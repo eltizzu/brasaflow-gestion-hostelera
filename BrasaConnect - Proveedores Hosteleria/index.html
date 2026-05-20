@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrasaConnect | Proveedores para hosteleria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-card panel">
+        <div class="brand-logo">BC</div>
+        <div>
+          <span class="eyebrow">Hosteleria conectada</span>
+          <h1>BrasaConnect</h1>
+          <p>Pedidos, catalogos, proveedores, historial y albaranes en un solo flujo.</p>
+        </div>
+      </div>
+
+      <section class="panel switch-panel">
+        <span class="label">Vista demo</span>
+        <div class="segmented" id="view-switcher">
+          <button class="active" data-view="business">Negocio</button>
+          <button data-view="supplier">Proveedor</button>
+          <button data-view="network">Red</button>
+        </div>
+      </section>
+
+      <label class="mobile-section-jump panel">
+        <span>Ir a seccion</span>
+        <select id="mobile-section-selector"></select>
+      </label>
+
+      <nav class="nav panel">
+        <button class="nav-link active" data-section="dashboard">Resumen</button>
+        <button class="nav-link" data-section="suppliers">Proveedores</button>
+        <button class="nav-link" data-section="catalog">Catalogo</button>
+        <button class="nav-link" data-section="orders">Pedidos</button>
+        <button class="nav-link" data-section="delivery-notes">Albaranes</button>
+        <button class="nav-link" data-section="network">Red</button>
+        <button class="nav-link" data-section="settings">Perfil</button>
+      </nav>
+
+      <section class="panel dark-panel">
+        <h2>Producto hermano</h2>
+        <p>BrasaConnect se integra con BrasaFlow, pero vive como app propia para no mezclar gestion interna con relacion proveedor-negocio.</p>
+      </section>
+    </aside>
+
+    <main class="main-content">
+      <header class="hero panel">
+        <div>
+          <span class="eyebrow" id="hero-kicker">Vista negocio</span>
+          <h2 id="hero-title">Compra mejor sin perder historial</h2>
+          <p id="hero-description">El negocio ve proveedores, revisa catalogos, hace pedidos y guarda albaranes e incidencias.</p>
+        </div>
+        <div class="hero-stack">
+          <article>
+            <span>Demo</span>
+            <strong id="hero-entity">La Terraza Central</strong>
+          </article>
+          <article>
+            <span>Estado</span>
+            <strong>MVP conectado</strong>
+          </article>
+        </div>
+      </header>
+
+      <section class="panel section-view active" id="dashboard-section"></section>
+      <section class="panel section-view" id="suppliers-section"></section>
+      <section class="panel section-view" id="catalog-section"></section>
+      <section class="panel section-view" id="orders-section"></section>
+      <section class="panel section-view" id="delivery-notes-section"></section>
+      <section class="panel section-view" id="network-section"></section>
+      <section class="panel section-view" id="settings-section"></section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+

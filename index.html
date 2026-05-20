@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrasaFlow | Gestion de personal para hosteleria</title>
+  <link rel="icon" href="./assets/logo-brasaflow.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div id="auth-root"></div>
+  <div class="app-shell" id="app-shell">
+    <aside class="sidebar">
+      <div>
+        <div class="brand-block">
+          <div class="brand-head">
+            <div class="brand-logo" id="brand-logo">
+              <img src="./assets/logo-brasaflow.svg" alt="BrasaFlow">
+            </div>
+            <div class="brand-copy">
+              <span class="brand-kicker" id="brand-kicker">Hosteleria</span>
+              <h1>BrasaFlow</h1>
+              <p>Una base de app para turnos, personal, inventario y comunicacion interna.</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="panel soft-panel">
+          <div class="section-title">
+            <h2>Vista actual</h2>
+            <p>Simula que entra cada tipo de usuario.</p>
+          </div>
+          <div class="segmented" id="view-switcher">
+            <button class="active" data-view="employee">Empleado</button>
+            <button data-view="manager">Encargado</button>
+            <button data-view="admin">Empresa</button>
+          </div>
+          <label class="field">
+            <span>Empleado activo</span>
+            <select id="employee-selector"></select>
+          </label>
+        </section>
+
+        <nav class="nav panel">
+          <button class="nav-link active" data-section="dashboard">Resumen</button>
+          <button class="nav-link" data-section="shifts">Turnos</button>
+          <button class="nav-link" data-section="attendance">Fichaje</button>
+          <button class="nav-link" data-section="time-off">Vacaciones</button>
+          <button class="nav-link" data-section="chat">Chats</button>
+          <button class="nav-link" data-section="inventory">Inventario</button>
+          <button class="nav-link" data-section="orders">Pedidos</button>
+          <button class="nav-link" data-section="temperatures">Temperaturas</button>
+          <button class="nav-link" data-section="allergens">Alergenos</button>
+          <button class="nav-link" data-section="recipes">Recetas</button>
+          <button class="nav-link" data-section="documents">Documentos</button>
+          <button class="nav-link" data-section="employees">Empleados</button>
+          <button class="nav-link" data-section="settings">Configuracion</button>
+        </nav>
+        <label class="mobile-section-jump panel">
+          <span>Ir a sección</span>
+          <select id="mobile-section-selector"></select>
+        </label>
+      </div>
+
+      <section class="panel highlight-panel">
+        <h2>Base para crecer</h2>
+        <ul class="mini-list">
+          <li>Roles y puestos editables por negocio</li>
+          <li>Vacaciones acumuladas configurables</li>
+          <li>Chats por area y avisos urgentes</li>
+          <li>Inventario compartido con pedidos por responsables</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="main-content">
+      <header class="hero panel">
+        <div>
+          <span class="brand-kicker" id="hero-badge">Vista Empleado</span>
+          <h2 id="hero-title">Gestion diaria para equipos de hosteleria</h2>
+          <p id="hero-description">El empleado ve sus turnos, vacaciones, avisos y documentos desde el movil. La empresa organiza toda la operativa desde un solo panel.</p>
+        </div>
+        <div class="hero-actions">
+          <div class="hero-stat">
+            <span class="stat-label">Negocio demo</span>
+            <strong>La Terraza Central</strong>
+          </div>
+          <div class="hero-stat">
+            <span class="stat-label">Modo</span>
+            <strong id="hero-mode">Empleado</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="content-grid">
+        <div class="content-column">
+          <section class="panel section-view active" id="dashboard-section"></section>
+          <section class="panel section-view" id="shifts-section"></section>
+          <section class="panel section-view" id="attendance-section"></section>
+          <section class="panel section-view" id="time-off-section"></section>
+          <section class="panel section-view" id="chat-section"></section>
+          <section class="panel section-view" id="inventory-section"></section>
+          <section class="panel section-view" id="orders-section"></section>
+          <section class="panel section-view" id="temperatures-section"></section>
+          <section class="panel section-view" id="allergens-section"></section>
+          <section class="panel section-view" id="recipes-section"></section>
+          <section class="panel section-view" id="documents-section"></section>
+          <section class="panel section-view" id="employees-section"></section>
+          <section class="panel section-view" id="settings-section"></section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

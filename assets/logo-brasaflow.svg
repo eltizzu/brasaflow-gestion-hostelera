@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">BrasaFlow</title>
+  <desc id="desc">Logo de BrasaFlow con una llama y un flujo interno.</desc>
+  <defs>
+    <linearGradient id="flame" x1="22" y1="10" x2="74" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2a85b"/>
+      <stop offset="0.48" stop-color="#c86f31"/>
+      <stop offset="1" stop-color="#8f3f17"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="37" y1="28" x2="68" y2="68" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#63b38f"/>
+      <stop offset="1" stop-color="#2b7f63"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="145%">
+      <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#8f3f17" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="96" height="96" rx="26" fill="#fffaf2"/>
+  <path filter="url(#shadow)" fill="url(#flame)" d="M50.3 12.2c2.7 10.4 12.8 17.2 16.7 27.1 4.8 12.2.9 25.8-9 33.6-10.4 8.3-25.1 6.5-33.1-3.4-7.4-9.1-6.6-22.9 1.1-32.7 5.1-6.5 14.6-11.2 16.4-24.6.3-2.1 2.9-3 4.5-1.6 1.4 1.2 2.6 1.8 3.4 1.6z"/>
+  <path fill="#fffaf2" d="M34.7 59.8c-3.2-7.6 1.3-15.5 8.8-22.9.8-.8 2.2-.2 2.2.9-.1 4.6 1.6 8.1 5.1 10.6 4.9 3.4 6.3 9.8 3.1 14.7-3.9 6.1-15.8 5.1-19.2-3.3z" opacity=".94"/>
+  <path fill="url(#leaf)" d="M53.9 52.4c6.4-1.7 12.3 1 17.4 7 .7.8.2 2.1-.9 2.2-4.8.4-8.2 1.8-10.1 4.2-4.3 5.4-12 4.8-15.6-.8-2.7-4.2.2-10 9.2-12.6z"/>
+  <path fill="#fffaf2" d="M35 37.1c5.6-2 11.6-.8 17.7 3.5 5.8 4.2 11.4 5.4 16.9 3.7 1.6-.5 2.8 1.3 1.8 2.6-5.7 7.9-15.1 9.6-24.2 3.1-5.2-3.8-9.9-4.8-14.2-3.2-1.5.6-2.8-1-2-2.4 1-2 2.3-4.6 4-7.3z" opacity=".92"/>
+</svg>
