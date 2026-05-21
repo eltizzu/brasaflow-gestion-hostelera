@@ -641,3 +641,46 @@ BrasaFlow Reune En Un Solo Lugar:
 
 La Clave Del Producto Es Que Cada Persona Vea Solo Lo Que Necesita Y Que La App Sea Facil De Usar, Especialmente Desde El Celular.
 
+## 21. Estado De Esta Version Demo
+
+Esta Version Esta Pensada Para Presentacion Y Prueba Guiada.
+
+Permite Mostrar:
+
+- Acceso Por Perfil.
+- Vista De Empleado.
+- Vista De Encargado.
+- Vista De Empresa.
+- Gestion De Turnos.
+- Fichaje.
+- Vacaciones Y Ausencias.
+- Chats Internos.
+- Documentos.
+- Inventario.
+- Pedidos.
+- Recepcion.
+- Temperaturas.
+- Recetas.
+- Alergenos.
+- Configuracion Del Negocio.
+- Logo Y Marca Del Negocio.
+
+## 22. Que Tener En Cuenta Al Presentarla
+
+- Los Datos Son De Demo.
+- No Deben Cargarse Datos Reales De Empleados O Empresas.
+- La App Muestra El Flujo Del Producto, No Una Version Final Con Login Real Y Base De Datos Productiva.
+- El Objetivo Es Que El Cliente Entienda Como Se Ordena La Operativa Interna.
+
+## 23. Relacion Con Las Apps Hermanas
+
+BrasaFlow Es El Centro Operativo Del Ecosistema.
+
+Las Apps Hermanas No Lo Reemplazan:
+
+- BrasaReservas Ordena Lo Que Pasa Antes Del Servicio.
+- BrasaComandas Ordenara Lo Que Pasa Durante El Servicio.
+- BrasaConnect Ordena La Relacion Con Proveedores.
+
+BrasaFlow Debe Seguir Siendo La App De Gestion Interna: personal, turnos, fichaje, vacaciones, documentos, inventario, pedidos internos, temperaturas, recetas y configuracion.
+

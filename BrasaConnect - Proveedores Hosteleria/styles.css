@@ -29,6 +29,7 @@ body {
   min-height: 100vh;
   font-family: "Outfit", sans-serif;
   color: var(--ink);
+  overflow-x: hidden;
   background:
     radial-gradient(circle at top left, rgba(43, 127, 99, 0.16), transparent 28%),
     radial-gradient(circle at bottom right, rgba(200, 111, 49, 0.16), transparent 24%),
@@ -87,21 +88,34 @@ button {
   display: flex;
   gap: 14px;
   align-items: center;
+  min-width: 0;
 }
 
 .brand-logo {
   width: 58px;
   height: 58px;
-  border-radius: 18px;
+  border-radius: 20px;
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  background: linear-gradient(135deg, var(--accent), var(--warm));
-  color: white;
+  background: #fffaf2;
+  color: var(--accent-strong);
   font-family: "Sora", sans-serif;
   font-weight: 700;
   letter-spacing: 0.04em;
   box-shadow: 0 14px 28px rgba(43, 127, 99, 0.2);
+  overflow: hidden;
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.brand-copy {
+  min-width: 0;
 }
 
 .brand-card h1,
@@ -109,7 +123,28 @@ button {
 .section-header h3 {
   margin: 8px 0;
   font-family: "Sora", sans-serif;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
+}
+
+.brand-card h1 {
+  max-width: 100%;
+  font-size: clamp(1.16rem, 1vw + 0.95rem, 1.3rem);
+  line-height: 1.08;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+.brand-card .eyebrow {
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  font-size: 0.72rem;
+}
+
+.brand-card p {
+  max-width: 100%;
+  line-height: 1.35;
+  overflow-wrap: break-word;
 }
 
 .brand-card p,
@@ -467,6 +502,22 @@ textarea {
   color: var(--muted);
 }
 
+.integration-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.integration-strip article {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(200, 111, 49, 0.08);
+  border: 1px solid rgba(200, 111, 49, 0.12);
+}
+
 .order-layout {
   display: grid;
   grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.1fr);
@@ -623,6 +674,7 @@ textarea {
   }
 
   .demo-path,
+  .integration-strip,
   .order-layout,
   .detail-grid {
     grid-template-columns: 1fr;

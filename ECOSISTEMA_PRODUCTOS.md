@@ -7,7 +7,8 @@ La Mejor Forma De Hacer Crecer Este Proyecto No Es Meter Todo Dentro De Una Mism
 Lo Mas Sano Es Separarlo En Productos Hermanos:
 
 - `BrasaFlow`
-- `App De Comandas`
+- `BrasaComandas`
+- `BrasaReservas`
 - `BrasaConnect`
 - Otros Productos Futuros
 
@@ -62,9 +63,9 @@ BrasaFlow Debe Quedar Como La App De `Gestion Interna Y Operativa Del Negocio`.
 - Local Principal
 - Parametros De Fichaje
 
-## 3. Que Conviene Pasar A La App De Comandas
+## 3. Que Conviene Pasar A BrasaComandas
 
-La App De Comandas Debe Quedar Como La Herramienta De `Servicio En Sala, Cocina Y Barra En Tiempo Real`.
+BrasaComandas Debe Quedar Como La Herramienta De `Servicio En Sala, Cocina Y Barra En Tiempo Real`.
 
 ### Toma De Pedidos
 
@@ -193,7 +194,54 @@ BrasaConnect No Tiene Que Estar Mezclado Con BrasaFlow, Pero Si Deben Poder Comp
 - Diferencias Entre Pedido Y Recepcion
 - Datos Para Coste De Recetas
 
-## 7. Cosas Que Hoy Tienen Mas Sentido En BrasaFlow
+## 7. Que Conviene Pasar A BrasaReservas
+
+BrasaReservas Debe Quedar Como La Herramienta De `Reservas, Sala, Lista De Espera Y Clientes`.
+
+### Reservas
+
+- Reservas Del Dia
+- Reservas Por Servicio
+- Estados De Reserva
+- Confirmaciones
+- Cancelaciones
+- No-Show
+
+### Sala
+
+- Mesas
+- Capacidad
+- Ocupacion
+- Lista De Espera
+- Clientes Sentados
+- Liberacion De Mesas
+
+### Clientes
+
+- Ficha De Cliente
+- Historial De Visitas
+- Preferencias
+- Notas Internas
+- Alergias Declaradas Si El Cliente Las Informa
+
+## 8. Que Datos Comparte BrasaFlow Con BrasaReservas
+
+### Desde BrasaReservas Hacia BrasaFlow
+
+- Prevision De Comensales
+- Horas De Mayor Carga
+- Grupos Grandes
+- Eventos
+- Necesidad De Refuerzo
+
+### Desde BrasaFlow Hacia BrasaReservas
+
+- Turnos De Sala
+- Personal Disponible
+- Areas Del Negocio
+- Configuracion Del Local
+
+## 9. Cosas Que Hoy Tienen Mas Sentido En BrasaFlow
 
 Estas Funciones Sirven, Pero Su Uso Es Mas Interno Que De Servicio:
 
@@ -205,7 +253,7 @@ Estas Funciones Sirven, Pero Su Uso Es Mas Interno Que De Servicio:
 - Preparar Pedidos
 - Registrar Temperaturas
 
-## 8. Cosas Que Hoy Tienen Mas Sentido En Comandas
+## 10. Cosas Que Hoy Tienen Mas Sentido En Comandas
 
 Estas Funciones Son Mucho Mas Potentes Frente Al Cliente O Durante El Servicio:
 
@@ -216,7 +264,19 @@ Estas Funciones Son Mucho Mas Potentes Frente Al Cliente O Durante El Servicio:
 - Ver El Estado Del Pedido En Vivo
 - Coordinar Cocina, Sala Y Barra
 
-## 9. Cosas Que Hoy Tienen Mas Sentido En BrasaConnect
+## 11. Cosas Que Hoy Tienen Mas Sentido En BrasaReservas
+
+Estas Funciones Son Mas Potentes Antes De Que Empiece El Servicio:
+
+- Gestionar Reservas
+- Confirmar O Cancelar Reservas
+- Controlar No-Shows
+- Organizar Lista De Espera
+- Ver Ocupacion Prevista
+- Consultar Historial Del Cliente
+- Preparar Carga De Sala Y Cocina
+
+## 12. Cosas Que Hoy Tienen Mas Sentido En BrasaConnect
 
 Estas Funciones Son Mas Potentes En La Relacion Negocio-Proveedor:
 
@@ -229,7 +289,7 @@ Estas Funciones Son Mas Potentes En La Relacion Negocio-Proveedor:
 - Comparar Pedido Contra Recepcion
 - Gestionar Incidencias De Entrega
 
-## 10. Reglas De Producto Para No Mezclar
+## 13. Reglas De Producto Para No Mezclar
 
 ### BrasaFlow
 
@@ -237,11 +297,17 @@ Debe Responder A Esta Pregunta:
 
 `Como Organizo El Negocio Por Dentro`
 
-### App De Comandas
+### BrasaComandas
 
 Debe Responder A Esta Pregunta:
 
 `Como Atiendo Mejor Y Mas Rapido Durante El Servicio`
+
+### BrasaReservas
+
+Debe Responder A Esta Pregunta:
+
+`Como Organizo Las Reservas Y La Ocupacion Antes Del Servicio`
 
 ### BrasaConnect
 
@@ -249,25 +315,35 @@ Debe Responder A Esta Pregunta:
 
 `Como Conecto Mi Negocio Con Mis Proveedores`
 
-## 11. Decisiones Tomadas
+## 14. Decisiones Tomadas
 
 Por Ahora Dejamos Asi:
 
 - `BrasaFlow` Sigue Siendo La App De Gestion Interna
 - `Alergenos` Puede Existir Dentro De BrasaFlow Como Base Interna
-- La Consulta Rapida De Alergenos Para Camarero Queda Pensada Sobre Todo Para La Futura `App De Comandas`
-- Todo Lo Que Sea Tiempo Real De Platos, Estados Y Notificaciones Al Camarero Va Para `Comandas`
+- La Consulta Rapida De Alergenos Para Camarero Queda Pensada Sobre Todo Para `BrasaComandas`
+- Todo Lo Que Sea Reservas, Lista De Espera, Ocupacion Y Ficha De Cliente Va Para `BrasaReservas`
+- Todo Lo Que Sea Tiempo Real De Platos, Estados Y Notificaciones Al Camarero Va Para `BrasaComandas`
 - Todo Lo Que Sea Catalogo De Proveedor, Red De Proveedores, Pedidos Conectados Y Albaranes Compartidos Va Para `BrasaConnect`
 
-## 12. Productos Futuros Ya Detectados
+## 15. Productos Futuros Ya Detectados
 
-### App De Comandas
+### BrasaComandas
 
 - Toma De Pedidos
 - Cocina Y Barra En Tiempo Real
 - Estados Del Servicio
 - Avisos Al Camarero
 - Datos De Tiempos
+
+### BrasaReservas
+
+- Reservas Del Dia
+- Mesa Y Sala
+- Lista De Espera
+- Estados De Reserva
+- Clientes E Historial
+- Prevision De Ocupacion
 
 ### BrasaConnect
 
@@ -303,14 +379,15 @@ Por Ahora Dejamos Asi:
 - Recordatorios
 - WhatsApp
 
-## 13. Conclusion
+## 16. Conclusion
 
 La Decision Correcta No Es Hacer Una App Gigante.
 
 La Decision Correcta Es Crear Un Ecosistema:
 
 - `BrasaFlow` Para Gestion Interna
-- `Comandas` Para Servicio En Tiempo Real
+- `BrasaReservas` Para Reservas, Sala Y Clientes
+- `BrasaComandas` Para Servicio En Tiempo Real
 - `BrasaConnect` Para Conectar Negocios Y Proveedores
 - Otros Productos Hermanos Para Problemas Distintos
 

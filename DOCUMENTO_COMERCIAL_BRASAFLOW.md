@@ -329,6 +329,47 @@ Sin Mezclarlo Todavia, BrasaFlow Puede Crecer Hacia:
 
 La Consulta Rápida De Alérgenos En Pleno Servicio Encaja Mejor En La Futura App De `Comandas`.
 
+## 12.1 Diferencia Frente A Otras Herramientas
+
+BrasaFlow No Esta Pensada Como Una Herramienta Aislada De Turnos, Fichaje O Documentos.
+
+Su Diferencia Esta En Que Ordena La Operativa Interna Completa Desde Una Misma Logica:
+
+- Cada Perfil Ve Solo Lo Que Necesita.
+- El Empleado Puede Usarla Desde El Movil.
+- El Encargado Trabaja Por Area.
+- La Empresa Tiene Vision Global.
+- Los Modulos Estan Pensados Para Hosteleria, No Para Una Oficina Generica.
+- Puede Crecer Como Ecosistema Sin Volver Pesada La App Principal.
+
+## 12.2 Apps Hermanas Y Ecosistema
+
+BrasaFlow Puede Presentarse Como La App Principal De Un Ecosistema Para Hosteleria.
+
+El Ecosistema Se Ordena Asi:
+
+- BrasaFlow: Gestion Interna Del Negocio.
+- BrasaReservas: Reservas, Sala, Espera Y Clientes.
+- BrasaComandas: Servicio En Vivo, Mesas Y Cocina.
+- BrasaConnect: Proveedores, Catalogos, Pedidos Y Albaranes.
+
+Esto Permite Vender BrasaFlow Como Producto Principal Y, A Futuro, Ofrecer Modulos Hermanos Segun La Necesidad Del Cliente.
+
+## 12.3 Actualizaciones Futuras Posibles
+
+Ideas Claras Para Evolucion:
+
+- Multi-Sede.
+- Panel De Empresa Para Varios Locales.
+- Firma Digital De Documentos.
+- Lectura De Albaranes O Inventarios Con IA.
+- Coste Por Plato.
+- Alertas Inteligentes.
+- Informes De Fichaje Y Ausencias.
+- Conexion Con BrasaReservas Para Prevision De Personal.
+- Conexion Con BrasaComandas Para Datos De Servicio.
+- Conexion Con BrasaConnect Para Compras Y Proveedores.
+
 ## 13. Posicionamiento Comercial
 
 BrasaFlow Puede Presentarse Como:

@@ -166,6 +166,7 @@ const defaultState = {
 
 let appState = structuredClone(defaultState);
 let saveTimer = null;
+const STORAGE_KEY = "brasaconnect-demo-state";
 
 const viewCopy = {
   business: {
@@ -242,10 +243,21 @@ async function loadState() {
     const savedState = await response.json();
     if (savedState && Object.keys(savedState).length) {
       appState = mergeState(structuredClone(defaultState), savedState);
+      return;
     }
   } catch (error) {
-    appState = structuredClone(defaultState);
+    try {
+      const localState = window.localStorage.getItem(STORAGE_KEY);
+      if (localState) {
+        appState = mergeState(structuredClone(defaultState), JSON.parse(localState));
+        return;
+      }
+    } catch (localError) {
+      window.localStorage.removeItem(STORAGE_KEY);
+    }
   }
+
+  appState = structuredClone(defaultState);
 }
 
 function mergeState(base, saved) {
@@ -262,13 +274,19 @@ function scheduleSave() {
   window.clearTimeout(saveTimer);
   saveTimer = window.setTimeout(async () => {
     try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    } catch (localError) {
+      // If browser storage is blocked, the demo still works during the session.
+    }
+
+    try {
       await fetch("/api/state", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(appState),
       });
     } catch (error) {
-      console.warn("No se pudo guardar el estado.", error);
+      // Static public demos save locally in the visitor browser.
     }
   }, 250);
 }
@@ -353,6 +371,16 @@ function renderDashboard() {
       ${renderFlowCard("Negocio", "Busca proveedor, arma pedido y confirma recepcion.")}
       ${renderFlowCard("Proveedor", "Recibe pedido, confirma estado y sube albaran.")}
       ${renderFlowCard("Historial", "Cada pedido queda guardado con estado, nota e incidencia.")}
+    </div>
+    <div class="integration-strip">
+      <article>
+        <span class="pill ok">Con BrasaFlow</span>
+        <strong>Inventario y pedidos internos pueden abrir pedidos conectados.</strong>
+      </article>
+      <article>
+        <span class="pill">Con recetas</span>
+        <strong>Los albaranes y precios pueden alimentar costes por plato mas adelante.</strong>
+      </article>
     </div>
   `;
 }
@@ -497,7 +525,7 @@ function renderCatalogCard(item) {
       </div>
       <span class="catalog-price">${money(item.price)}</span>
       <small class="muted">${escapeHtml(item.format)} · ${escapeHtml(item.category)} · ${escapeHtml(supplier.name)}</small>
-      <button class="action-btn primary" data-action="quick-order" data-product="${item.id}" ${item.available ? "" : "disabled"}>Agregar a pedido demo</button>
+      <button class="action-btn primary" data-action="quick-order" data-product="${item.id}" ${item.available ? "" : "disabled"}>Crear pedido</button>
     </article>
   `;
 }
@@ -644,7 +672,7 @@ function renderDeliveryNotes() {
         <h3>Albaranes</h3>
         <p>Primera version: registro simple asociado a pedidos.</p>
       </div>
-      <button class="action-btn primary" data-action="create-delivery-note">Registrar albaran demo</button>
+      <button class="action-btn primary" data-action="create-delivery-note">Registrar albaran</button>
     </div>
     <div class="cards-grid">
       ${visibleNotes.length ? visibleNotes.map(renderDeliveryNoteCard).join("") : `<div class="empty-note">No hay albaranes para esta vista.</div>`}
@@ -850,7 +878,7 @@ function createQuickOrder(productId) {
     deliveryDate: "",
     total: product.price,
     items: [{ productId: product.id, name: product.name, quantity: 1, format: product.format, price: product.price }],
-    note: "Pedido creado desde catalogo demo.",
+    note: "Pedido creado desde catalogo.",
     deliveryNoteId: "",
     incident: "",
   };
@@ -872,10 +900,10 @@ function createDeliveryNoteDemo(orderId = "") {
     id: `dn-${Date.now()}`,
     orderId: order.id,
     supplierId: order.supplierId,
-    number: `ALB-DEMO-${String(appState.deliveryNotes.length + 1).padStart(3, "0")}`,
+    number: `ALB-${new Date().getFullYear()}-${String(appState.deliveryNotes.length + 1).padStart(4, "0")}`,
     date: new Date().toISOString().slice(0, 10),
     status: "Pendiente de recepcion",
-    summary: "Albaran demo generado para probar el flujo.",
+    summary: "Albaran registrado desde el panel del proveedor.",
   };
   order.deliveryNoteId = note.id;
   pushOrderHistory(order, "Albaran registrado", "El proveedor subio o registro el albaran del pedido.");

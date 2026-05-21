@@ -154,7 +154,47 @@ BrasaConnect Debe Responder A Esta Pregunta:
 
 `Como Conecto Mi Negocio Con Mis Proveedores`
 
-## 5. Producto Futuro: Centralizador De Mensajes
+## 5. Producto Hermano: BrasaReservas
+
+BrasaReservas Queda Pensado Como App Hermana De BrasaFlow, No Como Parte Pesada Del Nucleo Actual.
+
+La Idea Es Gestionar Reservas, Ocupacion De Sala, Lista De Espera Y Clientes.
+
+### Funciones Principales
+
+- Reservas Del Dia.
+- Reservas Por Servicio.
+- Estados De Reserva.
+- Mesas.
+- Ocupacion De Sala.
+- Lista De Espera.
+- Ficha De Cliente.
+- Historial De Visitas.
+- Notas Internas.
+
+### Conexion Con BrasaFlow
+
+- BrasaReservas Puede Enviar Prevision De Comensales.
+- BrasaFlow Puede Usar Esa Prevision Para Turnos Y Refuerzos.
+- Eventos O Grupos Grandes Pueden Ayudar A Planificar Personal.
+
+### Conexion Con Comandas
+
+- Cuando El Cliente Llega, La Reserva Pasa A Mesa.
+- Cuando La Mesa Esta Activa, Comandas Toma El Servicio En Tiempo Real.
+
+### Conexion Con BrasaConnect
+
+- Si Hay Alta Demanda O Eventos, BrasaReservas Puede Ayudar A Anticipar Compras.
+- BrasaConnect Puede Convertir Esa Prevision En Pedidos A Proveedores.
+
+### Regla De Producto
+
+BrasaReservas Debe Responder A Esta Pregunta:
+
+`Como Organizo Las Reservas Y La Ocupacion Antes Del Servicio`
+
+## 6. Producto Futuro: Centralizador De Mensajes
 
 Idea De Una App Para Centralizar Conversaciones Y No Dejar Mensajes Sin Responder.
 
@@ -176,18 +216,6 @@ Idea De Una App Para Centralizar Conversaciones Y No Dejar Mensajes Sin Responde
 - Asignar Conversacion
 - Ver Historial
 - Medir Tiempos De Respuesta
-
-## 6. Producto Futuro: App De Reservas
-
-Una App De Reservas Separada Pero Con Posible Conexion A BrasaFlow.
-
-### Ideas Base
-
-- Reservas Del Restaurante
-- Vista Del Dia
-- Horas De Mayor Carga
-- Ocupacion Esperada
-- Conexion Futura Con Turnos U Operativa
 
 ## 7. Producto Futuro: App De Citas Para Belleza
 
@@ -228,6 +256,7 @@ La Vision Es Tener Un Ecosistema De Productos Claros:
 
 - BrasaFlow Para Gestion Interna
 - Comandas Para Servicio En Tiempo Real
+- BrasaReservas Para Reservas, Sala Y Clientes
 - BrasaConnect Para Proveedores, Pedidos Y Albaranes
 - Centralizador De Mensajes Para Atencion
 - Reservas Para Organizacion Comercial
