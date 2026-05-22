@@ -28,7 +28,8 @@
     body { font-family: "IBM Plex Sans", sans-serif; color: var(--text); background: var(--bg); min-height: 100vh; }
 
     nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 64px; background: rgba(17,10,3,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-    .nav-brand { font-family: "IBM Plex Mono", monospace; font-size: 1.05rem; font-weight: 600; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-brand { display: flex; align-items: center; gap: 10px; font-family: "IBM Plex Mono", monospace; font-size: 1.15rem; font-weight: 600; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-mark { width: 36px; height: 36px; border-radius: 9px; background: var(--accent-soft); border: 1px solid rgba(232,130,12,0.3); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; letter-spacing: 0; }
     .nav-brand span { color: var(--gold); }
     .nav-links { display: flex; align-items: center; gap: 28px; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color .2s; }
@@ -153,7 +154,7 @@
 <body>
 
 <nav>
-  <a class="nav-brand" href="#"><span>Brasa</span>Flow</a>
+  <a class="nav-brand" href="#"><div class="nav-mark">BF</div><span>Brasa</span>Flow</a>
   <div class="nav-links">
     <a href="#problema">Qué resuelve</a>
     <a href="#modulos">Módulos</a>
@@ -294,4 +295,105 @@
         <li>Comandas con productos por categoría</li>
         <li>Pantalla exclusiva para cocina</li>
         <li>Pantalla exclusiva para barra</li>
-        <li>Estados: pendiente, preparando, listo, servido
+        <li>Estados: pendiente, preparando, listo, servido</li>
+        <li>Historial de servicio por mesa</li>
+      </ul>
+      <div class="modulo-footer">
+        <a class="demo-link" href="https://brasa-comandas-comandas-hosteleria-ten.vercel.app/" target="_blank">Ver demo</a>
+        <a class="manual-link" href="https://brasa-comandas-comandas-hosteleria-ten.vercel.app/manual.html" target="_blank">Manual de uso</a>
+      </div>
+    </div>
+
+    <div class="modulo-card brasa-connect">
+      <div class="modulo-header">
+        <div class="modulo-icon">🔗</div>
+        <div>
+          <h3>BrasaConnect</h3>
+          <span class="modulo-tag">Proveedores</span>
+        </div>
+      </div>
+      <p>Conecta tu negocio con proveedores a través de un flujo compartido: catálogo, pedido, estado, albarán, incidencia e historial.</p>
+      <ul class="modulo-features">
+        <li>Catálogo digital por proveedor</li>
+        <li>Pedidos con estado compartido</li>
+        <li>Albaranes y recepción digital</li>
+        <li>Incidencias con seguimiento</li>
+        <li>Historial de compras ordenado</li>
+        <li>Vista proveedor y vista negocio</li>
+      </ul>
+      <div class="modulo-footer">
+        <a class="demo-link" href="https://brasa-connect-proveedores-hosteleri.vercel.app/" target="_blank">Ver demo</a>
+        <a class="manual-link" href="https://brasa-connect-proveedores-hosteleri.vercel.app/manual.html" target="_blank">Manual de uso</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="precios">
+  <div class="section-label">Precios</div>
+  <h2 class="section-title">Empieza por lo que necesitas</h2>
+  <p class="section-sub">BrasaFlow es la base del ecosistema. Los módulos adicionales se activan cuando los necesites.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-name">BrasaFlow Local</div>
+      <div class="price-amount">49€ <span>/mes</span></div>
+      <div class="price-desc">Un solo local que quiere ordenar su equipo y operativa básica.</div>
+      <ul class="price-features">
+        <li>Empleados y roles</li>
+        <li>Turnos y vacaciones</li>
+        <li>Fichaje básico</li>
+        <li>Chat interno</li>
+        <li>Documentos laborales</li>
+      </ul>
+      <a class="price-cta ghost" href="mailto:hola@impulsdigital.es?subject=BrasaFlow Local">Solicitar demo</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-name">BrasaFlow Operativa <span class="badge-pop">Popular</span></div>
+      <div class="price-amount">89€ <span>/mes</span></div>
+      <div class="price-desc">Para locales que quieren controlar el día a día completo.</div>
+      <ul class="price-features">
+        <li>Todo lo del plan Local</li>
+        <li>Inventario por área</li>
+        <li>Hoja de pedidos y recepción</li>
+        <li>Control de temperaturas</li>
+        <li>PDFs y registros descargables</li>
+      </ul>
+      <a class="price-cta" href="mailto:hola@impulsdigital.es?subject=BrasaFlow Operativa">Solicitar demo</a>
+    </div>
+    <div class="price-card">
+      <div class="price-name">BrasaFlow Pro</div>
+      <div class="price-amount">149€ <span>/mes</span></div>
+      <div class="price-desc">Grupos, cadenas o franquicias con más de un local.</div>
+      <ul class="price-features">
+        <li>Todo lo del plan Operativa</li>
+        <li>Multi-sede y panel central</li>
+        <li>Permisos por sede</li>
+        <li>Reportes globales</li>
+        <li>Base para módulos avanzados</li>
+      </ul>
+      <a class="price-cta ghost" href="mailto:hola@impulsdigital.es?subject=BrasaFlow Pro">Solicitar demo</a>
+    </div>
+  </div>
+  <div class="add-ons">
+    <h3>Módulos adicionales del ecosistema</h3>
+    <div class="addon-list">
+      <div class="addon-item"><strong>BrasaReservas</strong> <span>+ 29 €/mes — Reservas y sala</span></div>
+      <div class="addon-item"><strong>BrasaComandas</strong> <span>+ 19 €/mes — Servicio en vivo</span></div>
+      <div class="addon-item"><strong>BrasaConnect</strong> <span>+ 29 €/mes — Proveedores</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>¿Tu restaurante sigue gestionando todo por WhatsApp?</h2>
+  <p>Empieza con un piloto de 7 días con datos reales de tu negocio.</p>
+  <a href="mailto:hola@impulsdigital.es?subject=Quiero probar el ecosistema Brasa">Hablar con nosotros</a>
+</section>
+
+<footer>
+  <p>Ecosistema Brasa · Desarrollado por <a href="https://impulsdigital.es">Impuls Digital</a> &nbsp;·&nbsp; <a href="demo.html">Abrir BrasaFlow demo</a></p>
+</footer>
+
+</body>
+</html>
