@@ -36,12 +36,13 @@
     .nav-cta { background: var(--accent) !important; color: #0d0700 !important; padding: 8px 20px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: background .2s; }
     .nav-cta:hover { background: var(--gold) !important; }
 
-    .hero { max-width: 900px; margin: 0 auto; padding: 80px 24px 64px; text-align: center; }
-    .eyebrow { display: inline-block; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--border); font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 5px 14px; border-radius: 6px; margin-bottom: 20px; }
-    h1 { font-family: "IBM Plex Sans", sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; color: var(--text); margin-bottom: 20px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 1.1fr); gap: clamp(24px, 5vw, 56px); align-items: center; padding: clamp(40px, 6vw, 80px) clamp(20px, 4vw, 60px) 40px; max-width: 1200px; margin: 0 auto; overflow: hidden; }
+    .hero-copy { display: grid; gap: 18px; }
+    .eyebrow { display: inline-block; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--border); font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 5px 14px; border-radius: 6px; }
+    h1 { font-family: "IBM Plex Sans", sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--text); margin: 0; }
     h1 em { color: var(--accent); font-style: normal; }
-    .hero-sub { font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 640px; margin: 0 auto 36px; }
-    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-sub { font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 580px; margin: 0; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
     .btn-primary { background: var(--accent); color: #0d0700; padding: 13px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; transition: background .2s; font-size: 0.95rem; }
     .btn-primary:hover { background: var(--gold); }
     .btn-ghost { background: transparent; color: var(--text); padding: 13px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; border: 1.5px solid var(--border); transition: border-color .2s; font-size: 0.95rem; }
@@ -115,6 +116,32 @@
     footer { text-align: center; padding: 28px 24px; font-size: 0.82rem; color: var(--muted); border-top: 1px solid var(--border); }
     footer a { color: var(--accent); text-decoration: none; }
 
+    .hero-shot { display: grid; grid-template-columns: 120px minmax(0, 1fr); min-height: 400px; border: 1px solid rgba(232,130,12,0.28); border-radius: 12px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.45); transform: rotate(-1.3deg); text-align: left; font-size: 0.82rem; }
+    .hs-sidebar { background: #120d04; color: var(--text); padding: 18px 12px; display: flex; flex-direction: column; gap: 8px; border-right: 1px solid rgba(232,130,12,0.18); }
+    .hs-logo { width: 34px; height: 34px; border-radius: 8px; background: rgba(232,130,12,0.2); margin-bottom: 6px; display: flex; align-items: center; justify-content: center; font-family: "IBM Plex Mono",monospace; font-size: 0.65rem; font-weight: 600; color: var(--accent); }
+    .hs-nav { padding: 7px 9px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; color: rgba(245,237,224,0.45); }
+    .hs-nav.active { background: rgba(232,130,12,0.15); color: var(--accent); }
+    .hs-main { background: var(--surface); padding: 18px; display: grid; align-content: start; gap: 12px; }
+    .hs-head { display: flex; justify-content: space-between; align-items: center; }
+    .hs-head strong { font-family: "IBM Plex Mono",monospace; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .hs-head span { font-size: 0.72rem; color: var(--muted); }
+    .hs-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .hs-stat { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+    .hs-stat small { display: block; color: var(--muted); font-size: 0.7rem; margin-bottom: 4px; }
+    .hs-stat strong { font-size: 1.3rem; font-weight: 700; color: var(--gold); font-family: "IBM Plex Mono",monospace; }
+    .hs-rows { display: grid; gap: 8px; }
+    .hs-row { display: grid; grid-template-columns: 48px minmax(0,1fr) 8px; gap: 10px; align-items: center; background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px; }
+    .hs-row.alert { border-left-color: var(--gold); }
+    .hs-row.off { opacity: 0.45; border-left-color: rgba(232,130,12,0.2); }
+    .hs-row time { font-family: "IBM Plex Mono",monospace; font-weight: 600; font-size: 0.73rem; color: var(--accent); display: block; }
+    .hs-row.off time { color: var(--muted); }
+    .hs-row strong, .hs-row span { display: block; }
+    .hs-row strong { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .hs-row span { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .hs-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); align-self: center; }
+    .hs-dot.off { background: var(--muted); }
+    .hs-dot.warn { background: var(--gold); }
+    @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .hero-shot { transform: none; } }
     @media (max-width: 600px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
@@ -136,12 +163,56 @@
 </nav>
 
 <section class="hero">
-  <div class="eyebrow">Suite operativa para hostelería</div>
-  <h1>Todo lo que necesita tu restaurante, <em>en cuatro herramientas conectadas</em></h1>
-  <p class="hero-sub">BrasaFlow ordena tu equipo y operativa interna. BrasaReservas gestiona reservas y sala. BrasaComandas controla el servicio en vivo. BrasaConnect conecta con tus proveedores.</p>
-  <div class="hero-actions">
-    <a class="btn-primary" href="demo.html">Ver demo de BrasaFlow</a>
-    <a class="btn-ghost" href="#modulos">Explorar módulos</a>
+  <div class="hero-copy">
+    <div class="eyebrow">Suite operativa para hostelería</div>
+    <h1>Todo lo que necesita tu restaurante, <em>en cuatro herramientas conectadas</em></h1>
+    <p class="hero-sub">BrasaFlow ordena tu equipo y operativa interna. BrasaReservas gestiona reservas y sala. BrasaComandas controla el servicio en vivo. BrasaConnect conecta con tus proveedores.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="demo.html">Ver demo de BrasaFlow</a>
+      <a class="btn-ghost" href="#modulos">Explorar módulos</a>
+    </div>
+  </div>
+  <div class="hero-shot" aria-hidden="true">
+    <div class="hs-sidebar">
+      <div class="hs-logo">BF</div>
+      <div class="hs-nav active">Equipo</div>
+      <div class="hs-nav">Turnos</div>
+      <div class="hs-nav">Inventario</div>
+      <div class="hs-nav">Pedidos</div>
+    </div>
+    <div class="hs-main">
+      <div class="hs-head">
+        <strong>equipo.hoy</strong>
+        <span>Viernes 22 mayo</span>
+      </div>
+      <div class="hs-stats">
+        <div class="hs-stat"><small>En turno</small><strong>6</strong></div>
+        <div class="hs-stat"><small>Descanso</small><strong>2</strong></div>
+        <div class="hs-stat"><small>Incidencias</small><strong>0</strong></div>
+      </div>
+      <div class="hs-rows">
+        <div class="hs-row">
+          <time>08:00</time>
+          <div><strong>Carlos R.</strong><span>Cocina · Turno mañana</span></div>
+          <div class="hs-dot"></div>
+        </div>
+        <div class="hs-row alert">
+          <time>10:30</time>
+          <div><strong>Inventario</strong><span>2 productos bajo mínimo</span></div>
+          <div class="hs-dot warn"></div>
+        </div>
+        <div class="hs-row">
+          <time>12:00</time>
+          <div><strong>Ana P.</strong><span>Sala · Turno tarde</span></div>
+          <div class="hs-dot"></div>
+        </div>
+        <div class="hs-row off">
+          <time>--:--</time>
+          <div><strong>Luis M.</strong><span>Día libre</span></div>
+          <div class="hs-dot off"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -223,105 +294,4 @@
         <li>Comandas con productos por categoría</li>
         <li>Pantalla exclusiva para cocina</li>
         <li>Pantalla exclusiva para barra</li>
-        <li>Estados: pendiente, preparando, listo, servido</li>
-        <li>Historial de servicio por mesa</li>
-      </ul>
-      <div class="modulo-footer">
-        <a class="demo-link" href="https://brasa-comandas-comandas-hosteleria-ten.vercel.app/" target="_blank">Ver demo</a>
-        <a class="manual-link" href="https://brasa-comandas-comandas-hosteleria-ten.vercel.app/manual.html" target="_blank">Manual de uso</a>
-      </div>
-    </div>
-
-    <div class="modulo-card brasa-connect">
-      <div class="modulo-header">
-        <div class="modulo-icon">🔗</div>
-        <div>
-          <h3>BrasaConnect</h3>
-          <span class="modulo-tag">Proveedores</span>
-        </div>
-      </div>
-      <p>Conecta tu negocio con proveedores a través de un flujo compartido: catálogo, pedido, estado, albarán, incidencia e historial.</p>
-      <ul class="modulo-features">
-        <li>Catálogo digital por proveedor</li>
-        <li>Pedidos con estado compartido</li>
-        <li>Albaranes y recepción digital</li>
-        <li>Incidencias con seguimiento</li>
-        <li>Historial de compras ordenado</li>
-        <li>Vista proveedor y vista negocio</li>
-      </ul>
-      <div class="modulo-footer">
-        <a class="demo-link" href="https://brasa-connect-proveedores-hosteleri.vercel.app/" target="_blank">Ver demo</a>
-        <a class="manual-link" href="https://brasa-connect-proveedores-hosteleri.vercel.app/manual.html" target="_blank">Manual de uso</a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="section" id="precios">
-  <div class="section-label">Precios</div>
-  <h2 class="section-title">Empieza por lo que necesitas</h2>
-  <p class="section-sub">BrasaFlow es la base del ecosistema. Los módulos adicionales se activan cuando los necesites.</p>
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="price-name">BrasaFlow Local</div>
-      <div class="price-amount">49€ <span>/mes</span></div>
-      <div class="price-desc">Un solo local que quiere ordenar su equipo y operativa básica.</div>
-      <ul class="price-features">
-        <li>Empleados y roles</li>
-        <li>Turnos y vacaciones</li>
-        <li>Fichaje básico</li>
-        <li>Chat interno</li>
-        <li>Documentos laborales</li>
-      </ul>
-      <a class="price-cta ghost" href="mailto:hola@impulsdigital.es?subject=BrasaFlow Local">Solicitar demo</a>
-    </div>
-    <div class="price-card featured">
-      <div class="price-name">BrasaFlow Operativa <span class="badge-pop">Popular</span></div>
-      <div class="price-amount">89€ <span>/mes</span></div>
-      <div class="price-desc">Para locales que quieren controlar el día a día completo.</div>
-      <ul class="price-features">
-        <li>Todo lo del plan Local</li>
-        <li>Inventario por área</li>
-        <li>Hoja de pedidos y recepción</li>
-        <li>Control de temperaturas</li>
-        <li>PDFs y registros descargables</li>
-      </ul>
-      <a class="price-cta" href="mailto:hola@impulsdigital.es?subject=BrasaFlow Operativa">Solicitar demo</a>
-    </div>
-    <div class="price-card">
-      <div class="price-name">BrasaFlow Pro</div>
-      <div class="price-amount">149€ <span>/mes</span></div>
-      <div class="price-desc">Grupos, cadenas o franquicias con más de un local.</div>
-      <ul class="price-features">
-        <li>Todo lo del plan Operativa</li>
-        <li>Multi-sede y panel central</li>
-        <li>Permisos por sede</li>
-        <li>Reportes globales</li>
-        <li>Base para módulos avanzados</li>
-      </ul>
-      <a class="price-cta ghost" href="mailto:hola@impulsdigital.es?subject=BrasaFlow Pro">Solicitar demo</a>
-    </div>
-  </div>
-  <div class="add-ons">
-    <h3>Módulos adicionales del ecosistema</h3>
-    <div class="addon-list">
-      <div class="addon-item"><strong>BrasaReservas</strong> <span>+ 29 €/mes — Reservas y sala</span></div>
-      <div class="addon-item"><strong>BrasaComandas</strong> <span>+ 19 €/mes — Servicio en vivo</span></div>
-      <div class="addon-item"><strong>BrasaConnect</strong> <span>+ 29 €/mes — Proveedores</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="cta-section">
-  <h2>¿Tu restaurante sigue gestionando todo por WhatsApp?</h2>
-  <p>Empieza con un piloto de 7 días con datos reales de tu negocio.</p>
-  <a href="mailto:hola@impulsdigital.es?subject=Quiero probar el ecosistema Brasa">Hablar con nosotros</a>
-</section>
-
-<footer>
-  <p>Ecosistema Brasa · Desarrollado por <a href="https://impulsdigital.es">Impuls Digital</a> &nbsp;·&nbsp; <a href="demo.html">Abrir BrasaFlow demo</a></p>
-</footer>
-
-</body>
-</html>
+        <li>Estados: pendiente, preparando, listo, servido
