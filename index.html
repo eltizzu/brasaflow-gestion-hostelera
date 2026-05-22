@@ -29,7 +29,7 @@
 
     nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 64px; background: rgba(17,10,3,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
     .nav-brand { display: flex; align-items: center; gap: 10px; font-family: "IBM Plex Mono", monospace; font-size: 1.15rem; font-weight: 600; color: var(--accent); text-decoration: none; letter-spacing: -0.02em; }
-    .nav-mark { width: 36px; height: 36px; border-radius: 9px; background: var(--accent-soft); border: 1px solid rgba(232,130,12,0.3); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; letter-spacing: 0; }
+    .nav-brand img { height: 36px; width: auto; display: block; }
     .nav-brand span { color: var(--gold); }
     .nav-links { display: flex; align-items: center; gap: 28px; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color .2s; }
@@ -154,7 +154,7 @@
 <body>
 
 <nav>
-  <a class="nav-brand" href="#"><div class="nav-mark">BF</div><span>Brasa</span>Flow</a>
+  <a class="nav-brand" href="#"><img src="assets/logo-brasaflow.svg" alt="BrasaFlow" /></a>
   <div class="nav-links">
     <a href="#problema">Qué resuelve</a>
     <a href="#modulos">Módulos</a>
