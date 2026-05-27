@@ -1,22 +1,23 @@
 :root {
-  --bg: #f5efe4;
-  --bg-alt: #efe5d4;
-  --panel: rgba(255, 251, 245, 0.88);
-  --panel-strong: #fffaf2;
-  --border: rgba(85, 58, 33, 0.12);
-  --text: #2f2419;
-  --muted: #6f6254;
-  --accent: #c86f31;
-  --accent-strong: #8f3f17;
-  --accent-soft: #f8dcc4;
-  --success: #2b7f63;
-  --warning: #d9922e;
-  --danger: #a33d33;
-  --shadow: 0 18px 40px rgba(74, 46, 23, 0.12);
-  --radius-xl: 28px;
-  --radius-lg: 22px;
-  --radius-md: 16px;
-  --radius-sm: 12px;
+  --bg: #f6efe6;
+  --bg-alt: #efe2d1;
+  --panel: #fffaf2;
+  --panel-strong: #f5eadb;
+  --border: rgba(146, 64, 14, 0.2);
+  --text: #24160b;
+  --muted: #6f5a43;
+  --accent: #d97706;
+  --accent-strong: #92400e;
+  --accent-soft: rgba(217, 119, 6, 0.14);
+  --success: #047857;
+  --warning: #b45309;
+  --danger: #ef4444;
+  --shadow: none;
+  --radius-xl: 8px;
+  --radius-lg: 8px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+  --sidebar: #fff7ed;
 }
 
 * {
@@ -26,12 +27,9 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Outfit", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   color: var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(200, 111, 49, 0.18), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(43, 127, 99, 0.12), transparent 22%),
-    linear-gradient(135deg, var(--bg), var(--bg-alt));
+  background: linear-gradient(135deg, var(--bg), var(--bg-alt));
 }
 
 [hidden] {
@@ -59,7 +57,7 @@ textarea {
 
 .auth-card h1 {
   margin: 14px 0 10px;
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   letter-spacing: -0.04em;
 }
 
@@ -157,7 +155,7 @@ textarea {
   flex-shrink: 0;
   background: #fffaf2;
   color: var(--accent-strong);
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -180,7 +178,7 @@ textarea {
 .brand-block h1,
 .hero h2 {
   margin: 10px 0 8px;
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   letter-spacing: -0.04em;
 }
 
@@ -444,12 +442,107 @@ textarea {
   box-shadow: 0 10px 24px rgba(63, 44, 26, 0.04);
 }
 
+.starter-panel {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--panel-strong);
+}
+
+.starter-panel h4 {
+  margin: 10px 0 6px;
+  font-size: 1.1rem;
+}
+
+.starter-panel p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.starter-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.starter-steps button {
+  display: grid;
+  gap: 6px;
+  min-height: 76px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.starter-steps button strong {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fffaf2;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.starter-steps button span {
+  font-weight: 600;
+}
+
+.supplier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.supplier-card {
+  display: grid;
+  gap: 12px;
+}
+
+.section-help {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0 18px;
+}
+
+.section-help article {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 250, 242, 0.78);
+}
+
+.section-help strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.86rem;
+}
+
+.section-help span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 .stat-card strong,
 .employee-name,
 .inventory-value {
   display: block;
   margin-top: 10px;
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: 1.35rem;
 }
 
@@ -486,7 +579,7 @@ textarea {
 }
 
 .next-shift-banner strong {
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
 .status-pill,
@@ -530,7 +623,7 @@ textarea {
 .section-header h3 {
   margin: 0;
   font-size: 1.3rem;
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
 .section-header p {
@@ -1077,7 +1170,7 @@ th {
 
 .subsection-title {
   margin: 4px 0 2px;
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: 1rem;
 }
 
@@ -1102,7 +1195,7 @@ th {
   display: block;
   margin-top: 6px;
   font-size: 1.5rem;
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
 .metric-label {
@@ -1189,7 +1282,7 @@ th {
 
 .metric-ring strong {
   font-size: 1.5rem;
-  font-family: "Sora", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
 .empty-note {
@@ -1452,4 +1545,330 @@ th {
     width: 100%;
     justify-content: center;
   }
+
+  .starter-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .starter-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .section-help {
+    grid-template-columns: 1fr;
+  }
 }
+
+/* BrasaFlow readable warm identity refresh */
+.auth-shell,
+.app-shell {
+  background: linear-gradient(135deg, var(--bg), var(--bg-alt));
+}
+
+.panel,
+.auth-card,
+.section-view,
+.side-panel,
+.stat-card,
+.chat-card,
+.policy-card,
+.shift-card,
+.inventory-card,
+.employee-card,
+.list-card,
+.chat-room,
+.inline-form,
+.metric-card,
+.admin-mode-card,
+.brand-preview,
+.compact-card,
+.plan-day-card,
+.day-column,
+.table-wrap,
+.hero-stat,
+.soft-panel {
+  border-color: var(--border);
+  background: var(--panel);
+  box-shadow: none;
+  border-radius: var(--radius-xl);
+}
+
+.sidebar .brand-block,
+.sidebar .nav,
+.sidebar .soft-panel,
+.sidebar .highlight-panel {
+  border: 1px solid var(--border);
+  background: var(--sidebar);
+  border-radius: var(--radius-xl);
+  box-shadow: none;
+}
+
+.brand-block {
+  padding: 16px;
+}
+
+.highlight-panel {
+  color: var(--text);
+}
+
+.highlight-panel,
+.hero {
+  background: linear-gradient(135deg, #fffaf2, #f2e3cf);
+}
+
+.brand-logo {
+  border-radius: var(--radius-xl);
+  background: var(--panel);
+  color: var(--accent-strong);
+  box-shadow: none;
+}
+
+.business-logo {
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: #fffaf2;
+}
+
+.brand-block h1,
+.hero h2,
+.section-title h2,
+.section-header h3,
+.side-panel h2,
+.list-card h4,
+.chat-card h4,
+.policy-card h4 {
+  letter-spacing: 0;
+  color: var(--text);
+}
+
+.brand-kicker,
+.status-pill,
+.tag,
+.priority-pill,
+.availability-pill,
+.stat-label,
+.badge-pop,
+.addon-item,
+td small,
+th,
+.metric-card strong,
+.stat-card strong,
+.employee-name,
+.inventory-value,
+.price-amount,
+.brand-preview-text strong,
+.progress-ring span {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.brand-kicker,
+.segmented,
+.chat-tab,
+.chat-urgent-toggle,
+.day-check span,
+.action-btn.secondary,
+.badge-btn,
+.mini-action,
+.mobile-section-jump,
+select,
+input,
+textarea {
+  border-color: var(--border);
+  background: var(--panel-strong);
+  color: var(--text);
+}
+
+.field span {
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  padding: 0;
+  display: inline;
+}
+
+select,
+input,
+textarea,
+.chat-composer-box textarea {
+  border-radius: var(--radius-xl);
+}
+
+.brand-kicker,
+.segmented button.active,
+.nav-link:hover,
+.nav-link.active,
+.badge-btn.active-filter,
+.chat-tab.active,
+.day-check input:checked + span,
+.order-focus-row,
+.next-shift-banner,
+.shift-chip,
+.allergen-service-box {
+  background: rgba(232, 130, 12, 0.14);
+  color: var(--accent-strong);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.nav-link {
+  border-radius: var(--radius-xl);
+}
+
+.action-btn.primary,
+.price-cta,
+.demo-link,
+.nav-cta {
+  background: var(--accent);
+  color: #fffaf2;
+  box-shadow: none;
+}
+
+.action-btn.primary:hover,
+.price-cta:hover,
+.demo-link:hover,
+.nav-cta:hover {
+  background: var(--accent-strong);
+  color: #fffaf2;
+}
+
+.action-btn,
+.badge-btn,
+.mini-action,
+.segmented button,
+.nav-link,
+.chat-tab,
+.form-actions button {
+  border-radius: var(--radius-xl);
+}
+
+.hero-stat,
+.chat-message,
+.chat-composer,
+.day-column,
+.plan-day-card,
+.shift-chip,
+.table-wrap,
+table,
+.inline-form,
+.brand-preview,
+.admin-mode-card,
+.metric-card,
+.list-card {
+  background: var(--panel-strong);
+}
+
+.inline-form {
+  scroll-margin-top: 18px;
+}
+
+.inline-form.form-opened {
+  border-color: rgba(245, 200, 66, 0.55);
+  outline: 2px solid rgba(232, 130, 12, 0.28);
+  outline-offset: 2px;
+}
+
+.action-btn.secondary {
+  background: #fffaf2;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.action-btn.secondary:hover {
+  background: rgba(217, 119, 6, 0.12);
+  color: var(--accent-strong);
+}
+
+.chat-message.own {
+  background: rgba(232, 130, 12, 0.14);
+}
+
+.chat-message.urgent,
+.conflict-banner,
+.plan-day-card.blocked,
+.shift-chip.conflict {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--danger);
+  box-shadow: none;
+}
+
+.shift-chip.warning,
+.plan-day-card.warning,
+.metric-card.warning {
+  background: rgba(245, 200, 66, 0.12);
+  border-color: rgba(245, 200, 66, 0.28);
+}
+
+.status-pill.ok,
+.priority-pill.low,
+.availability-pill.free,
+.badge-btn,
+.mini-action {
+  background: rgba(245, 200, 66, 0.14);
+  color: var(--success);
+}
+
+.status-pill.warn,
+.priority-pill.medium,
+.availability-pill.pending,
+.warn-tag {
+  background: rgba(245, 200, 66, 0.14);
+  color: var(--warning);
+}
+
+.status-pill.danger,
+.priority-pill.high,
+.availability-pill.approved,
+.mini-action.alt,
+.allergen-pill.danger {
+  background: rgba(239, 68, 68, 0.14);
+  color: var(--danger);
+}
+
+th,
+td {
+  border-bottom-color: rgba(232, 130, 12, 0.14);
+}
+
+.table-wrap {
+  border-color: var(--border);
+}
+
+.progress-ring {
+  background: conic-gradient(var(--accent) var(--progress), rgba(245, 237, 224, 0.1) 0);
+}
+
+.mobile-section-jump {
+  background: rgba(255, 250, 242, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+.brand-kicker,
+.status-pill,
+.tag,
+.priority-pill,
+.availability-pill,
+.chat-tab,
+.chat-urgent-toggle,
+.day-check span,
+.badge-pop,
+.addon-item,
+.chat-message,
+.chat-message.own,
+.chat-composer-box textarea,
+.next-shift-banner,
+.conflict-banner,
+.shift-chip,
+.plan-day-card,
+.table-wrap,
+.chat-room,
+.inline-form,
+.hero-stat {
+  border-radius: var(--radius-xl);
+}
+
+@media (max-width: 760px) {
+  .mobile-section-jump {
+    background: rgba(255, 250, 242, 0.96);
+  }
+}
+

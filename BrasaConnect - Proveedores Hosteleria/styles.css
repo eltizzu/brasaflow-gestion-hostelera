@@ -1,23 +1,25 @@
 :root {
-  --bg: #f3efe7;
-  --bg-alt: #e7efe7;
-  --panel: rgba(255, 252, 247, 0.9);
-  --panel-strong: #fffaf2;
-  --ink: #2e261d;
-  --muted: #706457;
-  --line: rgba(66, 48, 30, 0.12);
-  --accent: #2b7f63;
-  --accent-strong: #1f5f4a;
-  --warm: #c86f31;
-  --warm-strong: #8f3f17;
-  --soft-green: #dfeee6;
-  --soft-warm: #f8dfc7;
-  --danger: #a33d33;
-  --warning: #d9922e;
-  --shadow: 0 18px 42px rgba(49, 54, 37, 0.12);
-  --radius-xl: 26px;
-  --radius-lg: 20px;
-  --radius-md: 14px;
+  --bg: #f8fafc;
+  --bg-alt: #f8fafc;
+  --panel: #ffffff;
+  --panel-strong: #ffffff;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --warm: #f59e0b;
+  --warm-strong: #f59e0b;
+  --soft-green: #ecfdf5;
+  --soft-warm: #fffbeb;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --radius-xl: 10px;
+  --radius-lg: 10px;
+  --radius-md: 10px;
+  --accent-soft: #eff6ff;
+  --received: #10b981;
 }
 
 * {
@@ -27,13 +29,10 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Outfit", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--ink);
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at top left, rgba(43, 127, 99, 0.16), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(200, 111, 49, 0.16), transparent 24%),
-    linear-gradient(135deg, var(--bg), var(--bg-alt));
+  background: var(--bg);
 }
 
 button,
@@ -100,7 +99,7 @@ button {
   flex: 0 0 auto;
   background: #fffaf2;
   color: var(--accent-strong);
-  font-family: "Sora", sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 700;
   letter-spacing: 0.04em;
   box-shadow: 0 14px 28px rgba(43, 127, 99, 0.2);
@@ -122,7 +121,7 @@ button {
 .hero h2,
 .section-header h3 {
   margin: 8px 0;
-  font-family: "Sora", sans-serif;
+  font-family: "Inter", sans-serif;
   letter-spacing: 0;
 }
 
@@ -344,7 +343,7 @@ button {
 .metric-card strong {
   display: block;
   margin-top: 8px;
-  font-family: "Sora", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1.45rem;
 }
 
@@ -395,7 +394,7 @@ button {
 }
 
 .catalog-price {
-  font-family: "Sora", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1.25rem;
 }
 
@@ -544,7 +543,7 @@ textarea {
 
 .order-detail h4 {
   margin: 10px 0 0;
-  font-family: "Sora", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .order-detail h5 {
@@ -686,5 +685,243 @@ textarea {
 
   .timeline-item {
     grid-template-columns: 1fr;
+  }
+}
+
+/* BrasaConnect clean marketplace identity */
+.panel,
+.brand-card,
+.switch-panel,
+.dark-panel,
+.nav,
+.section-view,
+.hero,
+.card,
+.metric-card,
+.supplier-card,
+.order-card,
+.catalog-card,
+.note-card,
+.inline-form,
+.order-detail,
+.hero-stack article,
+.table-wrap,
+.demo-path article,
+.integration-strip article,
+.detail-grid article,
+.line-list div,
+.timeline-item,
+.empty-note {
+  background: var(--panel);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-xl);
+}
+
+.sidebar .brand-card,
+.sidebar .switch-panel,
+.sidebar .nav,
+.mobile-section-jump {
+  background: #ffffff;
+}
+
+.dark-panel {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.dark-panel p {
+  color: #cbd5e1;
+}
+
+.brand-logo {
+  background: var(--accent-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+}
+
+.brand-card h1,
+.hero h2,
+.section-header h3,
+.card-title h4,
+.metric-card strong,
+.catalog-price {
+  font-family: "Inter", sans-serif;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+.brand-card p,
+.hero p,
+.muted,
+.section-header p,
+.label,
+.hero-stack span,
+.metric-card span,
+.metric-card small,
+.card p,
+.supplier-card p,
+.order-card p,
+.catalog-card p,
+.note-card p,
+small {
+  color: var(--muted);
+}
+
+.eyebrow,
+.brand-card .eyebrow {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-xl);
+}
+
+.hero {
+  background: linear-gradient(135deg, #ffffff, #eff6ff);
+}
+
+.segmented,
+.segmented button.active,
+.nav-link,
+.chip-btn,
+.action-btn,
+select,
+input,
+textarea,
+.status-pill,
+.pill {
+  border-radius: var(--radius-xl);
+}
+
+.segmented {
+  background: #f1f5f9;
+}
+
+.segmented button.active,
+.nav-link:hover,
+.nav-link.active,
+.chip-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px #bfdbfe;
+}
+
+.action-btn,
+.action-btn.primary {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.action-btn:hover,
+.action-btn.primary:hover {
+  background: var(--accent-strong);
+  color: #ffffff;
+}
+
+.action-btn.secondary,
+.chip-btn {
+  background: #ffffff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.metric-card,
+.supplier-card,
+.order-card,
+.catalog-card,
+.note-card,
+.card,
+.order-detail,
+.hero-stack article,
+.inline-form {
+  background: #ffffff;
+}
+
+.status-pill,
+.pill {
+  background: #f1f5f9;
+  color: var(--muted);
+}
+
+.status-pill.ok,
+.pill.ok {
+  background: #ecfdf5;
+  color: #10b981;
+}
+
+.status-pill.warn,
+.pill.warn {
+  background: var(--accent-soft);
+  color: #2563eb;
+}
+
+.status-pill.danger,
+.pill.danger {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.status-pill.active,
+.pill.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.order-card .pill.warn,
+.order-detail .pill.warn {
+  background: #fffbeb;
+  color: #f59e0b;
+}
+
+table {
+  background: #ffffff;
+}
+
+th {
+  background: #f8fafc;
+  color: var(--muted);
+}
+
+th,
+td {
+  border-bottom-color: var(--line);
+}
+
+.table-wrap {
+  border-color: var(--line);
+  background: #ffffff;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.demo-path article,
+.line-list div,
+.timeline-item {
+  background: var(--accent-soft);
+  border-color: #bfdbfe;
+}
+
+.demo-path span {
+  background: var(--accent);
+  color: #ffffff;
+  border-radius: var(--radius-xl);
+}
+
+.integration-strip article {
+  background: #f8fafc;
+}
+
+@media (max-width: 720px) {
+  .mobile-section-jump {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
   }
 }

@@ -29,13 +29,14 @@
     notifications: "Avisos urgentes resaltados y con aviso al movil.",
     chatRetentionDays: 14,
     areas: ["Cocina", "Sala", "General"],
-    brandAccent: "#c86f31",
-    brandStrong: "#8f3f17",
+    brandAccent: "#d97706",
+    brandStrong: "#92400e",
     worksiteLabel: "Local principal",
     clockInRadiusMeters: 80,
     worksiteLatitude: 36.7213,
     worksiteLongitude: -4.4214,
     clockInGeoMode: "Marcar para revision",
+    trialMode: true,
   },
   roles: [
     { id: "role-1", name: "Jefe de cocina", area: "Cocina", permissions: ["turnos_area", "pedido_area", "inventario_area"] },
@@ -48,6 +49,8 @@
     { id: "user-1", name: "Lucia Moreno", email: "lucia@brasaflow-demo.com", password: "1234", view: "employee", employeeId: "emp-1" },
     { id: "user-2", name: "Paula Serra", email: "paula@brasaflow-demo.com", password: "1234", view: "manager", employeeId: "emp-3" },
     { id: "user-3", name: "Admin BrasaFlow", email: "admin@brasaflow-demo.com", password: "1234", view: "admin", employeeId: "emp-1" },
+    { id: "user-4", name: "Lucia Moreno", email: "cocina@brasaflow-demo.com", password: "1234", view: "manager", employeeId: "emp-1" },
+    { id: "user-5", name: "Mario Vidal", email: "sala@brasaflow-demo.com", password: "1234", view: "employee", employeeId: "emp-4" },
   ],
   employees: [
     {
@@ -151,10 +154,52 @@
     { id: "inv-3", name: "Tonica", area: "Sala", unit: "botellas" },
     { id: "inv-4", name: "Servilletas premium", area: "Sala", unit: "cajas" },
   ],
+  suppliers: [
+    {
+      id: "sup-1",
+      name: "La Huerta de Madrid",
+      area: "Cocina",
+      category: "Frutas y verduras",
+      whatsapp: "+34 600 111 222",
+      products: ["Tomate", "Lechuga", "Patata", "Cebolla", "Hierbas frescas"],
+      usualOrder: "Verdura base para menu semanal y refuerzo de fin de semana.",
+      notes: "Entregan lunes, miercoles y viernes por la mañana.",
+    },
+    {
+      id: "sup-2",
+      name: "Pescados Norte",
+      area: "Cocina",
+      category: "Pescado y marisco",
+      whatsapp: "+34 600 333 444",
+      products: ["Lubina", "Merluza", "Gambas", "Calamar", "Fumet"],
+      usualOrder: "Pescado fresco para carta y sugerencias.",
+      notes: "Confirmar disponibilidad por WhatsApp antes de las 12:00.",
+    },
+    {
+      id: "sup-3",
+      name: "Bebidas Central",
+      area: "Sala",
+      category: "Bebidas",
+      whatsapp: "+34 600 555 666",
+      products: ["Agua", "Refrescos", "Tonica", "Cerveza", "Vino casa"],
+      usualOrder: "Reposicion de bebidas, barra y vinos de rotacion.",
+      notes: "Pedido grande los jueves.",
+    },
+    {
+      id: "sup-4",
+      name: "Higiene Pro",
+      area: "General",
+      category: "Limpieza y consumibles",
+      whatsapp: "+34 600 777 888",
+      products: ["Servilletas", "Papel manos", "Detergente", "Bolsas basura"],
+      usualOrder: "Consumibles de sala, cocina y limpieza.",
+      notes: "Revisar stock antes del cierre semanal.",
+    },
+  ],
   orders: [
-    { id: "order-1", area: "Cocina", item: "Aceite oliva", unit: "garrafas", quantity: 4, status: "Borrador", editableBy: ["Jefe de cocina", "Administrador"] },
-    { id: "order-2", area: "Cocina", item: "Lubina", unit: "kg", quantity: 10, status: "Pendiente", editableBy: ["Jefe de cocina", "Administrador"] },
-    { id: "order-3", area: "Sala", item: "Tonica", unit: "botellas", quantity: 24, status: "Borrador", editableBy: ["Jefe de sala", "Administrador"] },
+    { id: "order-1", supplierId: "sup-1", area: "Cocina", item: "Tomate, lechuga y patata", unit: "pedido semanal", quantity: 1, status: "Recibido", note: "Pedido base de verdura", createdAt: "2026-05-08T10:00:00", receivedDate: "2026-05-09", editableBy: ["Jefe de cocina", "Administrador"] },
+    { id: "order-2", supplierId: "sup-2", area: "Cocina", item: "Lubina y merluza", unit: "kg", quantity: 18, status: "Pendiente", note: "Confirmar disponibilidad por WhatsApp", createdAt: "2026-05-12T11:20:00", editableBy: ["Jefe de cocina", "Administrador"] },
+    { id: "order-3", supplierId: "sup-3", area: "Sala", item: "Agua, tonica y refrescos", unit: "cajas", quantity: 8, status: "Recibido", note: "Reposicion de barra", createdAt: "2026-05-06T09:40:00", receivedDate: "2026-05-07", editableBy: ["Jefe de sala", "Administrador"] },
   ],
   recipes: [
     {
@@ -300,6 +345,7 @@ const ALLERGEN_OPTIONS = [
 let appState = structuredClone(defaultState);
 let saveStateTimer = null;
 let lastPersistedSnapshot = "";
+const STORAGE_KEY = "brasaflow-restaurant-trial-state";
 
 function getPersistedState() {
   return {
@@ -322,10 +368,25 @@ function hydrateState(parsed = {}) {
       unit: item.unit ?? "",
       notes: item.notes ?? "",
     }));
+    const normalizedSuppliers = (parsed.suppliers ?? defaultState.suppliers).map((supplier) => ({
+      ...supplier,
+      area: supplier.area === "Barra" ? "Sala" : (supplier.area ?? "General"),
+      products: Array.isArray(supplier.products)
+        ? supplier.products.map((item) => String(item).trim()).filter(Boolean)
+        : String(supplier.products || "")
+          .split(/\r?\n|,/)
+          .map((item) => item.trim())
+          .filter(Boolean),
+      whatsapp: supplier.whatsapp ?? "",
+      usualOrder: supplier.usualOrder ?? "",
+      notes: supplier.notes ?? "",
+    }));
     const normalizedOrders = (parsed.orders ?? defaultState.orders).map((order) => ({
       ...order,
       area: order.area === "Barra" ? "Sala" : order.area,
       unit: order.unit ?? "",
+      supplierId: order.supplierId ?? "",
+      createdAt: normalizeChatTimestamp(order.createdAt ?? new Date().toISOString()),
     }));
     const normalizedRecipes = (parsed.recipes ?? defaultState.recipes).map((recipe) => ({
       id: recipe.id ?? uid("recipe"),
@@ -353,6 +414,11 @@ function hydrateState(parsed = {}) {
       ...employee,
       area: employee.area === "Barra" ? "Sala" : employee.area,
     }));
+    const savedUsers = Array.isArray(parsed.users) ? parsed.users : [];
+    const normalizedUsers = [
+      ...defaultState.users,
+      ...savedUsers.filter((user) => !defaultState.users.some((defaultUser) => defaultUser.id === user.id)),
+    ];
     const normalizedTemperatureEquipment = (parsed.temperatureEquipment ?? defaultState.temperatureEquipment).map((item) => ({
       ...item,
       area: item.area === "Barra" ? "Sala" : item.area,
@@ -378,10 +444,12 @@ function hydrateState(parsed = {}) {
       ui: { ...defaultState.ui, ...(parsed.ui ?? {}) },
       business: { ...defaultState.business, ...(parsed.business ?? {}) },
       settings: normalizedSettings,
+      users: normalizedUsers,
       roles: normalizedRoles,
       employees: normalizedEmployees,
       chats: normalizedChats,
       inventory: normalizedInventory,
+      suppliers: normalizedSuppliers,
       orders: normalizedOrders,
       recipes: normalizedRecipes,
       temperatureEquipment: normalizedTemperatureEquipment,
@@ -402,16 +470,23 @@ async function loadState() {
   try {
     const response = await fetch("/api/state");
     if (!response.ok) {
-      return structuredClone(defaultState);
+      throw new Error("Estado remoto no disponible");
     }
     const payload = await response.json();
     const hasRemoteData = payload && Object.keys(payload).length > 0;
     if (!hasRemoteData) {
-      return structuredClone(defaultState);
+      const localState = window.localStorage.getItem(STORAGE_KEY);
+      return localState ? hydrateState(JSON.parse(localState)) : structuredClone(defaultState);
     }
     return hydrateState(payload);
   } catch {
-    return structuredClone(defaultState);
+    try {
+      const localState = window.localStorage.getItem(STORAGE_KEY);
+      return localState ? hydrateState(JSON.parse(localState)) : structuredClone(defaultState);
+    } catch {
+      window.localStorage.removeItem(STORAGE_KEY);
+      return structuredClone(defaultState);
+    }
   }
 }
 
@@ -420,13 +495,18 @@ async function saveStateNow() {
   if (snapshot === lastPersistedSnapshot) {
     return;
   }
-  await fetch("/api/state", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: snapshot,
-  });
+  try {
+    window.localStorage.setItem(STORAGE_KEY, snapshot);
+  } catch {}
+  try {
+    await fetch("/api/state", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: snapshot,
+    });
+  } catch {}
   lastPersistedSnapshot = snapshot;
 }
 
@@ -439,6 +519,200 @@ function scheduleSaveState() {
 
 function uid(prefix) {
   return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+}
+
+function normalizeImportValue(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function makeDemoEmail(name, fallbackId = Date.now()) {
+  const slug = normalizeImportValue(name)
+    .replace(/[^a-z0-9]+/g, ".")
+    .replace(/^\.+|\.+$/g, "")
+    .slice(0, 36) || `empleado.${fallbackId}`;
+  let email = `${slug}@demo.local`;
+  let counter = 2;
+  while (appState.employees.some((employee) => normalizeImportValue(employee.email) === normalizeImportValue(email))) {
+    email = `${slug}.${counter}@demo.local`;
+    counter += 1;
+  }
+  return email;
+}
+
+function parseCsvRows(rawText) {
+  const text = String(rawText || "").replace(/^\uFEFF/, "").trim();
+  if (!text) return [];
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let quoted = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const next = text[index + 1];
+    if (char === '"' && quoted && next === '"') {
+      cell += '"';
+      index += 1;
+      continue;
+    }
+    if (char === '"') {
+      quoted = !quoted;
+      continue;
+    }
+    if (char === "," && !quoted) {
+      row.push(cell.trim());
+      cell = "";
+      continue;
+    }
+    if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && next === "\n") index += 1;
+      row.push(cell.trim());
+      rows.push(row);
+      row = [];
+      cell = "";
+      continue;
+    }
+    cell += char;
+  }
+  row.push(cell.trim());
+  rows.push(row);
+
+  const headers = rows.shift()?.map(normalizeImportValue) ?? [];
+  return rows
+    .filter((values) => values.some((value) => String(value).trim()))
+    .map((values) => headers.reduce((record, header, index) => {
+      record[header] = values[index] ?? "";
+      return record;
+    }, {}));
+}
+
+function findOrCreateImportedRole(roleName, area) {
+  const normalizedRole = normalizeImportValue(roleName || "Empleado");
+  const normalizedArea = normalizeImportValue(area || "General");
+  const existingRole = appState.roles.find((role) => (
+    normalizeImportValue(role.name) === normalizedRole
+    && normalizeImportValue(role.area) === normalizedArea
+  ));
+  if (existingRole) return existingRole;
+
+  const isLead = ["jefe", "encargado", "responsable", "manager"].some((term) => normalizedRole.includes(term));
+  const role = {
+    id: uid("role"),
+    name: roleName || "Empleado",
+    area: area || "General",
+    permissions: isLead ? ["turnos_area", "pedido_area", "inventario_area"] : ["inventario_area"],
+  };
+  appState.roles.push(role);
+  return role;
+}
+
+function addIfMissingByName(collection, entries, getName = (item) => item.name) {
+  entries.forEach((entry) => {
+    const entryName = normalizeImportValue(getName(entry));
+    const exists = collection.some((item) => normalizeImportValue(getName(item)) === entryName);
+    if (!exists) collection.push(entry);
+  });
+}
+
+function loadLargeRestaurantDemo() {
+  const demoEmployees = [
+    ["emp-lg-5", "Nerea Costa", "Segundo de cocina", "Cocina", 40],
+    ["emp-lg-6", "Rafa Molina", "Cocinero", "Cocina", 40],
+    ["emp-lg-7", "Ines Vega", "Cocinera", "Cocina", 35],
+    ["emp-lg-8", "Hugo Perez", "Ayudante de cocina", "Cocina", 32],
+    ["emp-lg-9", "Sofia Rivas", "Pastelera", "Cocina", 30],
+    ["emp-lg-10", "Tomas Gil", "Office", "Cocina", 28],
+    ["emp-lg-11", "Clara Vidal", "Camarera", "Sala", 35],
+    ["emp-lg-12", "Ivan Torres", "Camarero", "Sala", 35],
+    ["emp-lg-13", "Noa Marin", "Camarera", "Sala", 30],
+    ["emp-lg-14", "Bruno Cano", "Runner", "Sala", 25],
+    ["emp-lg-15", "Elena Soler", "Barra", "Sala", 35],
+    ["emp-lg-16", "Gael Ruiz", "Barra", "Sala", 30],
+    ["emp-lg-17", "Alba Nieto", "Host / reservas", "Sala", 25],
+    ["emp-lg-18", "Mateo Cruz", "Camarero extra", "Sala", 20],
+    ["emp-lg-19", "Lola Ferrer", "Gerencia", "General", 40],
+    ["emp-lg-20", "Pablo Mora", "Administracion", "General", 20],
+  ].map(([id, name, roleName, area, weeklyHours], index) => {
+    const role = findOrCreateImportedRole(roleName, area);
+    return {
+      id,
+      name,
+      roleId: role.id,
+      area,
+      contractStart: `2026-02-${String((index % 20) + 1).padStart(2, "0")}`,
+      annualVacationDays: 30,
+      usedVacationDays: index % 4,
+      status: "Activa",
+      weeklyHours,
+      email: makeDemoEmail(name, id),
+    };
+  });
+
+  addIfMissingByName(appState.employees, demoEmployees);
+
+  const inventoryEntries = [
+    ["Tomate triturado", "Cocina", "latas"], ["Harina fuerza", "Cocina", "kg"], ["Mozzarella", "Cocina", "kg"],
+    ["Huevos", "Cocina", "docenas"], ["Mantequilla", "Cocina", "kg"], ["Jamon serrano", "Cocina", "kg"],
+    ["Arroz bomba", "Cocina", "kg"], ["Caldo base", "Cocina", "litros"], ["Patata", "Cocina", "kg"],
+    ["Cebolla", "Cocina", "kg"], ["Pechuga pollo", "Cocina", "kg"], ["Merluza", "Cocina", "kg"],
+    ["Gambas", "Cocina", "kg"], ["Lechuga", "Cocina", "cajas"], ["Pan burger", "Cocina", "unidades"],
+    ["Agua sin gas", "Sala", "botellas"], ["Agua con gas", "Sala", "botellas"], ["Cerveza barril", "Sala", "barriles"],
+    ["Vino blanco casa", "Sala", "botellas"], ["Vino tinto casa", "Sala", "botellas"], ["Cafe", "Sala", "kg"],
+    ["Leche", "Sala", "litros"], ["Azucar", "Sala", "sobres"], ["Tonica premium", "Sala", "botellas"],
+    ["Refrescos cola", "Sala", "botellas"], ["Servilletas", "Sala", "paquetes"], ["Manteles", "Sala", "unidades"],
+    ["Papel manos", "General", "paquetes"], ["Detergente lavavajillas", "General", "garrafas"], ["Bolsas basura", "General", "rollos"],
+  ].map(([name, area, unit], index) => ({ id: `inv-lg-${index + 1}`, name, area, unit }));
+  addIfMissingByName(appState.inventory, inventoryEntries, (item) => `${item.area}-${item.name}`);
+
+  const supplierEntries = [
+    { id: "sup-lg-1", name: "Carnes Lopez", area: "Cocina", category: "Carnes", whatsapp: "+34 611 100 200", products: ["Ternera", "Pollo", "Hamburguesas", "Costilla"], usualOrder: "Carne para menu y parrilla de fin de semana.", notes: "Pedir antes del jueves." },
+    { id: "sup-lg-2", name: "Panaderia San Isidro", area: "Cocina", category: "Pan y bolleria", whatsapp: "+34 611 100 201", products: ["Pan burger", "Pan de mesa", "Brioche", "Molletes"], usualOrder: "Pan diario y refuerzo de fin de semana.", notes: "Entrega temprana." },
+    { id: "sup-lg-3", name: "Vinos del Centro", area: "Sala", category: "Vinos", whatsapp: "+34 611 100 202", products: ["Vino blanco", "Vino tinto", "Cava", "Vino por copa"], usualOrder: "Reposicion de vinos de rotacion.", notes: "Revisar stock jueves." },
+  ];
+  addIfMissingByName(appState.suppliers, supplierEntries);
+
+  const largeOrders = [
+    { id: "order-lg-1", supplierId: "sup-1", area: "Cocina", item: "Tomate triturado, patata y cebolla", unit: "pedido", quantity: 1, status: "Pendiente", note: "Pedido semanal de verdura", createdAt: "2026-05-18T10:00:00", editableBy: ["Jefe de cocina", "Administrador"] },
+    { id: "order-lg-2", supplierId: "sup-2", area: "Cocina", item: "Merluza 12 kg y gambas 4 kg", unit: "kg", quantity: 16, status: "Borrador", note: "Confirmar por WhatsApp", createdAt: "2026-05-17T12:00:00", editableBy: ["Jefe de cocina", "Administrador"] },
+    { id: "order-lg-3", supplierId: "sup-3", area: "Sala", item: "Agua sin gas, tonica y refrescos", unit: "cajas", quantity: 12, status: "Recibido", note: "Pedido de barra repetible", createdAt: "2026-05-11T09:00:00", receivedDate: "2026-05-12", editableBy: ["Jefe de sala", "Administrador"] },
+    { id: "order-lg-4", supplierId: "sup-lg-3", area: "Sala", item: "Vino blanco casa 18 botellas", unit: "botellas", quantity: 18, status: "Recibido", note: "Reposicion semanal", createdAt: "2026-05-10T10:30:00", receivedDate: "2026-05-11", editableBy: ["Jefe de sala", "Administrador"] },
+    { id: "order-lg-5", supplierId: "sup-4", area: "General", item: "Bolsas basura y papel manos", unit: "pedido", quantity: 1, status: "Enviado", note: "Consumibles generales", createdAt: "2026-05-19T08:30:00", editableBy: ["Administrador"] },
+  ];
+  addIfMissingByName(appState.orders, largeOrders, (item) => `${item.area}-${item.item}`);
+
+  const demoShiftDays = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+  const shiftEmployees = [...appState.employees].filter((item) => item.area !== "General").slice(0, 18);
+  const demoShifts = shiftEmployees.flatMap((employee, employeeIndex) => (
+    demoShiftDays.slice(0, employeeIndex % 3 === 0 ? 5 : 4).map((day, dayIndex) => ({
+      id: `shift-lg-${employee.id}-${day}`,
+      week: "Semana actual",
+      day,
+      area: employee.area,
+      employeeId: employee.id,
+      time: employee.area === "Cocina"
+        ? (dayIndex % 2 ? "12:00 - 20:00" : "09:00 - 17:00")
+        : (dayIndex % 2 ? "17:00 - 00:00" : "12:00 - 20:00"),
+      note: "Turno de demo grande",
+    }))
+  ));
+  addIfMissingByName(appState.shifts, demoShifts, (item) => `${item.week}-${item.day}-${item.employeeId}-${item.time}`);
+
+  const equipment = [
+    { id: "temp-lg-1", name: "Camara carnes", area: "Cocina", target: "0 a 4 C" },
+    { id: "temp-lg-2", name: "Camara pescados", area: "Cocina", target: "0 a 3 C" },
+    { id: "temp-lg-3", name: "Congelador principal", area: "Cocina", target: "-18 C o menos" },
+    { id: "temp-lg-4", name: "Botellero barra", area: "Sala", target: "2 a 8 C" },
+    { id: "temp-lg-5", name: "Vitrina postres", area: "Sala", target: "2 a 6 C" },
+  ];
+  addIfMissingByName(appState.temperatureEquipment, equipment);
+
+  appState.ui.currentEmployeeId = "emp-1";
+  appState.ui.shiftPlannerEmployeeId = "emp-1";
+  appState.ui.currentSection = "dashboard";
 }
 
 function getRoleById(roleId) {
@@ -749,8 +1023,10 @@ function formatChatTimestamp(value) {
 
 function applyBrandTheme() {
   const root = document.documentElement;
-  root.style.setProperty("--accent", appState.settings.brandAccent || "#c86f31");
-  root.style.setProperty("--accent-strong", appState.settings.brandStrong || "#8f3f17");
+  const accent = appState.settings.brandAccent === "#c86f31" ? "#d97706" : (appState.settings.brandAccent || "#d97706");
+  const strong = appState.settings.brandStrong === "#8f3f17" ? "#92400e" : (appState.settings.brandStrong || "#92400e");
+  root.style.setProperty("--accent", accent);
+  root.style.setProperty("--accent-strong", strong);
 }
 
 function getChatCutoffDate() {
@@ -894,6 +1170,22 @@ function visibleInventory(employee) {
 
 function visibleOrders(employee) {
   return scopeItemsByEmployeeArea(appState.orders, employee, (item) => item.area);
+}
+
+function visibleSuppliers(employee) {
+  if (isAdminView()) return appState.suppliers;
+  if (isManagerView()) {
+    return appState.suppliers.filter((supplier) => supplier.area === employee.area || supplier.area === "General");
+  }
+  return [];
+}
+
+function getSupplierById(supplierId) {
+  return appState.suppliers.find((supplier) => supplier.id === supplierId) ?? null;
+}
+
+function getSupplierForOrder(order) {
+  return getSupplierById(order.supplierId) ?? appState.suppliers.find((supplier) => supplier.area === order.area) ?? null;
 }
 
 function visibleTemperatureEquipment(employee) {
@@ -1587,7 +1879,7 @@ function countPendingRequests(employee) {
 
 function statusClass(value) {
   if (["Activa", "Aprobada", "Borrador", "Cerrado", "Recibido"].includes(value)) return "ok";
-  if (["Pendiente", "En revision", "Recibido con incidencia"].includes(value)) return "warn";
+  if (["Pendiente", "En revision", "Enviado", "Recibido con incidencia"].includes(value)) return "warn";
   return "danger";
 }
 
@@ -1677,7 +1969,7 @@ function renderAuth() {
       <div class="auth-card panel">
         <span class="brand-kicker">Acceso BrasaFlow</span>
         <h1>Entrar a tu espacio</h1>
-        <p>Ahora cada perfil entra con su cuenta y ve solo el panel que le corresponde.</p>
+        <p>Modo prueba restaurante: horarios, fichaje, inventario, pedidos, temperaturas, recetas y chat sin cargar datos sensibles.</p>
         <form id="login-form" class="auth-form">
           <label class="field">
             <span>Email</span>
@@ -1692,10 +1984,13 @@ function renderAuth() {
         <div class="auth-demo">
           <h2>Cuentas demo</h2>
           <ul class="mini-list">
-            <li>Empleado: lucia@brasaflow-demo.com / 1234</li>
-            <li>Encargado: paula@brasaflow-demo.com / 1234</li>
+            <li>Empleado cocina: lucia@brasaflow-demo.com / 1234</li>
+            <li>Empleado sala: sala@brasaflow-demo.com / 1234</li>
+            <li>Encargado cocina: cocina@brasaflow-demo.com / 1234</li>
+            <li>Encargado sala: paula@brasaflow-demo.com / 1234</li>
             <li>Empresa: admin@brasaflow-demo.com / 1234</li>
           </ul>
+          <p class="muted" style="margin-top: 12px;">Usar informacion ficticia. No cargar nominas, contratos, documentos reales ni datos personales sensibles.</p>
         </div>
       </div>
     </section>
@@ -1719,6 +2014,19 @@ function renderHero() {
     : "Negocio";
 }
 
+function renderSectionHelp(items = []) {
+  return `
+    <div class="section-help">
+      ${items.map((item) => `
+        <article>
+          <strong>${escapeHtml(item.title)}</strong>
+          <span>${escapeHtml(item.text)}</span>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
 function renderDashboard() {
   const employee = getCurrentEmployee();
   const vacation = calculateVacationBalance(employee);
@@ -1734,13 +2042,43 @@ function renderDashboard() {
     <div class="section-header">
       <div>
         <h3>Resumen del dia</h3>
-        <p>${employee.name} entra como ${getRoleName(employee)} y ve solo lo que le corresponde.</p>
+        <p>${appState.ui.currentView === "admin" ? "Vista rapida del negocio para empezar la prueba sin perderse." : `${employee.name} entra como ${getRoleName(employee)} y ve solo lo que le corresponde.`}</p>
       </div>
       <div class="action-row">
         <button class="action-btn primary" data-section-target="shifts">Ver turnos</button>
         <button class="action-btn secondary" data-section-target="attendance">Abrir fichaje</button>
+        ${appState.ui.currentView === "admin" ? `<button class="action-btn secondary" data-action="load-large-demo">Cargar demo grande</button>` : ""}
       </div>
     </div>
+    ${renderSectionHelp(appState.ui.currentView === "admin" ? [
+      { title: "Que se hace aca", text: "Ver el estado general de la prueba y entrar rapido a las partes importantes." },
+      { title: "Primer paso", text: "Si no queres cargar datos a mano, toca Cargar demo grande." },
+      { title: "Luego", text: "Revisa empleados, inventario, turnos, proveedores y chat." },
+    ] : [
+      { title: "Que se hace aca", text: "Ver tu resumen del dia: turnos, fichaje, vacaciones, avisos y pedidos visibles." },
+      { title: "Primer paso", text: "Mira tu proximo turno o abre fichaje si vas a marcar entrada o salida." },
+      { title: "Importante", text: "Cada perfil ve solo lo que le corresponde." },
+    ])}
+    ${appState.ui.currentView === "admin" ? `
+      <div class="starter-panel">
+        <div>
+          <span class="brand-kicker">Primeros pasos</span>
+          <h4>Preparar una prueba en 10 minutos</h4>
+          <p>Segui este orden para que el restaurante entienda rapido como se usa BrasaFlow.</p>
+        </div>
+        <div class="starter-steps">
+          <button data-section-target="employees"><strong>1</strong><span>Equipo</span></button>
+          <button data-section-target="shifts"><strong>2</strong><span>Turnos</span></button>
+          <button data-section-target="inventory"><strong>3</strong><span>Inventario y pedidos</span></button>
+          <button data-section-target="chat"><strong>4</strong><span>Chat</span></button>
+          <button data-section-target="recipes"><strong>5</strong><span>Cocina</span></button>
+        </div>
+      </div>
+      <div class="info-note mode-explainer">
+        <strong>Demo grande</strong>
+        <span>Si queres mostrarla sin cargar datos a mano, usa Cargar demo grande. Agrega mas empleados, inventario, pedidos, turnos y equipos de temperatura ficticios.</span>
+      </div>
+    ` : ""}
     ${nextShift ? `
       <div class="next-shift-banner">
         <strong>${getShiftCountdownLabel(nextShift.startsAt)}</strong>
@@ -1777,17 +2115,24 @@ function renderDashboard() {
     </div>
     <div class="two-column" style="margin-top: 18px;">
       <article class="list-card">
-        <h4>${appState.ui.currentView === "admin" ? "Persona revisada" : "Perfil actual"}</h4>
+        <h4>${appState.ui.currentView === "admin" ? "Datos base de la demo" : "Perfil actual"}</h4>
         <div class="pill-row" style="margin-top: 10px;">
-          ${contractHighlights.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")}
+          ${appState.ui.currentView === "admin"
+            ? [
+              `${appState.employees.length} empleados cargados`,
+              `${appState.inventory.length} productos base`,
+              `${appState.shifts.length} turnos cargados`,
+              `${appState.orders.length} lineas de pedido`,
+            ].map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")
+            : contractHighlights.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")}
         </div>
       </article>
       <article class="list-card">
-        <h4>${appState.ui.currentView === "admin" ? "Saldo de la persona revisada" : "Saldo disponible hoy"}</h4>
+        <h4>${appState.ui.currentView === "admin" ? "Estado de la prueba" : "Saldo disponible hoy"}</h4>
         <div class="metric-ring" style="--progress: ${(vacation.available / Math.max(employee.annualVacationDays, 1)) * 360}deg;">
-          <strong>${vacation.available}</strong>
+          <strong>${appState.ui.currentView === "admin" ? appState.employees.length : vacation.available}</strong>
         </div>
-        <p class="muted" style="text-align: center;">${appState.ui.currentView === "admin" ? "Dias disponibles en la ficha que estas revisando." : "Dias listos para pedir hoy."}</p>
+        <p class="muted" style="text-align: center;">${appState.ui.currentView === "admin" ? "Personas disponibles para probar turnos, fichaje, chat y pedidos." : "Dias listos para pedir hoy."}</p>
       </article>
     </div>
   `;
@@ -1814,6 +2159,11 @@ function renderTimeOff() {
         <button class="action-btn primary" data-open-form="timeoff-form">Nueva solicitud</button>
       </div>
     </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Pedir vacaciones, ausencias o permisos y ver su estado." },
+      { title: "Como se usa", text: "Toca Nueva solicitud, elige fechas y guarda. Empresa o encargado aprueban o rechazan." },
+      { title: "Para la prueba", text: "Usa fechas ficticias para comprobar si el flujo se entiende." },
+    ])}
     <div class="cards-grid">
       <article class="stat-card">
         <span class="status-pill ok">Disponibles</span>
@@ -1921,6 +2271,15 @@ function renderChat() {
         <span class="badge-btn">Visibles ${retentionDays} dias</span>
       </div>
     </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Comunicar avisos internos sin mezclar todo en WhatsApp." },
+      { title: "Como se usa", text: "Elige canal General, Cocina o Sala, escribe el mensaje y marca Urgente solo si hace falta." },
+      { title: "Para la prueba", text: "Manda un aviso normal y otro urgente para ver la diferencia." },
+    ])}
+    <div class="info-note mode-explainer">
+      <strong>Como manejar esta seccion</strong>
+      <span>General sirve para todos. Cocina o Sala sirven para hablar con cada area. Marca Urgente solo cuando el equipo necesita verlo antes del servicio.</span>
+    </div>
     <div class="cards-grid">
       <article class="stat-card">
         <span class="status-pill ok">Canal activo</span>
@@ -2012,6 +2371,11 @@ function renderAttendance() {
           : ""}
       </div>
     </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: appState.ui.currentView === "employee" ? "Marcar entrada y salida, y revisar tus horas." : "Revisar fichajes del equipo, jornadas abiertas e incidencias." },
+      { title: "Como se usa", text: canSelfClock ? "Toca Fichar entrada al llegar y Fichar salida al irte." : "Usalo como consulta y exporta PDF si necesitas revisar horas." },
+      { title: "Para la prueba", text: "Prueba abrir y cerrar una jornada ficticia para ver el flujo completo." },
+    ])}
     <div class="cards-grid">
       <article class="stat-card">
         <span class="status-pill ${summary.openLog ? "warn" : "ok"}">Estado de hoy</span>
@@ -2082,7 +2446,7 @@ function renderAttendance() {
         ${currentUser?.view === "admin" ? `
           <div class="info-note" style="margin-top: 16px;">
             <strong>Para empresa</strong>
-            <span>Podes usar el selector lateral para cambiar de empleado y revisar su ficha, sus turnos, sus vacaciones y ahora tambien su fichaje.</span>
+            <span>Aca revisas los fichajes visibles del equipo y las jornadas abiertas. El empleado solo usa esta seccion para marcar entrada y salida.</span>
           </div>
         ` : ""}
       </article>
@@ -2109,12 +2473,23 @@ function renderInventory() {
   document.getElementById("inventory-section").innerHTML = `
     <div class="section-header">
       <div>
-        <h3>Lista base de productos</h3>
-        <p>Referencia simple por zona. Aca ves que productos deberia tener cada area y, si hace falta, pulsas Pedir.</p>
+        <h3>Inventario y pedidos</h3>
+        <p>Lista base de productos y acceso a proveedores, pedidos habituales e historial para repetir compras.</p>
       </div>
       <div class="action-row">
+        <button class="action-btn secondary" data-section-target="orders">Ver proveedores y pedidos</button>
         ${editable ? `<button class="action-btn primary" data-open-form="inventory-form">Agregar producto</button>` : ""}
+        ${editable ? `<button class="action-btn secondary" data-open-form="bulk-inventory-form">Carga por plantilla</button>` : ""}
       </div>
+    </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Guardar la lista de productos habituales del restaurante por area." },
+      { title: "Como se usa", text: "Agrega un producto suelto o carga muchos con plantilla. No hace falta poner precios." },
+      { title: "Pedidos", text: "Cuando quieras comprar, entra en Proveedores y pedidos para repetir pedidos antiguos o contactar por WhatsApp." },
+    ])}
+    <div class="info-note mode-explainer">
+      <strong>Como manejar esta seccion</strong>
+      <span>Usalo como lista base del restaurante. Los pedidos reales se gestionan aparte, desde Proveedores y pedidos.</span>
     </div>
     <div class="cards-grid">
       <article class="stat-card">
@@ -2148,6 +2523,27 @@ function renderInventory() {
         </div>
       </form>
     </div>
+    <div class="inline-form" id="bulk-inventory-form" hidden ${editable ? "" : "disabled"}>
+      <h4>Carga por plantilla de inventario</h4>
+      <p class="muted">Pega una tabla de productos o sube la plantilla completada. Minimo necesario: producto, area y unidad.</p>
+      <form data-form="bulk-inventory" class="form-grid">
+        <label class="field field-wide">
+          <span>Archivo de plantilla</span>
+          <input type="file" name="inventoryCsv" accept=".csv,text/csv">
+        </label>
+        <label class="field field-wide">
+          <span>O pegar datos de la plantilla</span>
+          <textarea name="inventoryCsvText" rows="8" placeholder="producto,area,unidad&#10;Tomate triturado,Cocina,latas&#10;Servilletas,Sala,paquetes"></textarea>
+        </label>
+        <div class="info-note field-wide">
+          <strong>Consejo</strong>
+          <span>Para una primera prueba, carga solo productos habituales o criticos. No hace falta meter todo el almacen.</span>
+        </div>
+        <div class="form-actions">
+          <button class="action-btn primary" type="submit">Importar inventario</button>
+        </div>
+      </form>
+    </div>
     <div class="stack" style="margin-top: 18px;">
       ${groupedAreas.map((area) => {
         const areaItems = inventory.filter((item) => item.area === area);
@@ -2158,9 +2554,6 @@ function renderInventory() {
                 <h4>${area}</h4>
                 <p>${areaItems.length} productos base</p>
               </div>
-              <div class="action-row">
-                <button class="badge-btn" data-action="open-area-orders" data-area="${area}">Revisar pedidos</button>
-              </div>
             </div>
             <div class="table-wrap">
               <table>
@@ -2168,36 +2561,19 @@ function renderInventory() {
                   <tr>
                     <th>Producto</th>
                     <th>Formato</th>
-                    <th>Estado</th>
-                    <th>Accion</th>
+                    <th>Area</th>
                   </tr>
                 </thead>
                 <tbody>
                   ${areaItems.map((item) => {
-                    const orderEntry = getOrderEntryForItem(item.area, item.name);
-                    const orderStatus = orderEntry
-                      ? orderEntry.status === "Cerrado"
-                        ? "Esperando recepcion"
-                        : "En pedido"
-                      : "Sin pedir";
-                    const orderStatusClass = orderEntry
-                      ? orderEntry.status === "Cerrado"
-                        ? "warn"
-                        : "ok"
-                      : "ok";
                     return `
                       <tr>
                         <td>${item.name}</td>
                         <td>${item.unit || `<small class="muted">Sin detalle</small>`}</td>
-                        <td><span class="status-pill ${orderStatusClass}">${orderStatus}</span></td>
-                        <td>
-                          ${(canEditOrders(employee) || appState.ui.currentView === "admin")
-                            ? `<button class="badge-btn" data-action="send-to-order" data-id="${item.id}">${itemsAlreadyInOrder(item.area).has(item.name) ? "Editar pedido" : "Pedir"}</button>`
-                            : `<small class="muted">Solo consulta</small>`}
-                        </td>
+                        <td><span class="tag">${item.area}</span></td>
                       </tr>
                     `;
-                  }).join("") || `<tr><td colspan="4"><div class="empty-note">Todavia no hay productos cargados en ${area}.</div></td></tr>`}
+                  }).join("") || `<tr><td colspan="3"><div class="empty-note">Todavia no hay productos cargados en ${area}.</div></td></tr>`}
                 </tbody>
               </table>
             </div>
@@ -2211,193 +2587,211 @@ function renderInventory() {
 function renderOrders() {
   const employee = getCurrentEmployee();
   const orders = visibleOrders(employee);
+  const suppliers = visibleSuppliers(employee);
   const editable = canEditOrders(employee) || appState.ui.currentView === "admin";
-  const draft = appState.ui.orderDraft ?? {};
-  const availableAreas = getOrderAreasForView(employee);
-  const selectedArea = getActiveOrdersArea(employee);
-  const areaInventory = inventoryItemsForArea(employee, selectedArea);
-  const areaOrders = orders.filter((order) => order.area === selectedArea);
-  const activeOrders = areaOrders.filter((order) => !["Recibido", "Recibido con incidencia"].includes(order.status));
-  const editableOrders = activeOrders.filter((order) => order.status !== "Cerrado");
-  const receivableOrders = activeOrders.filter((order) => order.status === "Cerrado");
-  const historyOrders = areaOrders.filter((order) => ["Recibido", "Recibido con incidencia"].includes(order.status));
+  const activeOrders = orders.filter((order) => !["Recibido", "Recibido con incidencia"].includes(order.status));
+  const historyOrders = orders.filter((order) => ["Recibido", "Recibido con incidencia"].includes(order.status));
+  const pendingOrders = activeOrders.filter((order) => ["Pendiente", "Enviado", "Cerrado"].includes(order.status));
   const completedLines = historyOrders.length;
-  const closedLines = receivableOrders.length;
-  const editableLines = editableOrders.length;
-  const focusedItem = draft.area === selectedArea ? draft.item : "";
+  const supplierOptions = (suppliers.length ? suppliers : appState.suppliers)
+    .filter((supplier) => canAccessArea(employee, supplier.area));
+  const selectedSupplier = supplierOptions[0] ?? null;
 
   document.getElementById("orders-section").innerHTML = `
     <div class="section-header">
       <div>
-        <h3>Seguimiento de pedidos</h3>
-        <p>${editable ? "Desde Inventario marcas un producto con Pedir. Aca completas cantidad, revisas el estado y registras lo que llego." : "Tu rol puede revisar el estado de los pedidos de esta zona."}</p>
+        <h3>Proveedores y pedidos</h3>
+        <p>${editable ? "Aca gestionas a quien se le compra, que ofrece cada proveedor y que pedidos se pueden repetir." : "Tu rol puede consultar proveedores y pedidos de tu zona."}</p>
       </div>
       <div class="action-row">
-        ${availableAreas.map((area) => `<button class="badge-btn ${area === selectedArea ? "active-filter" : ""}" data-action="set-orders-area" data-area="${area}">${area}</button>`).join("")}
+        ${editable ? `<button class="action-btn primary" data-open-form="supplier-order-form">Nuevo pedido</button>` : ""}
+        ${editable ? `<button class="action-btn secondary" data-open-form="supplier-form">Nuevo proveedor</button>` : ""}
       </div>
+    </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Guardar proveedores, que venden, su WhatsApp y los pedidos habituales." },
+      { title: "Como se usa", text: "Carga proveedores primero. Despues crea pedidos o repite uno anterior desde el historial." },
+      { title: "Puente a BrasaConnect", text: "Esta es la base para conectar restaurantes y proveedores en una app hermana." },
+    ])}
+    <div class="info-note mode-explainer">
+      <strong>Como manejar esta seccion</strong>
+      <span>Primero cargas proveedores con lo que venden y su WhatsApp. Despues guardas pedidos habituales. Cuando quieras repetir uno, tocas Repetir pedido y queda como borrador nuevo.</span>
     </div>
     <div class="cards-grid">
       <article class="stat-card">
-        <span class="status-pill ok">Zona activa</span>
-        <strong>${selectedArea}</strong>
-        <small class="muted">${areaInventory.length} productos base disponibles</small>
+        <span class="status-pill ok">Proveedores</span>
+        <strong>${suppliers.length}</strong>
+        <small class="muted">Contactos y catalogos visibles</small>
       </article>
       <article class="stat-card">
-        <span class="status-pill ${editableLines ? "warn" : "ok"}">Pedido en curso</span>
-        <strong>${editableLines}</strong>
-        <small class="muted">Lineas que aun estas armando o revisando</small>
+        <span class="status-pill ${activeOrders.length ? "warn" : "ok"}">Pedidos abiertos</span>
+        <strong>${activeOrders.length}</strong>
+        <small class="muted">Borradores, pendientes o enviados</small>
       </article>
       <article class="stat-card">
-        <span class="status-pill ${closedLines ? "warn" : "ok"}">Pendientes de recibir</span>
-        <strong>${closedLines}</strong>
-        <small class="muted">Lineas ya cerradas y esperando entrega</small>
+        <span class="status-pill ${pendingOrders.length ? "warn" : "ok"}">Por seguimiento</span>
+        <strong>${pendingOrders.length}</strong>
+        <small class="muted">Pedidos que conviene revisar</small>
       </article>
       <article class="stat-card">
         <span class="status-pill ${completedLines ? "ok" : "warn"}">Historial resuelto</span>
         <strong>${completedLines}</strong>
-        <small class="muted">Lineas ya recibidas</small>
+        <small class="muted">Pedidos antiguos para repetir</small>
       </article>
     </div>
-    <div class="inline-form">
-      <h4>Pedido actual de ${selectedArea}</h4>
-      <p class="muted" style="margin-top: -6px;">${focusedItem ? `Llegaste desde Inventario con ${escapeHtml(focusedItem)}. Ajusta cantidad o nota y guarda.` : "Aca aparecen solo los productos que ya marcaste con Pedir."}</p>
-      <form data-form="order-bulk" class="stack">
-        <input type="hidden" name="area" value="${selectedArea}">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Unidad</th>
-                <th>Cantidad a pedir</th>
-                <th>Nota</th>
-                <th>Estado</th>
-                ${editable ? "<th>Accion</th>" : ""}
-              </tr>
-            </thead>
-            <tbody>
-              ${editableOrders.map((orderLine) => {
-                const focused = focusedItem === orderLine.item;
-                const currentStatus = orderLine.status || "Borrador";
-                return `
-                  <tr class="${focused ? "order-focus-row" : ""}">
-                    <td>${orderLine.item}</td>
-                    <td>${orderLine.unit || `<small class="muted">Sin detalle</small>`}</td>
-                    <td>
-                      ${editable
-                        ? `<input type="number" min="0" step="0.1" name="qty-${orderLine.id}" placeholder="0" value="${focused ? (draft.quantity || orderLine.quantity || 1) : (orderLine.quantity ?? "")}">`
-                        : (orderLine.quantity ?? `<small class="muted">-</small>`)}
-                    </td>
-                    <td>
-                      ${editable
-                        ? `<input name="note-${orderLine.id}" placeholder="Opcional" value="${escapeAttribute(orderLine.note || "")}">`
-                        : (orderLine.note ? escapeHtml(orderLine.note) : `<small class="muted">Sin nota</small>`)}
-                    </td>
-                    <td>
-                      ${editable
-                        ? `<select name="status-${orderLine.id}">
-                            <option value="Borrador" ${currentStatus === "Borrador" ? "selected" : ""}>Borrador</option>
-                            <option value="Pendiente" ${currentStatus === "Pendiente" ? "selected" : ""}>Pendiente</option>
-                            <option value="Cerrado" ${currentStatus === "Cerrado" ? "selected" : ""}>Cerrado</option>
-                          </select>`
-                        : `<span class="status-pill ${statusClass(currentStatus)}">${currentStatus}</span>`}
-                    </td>
-                    ${editable ? `<td><button class="mini-action alt" type="button" data-action="delete-order-line" data-id="${orderLine.id}">Quitar</button></td>` : ""}
-                  </tr>
-                `;
-              }).join("") || `<tr><td colspan="${editable ? 6 : 5}"><div class="empty-note">Todavia no hay lineas en curso para ${selectedArea}. Ve a Inventario y pulsa Pedir en el producto que haga falta.</div></td></tr>`}
-            </tbody>
-          </table>
-        </div>
-        ${editable ? `
-          <div class="form-actions">
-            <button class="action-btn primary" type="submit" ${editableOrders.length ? "" : "disabled"}>Guardar pedido actual</button>
+    <div class="supplier-grid">
+      ${suppliers.map((supplier) => `
+        <article class="list-card supplier-card">
+          <div class="section-header compact-header">
+            <div>
+              <h4>${escapeHtml(supplier.name)}</h4>
+              <p>${escapeHtml(supplier.category)} · ${escapeHtml(supplier.area)}</p>
+            </div>
+            ${supplier.whatsapp ? `<a class="badge-btn" href="https://wa.me/${supplier.whatsapp.replace(/\D/g, "")}" target="_blank" rel="noreferrer">WhatsApp</a>` : ""}
           </div>
-        ` : ""}
-      </form>
-    </div>
-    <div class="inline-form" style="margin-top: 18px;">
-      <h4>Recepcion del pedido</h4>
-      <p class="muted" style="margin-top: -6px;">Aca aparecen solo las lineas ya cerradas y listas para recibir.</p>
-      <form data-form="order-reception" class="stack">
-        <input type="hidden" name="area" value="${selectedArea}">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Pedido</th>
-                <th>Recibido</th>
-                <th>Diferencia</th>
-                <th>Observacion</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${receivableOrders.map((order) => {
-                const difference = getOrderDifference(order);
-                const differenceLabel = difference === null
-                  ? `<small class="muted">Pendiente</small>`
-                  : difference > 0
-                    ? `Faltan ${difference} ${order.unit || ""}`.trim()
-                    : difference < 0
-                      ? `Sobran ${Math.abs(difference)} ${order.unit || ""}`.trim()
-                      : `Coincide`;
-                return `
-                  <tr>
-                    <td>${order.item}</td>
-                    <td>${order.quantity} ${order.unit || ""}</td>
-                    <td>
-                      ${editable
-                        ? `<input type="number" min="0" step="0.1" name="received-${order.id}" placeholder="0" value="${order.receivedQuantity ?? ""}">`
-                        : (typeof order.receivedQuantity === "number" ? `${order.receivedQuantity}` : `<small class="muted">-</small>`)}
-                    </td>
-                    <td>${differenceLabel}</td>
-                    <td>
-                      ${editable
-                        ? `<input name="received-note-${order.id}" placeholder="Falto algo, vino mal..." value="${escapeAttribute(order.receivedNote || "")}">`
-                        : (order.receivedNote ? escapeHtml(order.receivedNote) : `<small class="muted">Sin nota</small>`)}
-                    </td>
-                    <td><span class="status-pill ${statusClass(order.status)}">${order.status}</span></td>
-                  </tr>
-                `;
-              }).join("") || `<tr><td colspan="6"><div class="empty-note">Todavia no hay lineas listas para recibir en ${selectedArea}.</div></td></tr>`}
-            </tbody>
-          </table>
-        </div>
-        ${editable ? `
-          <div class="form-actions">
-            <button class="action-btn secondary" type="submit" ${receivableOrders.length ? "" : "disabled"}>Guardar recepcion</button>
+          <div class="pill-row">
+            ${(supplier.products || []).map((product) => `<span class="tag">${escapeHtml(product)}</span>`).join("")}
           </div>
-        ` : ""}
-      </form>
+          <div class="info-note compact-note">
+            <strong>Se le suele pedir</strong>
+            <span>${escapeHtml(supplier.usualOrder || "Pedido habitual pendiente de definir.")}</span>
+          </div>
+          ${supplier.notes ? `<p class="muted">${escapeHtml(supplier.notes)}</p>` : ""}
+        </article>
+      `).join("") || `<div class="empty-note">Todavia no hay proveedores cargados.</div>`}
     </div>
+    ${editable ? `
+      <div class="inline-form" id="supplier-order-form" hidden>
+        <h4>Nuevo pedido a proveedor</h4>
+        <form data-form="supplier-order" class="form-grid">
+          <label class="field">
+            <span>Proveedor</span>
+            <select name="supplierId">${renderOptions(supplierOptions, (item) => item.id, (item) => `${item.name} · ${item.category}`, selectedSupplier?.id)}</select>
+          </label>
+          <label class="field">
+            <span>Estado</span>
+            <select name="status">
+              <option>Borrador</option>
+              <option>Pendiente</option>
+              <option>Enviado</option>
+              <option>Recibido</option>
+              <option>Recibido con incidencia</option>
+            </select>
+          </label>
+          <label class="field field-wide">
+            <span>Que se pide</span>
+            <textarea name="item" rows="3" required placeholder="Ej: Tomate 20 kg, lechuga 4 cajas, cebolla 10 kg"></textarea>
+          </label>
+          <label class="field">
+            <span>Cantidad resumida</span>
+            <input type="number" min="0" step="0.1" name="quantity" value="1">
+          </label>
+          <label class="field">
+            <span>Unidad / formato</span>
+            <input name="unit" placeholder="pedido, cajas, kg, botellas...">
+          </label>
+          <label class="field field-wide">
+            <span>Nota</span>
+            <textarea name="note" rows="2" placeholder="Confirmar por WhatsApp, entregar viernes, revisar faltantes..."></textarea>
+          </label>
+          <div class="form-actions">
+            <button class="action-btn primary" type="submit">Guardar pedido</button>
+          </div>
+        </form>
+      </div>
+      <div class="inline-form" id="supplier-form" hidden>
+        <h4>Nuevo proveedor</h4>
+        <form data-form="supplier" class="form-grid">
+          <label class="field">
+            <span>Nombre</span>
+            <input name="name" required placeholder="Ej: Carnes Lopez">
+          </label>
+          <label class="field">
+            <span>Area</span>
+            <select name="area">${renderOptions(appState.ui.currentView === "admin" ? getAreaOptions() : [employee.area], (item) => item, (item) => item, employee.area)}</select>
+          </label>
+          <label class="field">
+            <span>Que vende</span>
+            <input name="category" required placeholder="Carnes, bebidas, limpieza...">
+          </label>
+          <label class="field">
+            <span>WhatsApp</span>
+            <input name="whatsapp" placeholder="+34 600 000 000">
+          </label>
+          <label class="field field-wide">
+            <span>Productos principales</span>
+            <textarea name="products" rows="3" placeholder="Una linea por producto: carne, pollo, hamburguesas..."></textarea>
+          </label>
+          <label class="field field-wide">
+            <span>Que se le suele pedir</span>
+            <textarea name="usualOrder" rows="2" placeholder="Pedido habitual o frecuencia"></textarea>
+          </label>
+          <div class="form-actions">
+            <button class="action-btn primary" type="submit">Guardar proveedor</button>
+          </div>
+        </form>
+      </div>
+    ` : ""}
     <div class="inline-form" style="margin-top: 18px;">
-      <h4>Historial reciente</h4>
-      <p class="muted" style="margin-top: -6px;">Aca quedan visibles las lineas ya resueltas para tener referencia.</p>
+      <h4>Pedidos abiertos</h4>
+      <p class="muted" style="margin-top: -6px;">Pedidos actuales, pendientes de enviar o recibir.</p>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Producto</th>
+              <th>Proveedor</th>
               <th>Pedido</th>
-              <th>Recibido</th>
-              <th>Fecha</th>
-              <th>Observacion</th>
+              <th>Area</th>
               <th>Estado</th>
+              <th>WhatsApp</th>
+              ${editable ? "<th>Accion</th>" : ""}
             </tr>
           </thead>
           <tbody>
-            ${historyOrders.map((order) => `
-              <tr>
-                <td>${order.item}</td>
-                <td>${order.quantity} ${order.unit || ""}</td>
-                <td>${typeof order.receivedQuantity === "number" ? `${order.receivedQuantity} ${order.unit || ""}` : `<small class="muted">Sin dato</small>`}</td>
-                <td>${order.receivedDate ? escapeHtml(order.receivedDate) : `<small class="muted">Sin fecha</small>`}</td>
-                <td>${order.receivedNote ? escapeHtml(order.receivedNote) : `<small class="muted">Sin nota</small>`}</td>
-                <td><span class="status-pill ${statusClass(order.status)}">${order.status}</span></td>
-              </tr>
-            `).join("") || `<tr><td colspan="6"><div class="empty-note">Todavia no hay historial resuelto en ${selectedArea}.</div></td></tr>`}
+            ${activeOrders.map((order) => {
+              const supplier = getSupplierForOrder(order);
+              return `
+                <tr>
+                  <td>${escapeHtml(supplier?.name || "Proveedor sin asignar")}</td>
+                  <td>${escapeHtml(order.item)}<br><small class="muted">${escapeHtml(order.note || "")}</small></td>
+                  <td><span class="tag">${escapeHtml(order.area)}</span></td>
+                  <td><span class="status-pill ${statusClass(order.status)}">${escapeHtml(order.status)}</span></td>
+                  <td>${supplier?.whatsapp ? `<a class="badge-btn" href="https://wa.me/${supplier.whatsapp.replace(/\D/g, "")}" target="_blank" rel="noreferrer">Abrir</a>` : `<small class="muted">Sin dato</small>`}</td>
+                  ${editable ? `<td><button class="mini-action alt" data-action="delete-order-line" data-id="${order.id}">Quitar</button></td>` : ""}
+                </tr>
+              `;
+            }).join("") || `<tr><td colspan="${editable ? 6 : 5}"><div class="empty-note">No hay pedidos abiertos.</div></td></tr>`}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="inline-form" style="margin-top: 18px;">
+      <h4>Pedidos anteriores para repetir</h4>
+      <p class="muted" style="margin-top: -6px;">Historial util para repetir compras habituales sin volver a escribir todo.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Proveedor</th>
+              <th>Pedido anterior</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              ${editable ? "<th>Accion</th>" : ""}
+            </tr>
+          </thead>
+          <tbody>
+            ${historyOrders.map((order) => {
+              const supplier = getSupplierForOrder(order);
+              return `
+                <tr>
+                  <td>${escapeHtml(supplier?.name || "Proveedor sin asignar")}</td>
+                  <td>${escapeHtml(order.item)}<br><small class="muted">${escapeHtml(order.note || "")}</small></td>
+                  <td>${order.receivedDate ? escapeHtml(order.receivedDate) : formatShortDate(normalizeChatTimestamp(order.createdAt))}</td>
+                  <td><span class="status-pill ${statusClass(order.status)}">${escapeHtml(order.status)}</span></td>
+                  ${editable ? `<td><button class="mini-action" data-action="repeat-order" data-id="${order.id}">Repetir pedido</button></td>` : ""}
+                </tr>
+              `;
+            }).join("") || `<tr><td colspan="${editable ? 5 : 4}"><div class="empty-note">Todavia no hay pedidos anteriores.</div></td></tr>`}
           </tbody>
         </table>
       </div>
@@ -2430,15 +2824,25 @@ function renderEmployees() {
   sectionEl.innerHTML = `
     <div class="section-header">
       <div>
-        <h3>Empleados, puestos y permisos</h3>
+        <h3>Equipo</h3>
         <p>${appState.ui.currentView === "admin"
           ? "Desde aca empresa organiza el equipo completo, los puestos y los permisos base."
           : "Desde aca revisas y organizas solo la gente y los puestos de tu zona."}</p>
       </div>
       <div class="action-row">
         <button class="action-btn primary" data-open-form="employee-form">Alta de empleado</button>
+        <button class="action-btn secondary" data-open-form="bulk-employees-form">Carga por plantilla</button>
         <button class="action-btn secondary" data-open-form="role-form">Nuevo puesto</button>
       </div>
+    </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Cargar el equipo, definir puestos y dejar permisos basicos por area." },
+      { title: "Como se usa", text: "Para una persona usa Alta de empleado. Para muchas, usa Carga por plantilla." },
+      { title: "Para la prueba", text: "No cargues DNI, contratos ni datos reales sensibles." },
+    ])}
+    <div class="info-note mode-explainer">
+      <strong>Como manejar esta seccion</strong>
+      <span>Para un empleado suelto usa Alta de empleado. Para cargar muchas personas juntas usa Carga por plantilla. Los emails demo se generan solos si los dejas vacios.</span>
     </div>
     <div class="cards-grid compact-grid">
       <article class="stat-card compact-stat">
@@ -2460,6 +2864,10 @@ function renderEmployees() {
     <div class="info-note">
       <strong>Como se usa</strong>
       <span>Primero se crean los puestos. Despues se da de alta cada persona eligiendo su rol, fecha de alta y horas semanales.</span>
+    </div>
+    <div class="info-note">
+      <strong>Restaurante grande</strong>
+      <span>Para equipos de 15 a 25 personas, usa Carga por plantilla y pega una tabla simple de empleados. No hace falta cargar documentos ni datos sensibles.</span>
     </div>
     <div class="two-column">
       <article class="list-card">
@@ -2498,8 +2906,8 @@ function renderEmployees() {
           <input name="name" required>
         </label>
         <label class="field">
-          <span>Email</span>
-          <input name="email" type="email">
+          <span>Email demo opcional</span>
+          <input name="email" type="email" placeholder="Si lo dejas vacio, se genera solo">
         </label>
         <label class="field">
           <span>Rol</span>
@@ -2507,11 +2915,11 @@ function renderEmployees() {
         </label>
         <label class="field">
           <span>Fecha de alta</span>
-          <input type="date" name="contractStart" required>
+          <input type="date" name="contractStart" value="${getTodayKey()}" required>
         </label>
         <label class="field">
           <span>Horas semanales</span>
-          <input type="number" min="1" name="weeklyHours" required>
+          <input type="number" min="1" name="weeklyHours" value="40" required>
         </label>
         <label class="field">
           <span>Dias anuales de vacaciones</span>
@@ -2519,6 +2927,27 @@ function renderEmployees() {
         </label>
         <div class="form-actions">
           <button class="action-btn primary" type="submit" ${roleOptions.length ? "" : "disabled"}>Guardar empleado</button>
+        </div>
+      </form>
+    </div>
+    <div class="inline-form" id="bulk-employees-form" hidden>
+      <h4>Carga por plantilla</h4>
+      <p class="muted">Pega una tabla de empleados o sube la plantilla completada. Minimo necesario: nombre, puesto, area y horas semanales. Los emails demo se generan solos si no vienen cargados.</p>
+      <form data-form="bulk-employees" class="form-grid">
+        <label class="field field-wide">
+          <span>Archivo de plantilla</span>
+          <input type="file" name="employeeCsv" accept=".csv,text/csv">
+        </label>
+        <label class="field field-wide">
+          <span>O pegar datos de la plantilla</span>
+          <textarea name="employeeCsvText" rows="8" placeholder="nombre,puesto,area,horas_semanales&#10;Lucia Moreno,Jefe de cocina,Cocina,40&#10;Mario Vidal,Camarero,Sala,30"></textarea>
+        </label>
+        <div class="info-note field-wide">
+          <strong>Privacidad</strong>
+          <span>No subas DNI, contratos, nominas, direcciones ni datos bancarios. Para la prueba alcanza con datos basicos o ficticios.</span>
+        </div>
+        <div class="form-actions">
+          <button class="action-btn primary" type="submit">Importar empleados</button>
         </div>
       </form>
     </div>
@@ -2572,6 +3001,11 @@ function renderTemperatures() {
         <button class="action-btn primary" data-open-form="temperature-log-form">Cargar temperatura</button>
       </div>
     </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Registrar controles de neveras, congeladores, camaras o botelleros." },
+      { title: "Como se usa", text: "Primero carga equipos. Despues, cada dia, elige equipo y anota temperatura." },
+      { title: "Para la prueba", text: "Carga una temperatura normal y otra con observacion para ver el seguimiento." },
+    ])}
     <div class="cards-grid">
       <article class="stat-card">
         <span class="status-pill ok">Equipos visibles</span>
@@ -2738,6 +3172,11 @@ function renderAllergens() {
         ${canViewRecipes(employee) ? `<button class="action-btn secondary" data-section-target="recipes">Ir a recetas</button>` : ""}
       </div>
     </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Consultar rapidamente que recetas tienen alergenos y que nota debe conocer el equipo." },
+      { title: "Como se usa", text: "Filtra por alergeno o busca un plato. Si falta algo, ve a Recetas y edita la ficha." },
+      { title: "Para la prueba", text: "Busca gluten o lacteos y comprueba si la informacion se entiende." },
+    ])}
     <div class="cards-grid">
       <article class="stat-card">
         <span class="status-pill ok">Recetas visibles</span>
@@ -2818,13 +3257,20 @@ function renderRecipes() {
   sectionEl.innerHTML = `
     <div class="section-header">
       <div>
-        <h3>Recetas base</h3>
-        <p>Base interna de cocina para ordenar ingredientes, rendimiento y notas de apoyo sin volverlo complicado.</p>
+        <h3>Cocina</h3>
+        <p>Recetas, alergenos y controles de temperatura reunidos para no repartir cocina en demasiadas pantallas.</p>
       </div>
       <div class="action-row">
+        <button class="action-btn secondary" data-section-target="allergens">Ver alergenos</button>
+        <button class="action-btn secondary" data-section-target="temperatures">Temperaturas</button>
         ${editable ? `<button class="action-btn primary" data-action="new-recipe">Agregar receta</button>` : ""}
       </div>
     </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Guardar recetas, marcar alergenos y acceder al control de temperaturas." },
+      { title: "Como se usa", text: "Carga una receta, marca sus alergenos y revisa luego la consulta rapida." },
+      { title: "Temperaturas", text: "Usa el boton Temperaturas para registrar neveras, camaras o congeladores." },
+    ])}
     <div class="cards-grid compact-grid">
       <article class="stat-card compact-stat">
         <span class="status-pill ok">Recetas visibles</span>
@@ -3104,6 +3550,11 @@ function renderSettings() {
         <button class="action-btn primary" data-open-form="settings-form">Personalizar app</button>
       </div>
     </div>
+    ${renderSectionHelp([
+      { title: "Que se hace aca", text: "Ajustar nombre del negocio, marca, fichaje, vacaciones y reglas generales." },
+      { title: "Como se usa", text: "Toca Personalizar app, cambia solo lo necesario y guarda." },
+      { title: "Para la prueba", text: "No hace falta configurar todo; alcanza con revisar nombre, local y reglas visibles." },
+    ])}
     <div class="cards-grid compact-grid">
       <article class="stat-card compact-stat">
         <span class="status-pill ok">Marca</span>
@@ -3261,6 +3712,17 @@ function renderSettings() {
 function renderSectionVisibility() {
   const employee = getCurrentEmployee();
   const hiddenSections = new Set();
+  if (appState.settings.trialMode) {
+    hiddenSections.add("documents");
+  }
+  hiddenSections.add("time-off");
+  document.querySelectorAll(".nav-link").forEach((button) => {
+    const section = button.dataset.section;
+    const visibleMainSections = ["dashboard", "employees", "shifts", "attendance", "chat", "inventory", "recipes", "settings"];
+    if (!visibleMainSections.includes(section)) {
+      button.hidden = true;
+    }
+  });
   if (appState.ui.currentView === "employee") {
     hiddenSections.add("employees");
     hiddenSections.add("settings");
@@ -3452,6 +3914,23 @@ function deleteOrderLine(orderId) {
   renderApp();
 }
 
+function repeatSupplierOrder(orderId) {
+  const employee = getCurrentEmployee();
+  const order = appState.orders.find((item) => item.id === orderId);
+  if (!canManageOrderLine(employee, order)) return;
+  appState.orders.unshift({
+    ...order,
+    id: uid("order"),
+    status: "Borrador",
+    createdAt: new Date().toISOString(),
+    receivedDate: "",
+    receivedQuantity: undefined,
+    receivedNote: "",
+    note: order.note ? `${order.note} · repetido desde historial` : "Repetido desde historial",
+  });
+  renderApp();
+}
+
 function updateShiftEmployeeOptions(area, selectedEmployeeId = "") {
   const form = document.querySelector("form[data-form='shift']");
   if (!form) return;
@@ -3518,6 +3997,26 @@ function renderShifts() {
         ${canManageShifts ? `<button class="action-btn secondary" data-action="duplicate-week" ${targetWeek === activeWeek ? "disabled" : ""}>Duplicar a ${getShiftWeekLabel(targetWeek)}</button>` : ""}
       </div>
     </div>
+    ${renderSectionHelp(canManageShifts ? [
+      { title: "Que se hace aca", text: "Crear y revisar horarios por semana, empleado y area." },
+      { title: "Como se usa", text: "Para muchos dias usa Cargar semana completa. Para algo puntual usa Crear turno." },
+      { title: "Para la prueba", text: "Cambia un turno, duplica semana y revisa si el tablero queda claro." },
+    ] : [
+      { title: "Que se hace aca", text: "Ver tus turnos y horarios de la semana." },
+      { title: "Como se usa", text: "Solo consulta. Si necesitas cambiar algo, avisa por chat o solicita ausencia." },
+      { title: "Para la prueba", text: "Comprueba si el horario se entiende en movil." },
+    ])}
+    ${canManageShifts ? `
+      <div class="info-note mode-explainer">
+        <strong>Como manejar esta seccion</strong>
+        <span>Para cargar una semana, elegi primero el empleado y la semana. Para un turno suelto, toca Crear turno. El selector de empleado dentro de Turnos es el que decide a quien se le asigna el horario.</span>
+      </div>
+    ` : `
+      <div class="info-note mode-explainer">
+        <strong>Como manejar esta seccion</strong>
+        <span>Aca solo ves tus horarios. Para cambios, usa el chat o solicita una ausencia desde Vacaciones y ausencias.</span>
+      </div>
+    `}
     ${canManageShifts ? `
       ${conflicts.length ? `
         <div class="conflict-banner">
@@ -3527,10 +4026,11 @@ function renderShifts() {
       ` : ""}
       <div class="inline-form">
         <h4>Cargar semana completa</h4>
+        <p class="muted">Usalo cuando queres armar varios dias de una misma persona de una sola vez.</p>
         <form data-form="shift-plan" class="shift-plan-form">
           <div class="shift-plan-head">
             <label class="field">
-              <span>Empleado</span>
+              <span>Empleado al que le cargas la semana</span>
               <select name="plannerEmployeeId" data-shift-planner-employee>
                 ${renderOptions(employeePool, (item) => item.id, (item) => `${item.name} · ${item.area}`, plannerEmployee?.id)}
               </select>
@@ -3580,7 +4080,7 @@ function renderShifts() {
           <h4>Aplicar plantilla</h4>
           <form data-form="shift-template-apply" class="form-grid">
             <label class="field">
-              <span>Empleado</span>
+              <span>Empleado al que aplicar plantilla</span>
               <select name="employeeId">${renderOptions(employeePool, (item) => item.id, (item) => `${item.name} · ${item.area}`, plannerEmployee?.id)}</select>
             </label>
             <label class="field">
@@ -3608,7 +4108,7 @@ function renderShifts() {
               <input name="name" required placeholder="Ejemplo: Cierre sala finde">
             </label>
             <label class="field">
-              <span>Empleado base</span>
+              <span>Empleado de ejemplo para guardar</span>
               <select name="employeeId">${renderOptions(employeePool, (item) => item.id, (item) => `${item.name} · ${item.area}`, plannerEmployee?.id)}</select>
             </label>
             <label class="field">
@@ -3623,6 +4123,7 @@ function renderShifts() {
       </div>
       <div class="inline-form" id="shift-form" hidden>
         <h4>Crear o editar turno</h4>
+        <p class="muted">Usalo para sumar un turno puntual. Aca elegis area, empleado, dias y horario.</p>
         <form data-form="shift" class="form-grid">
           <input type="hidden" name="shiftId" value="">
           <label class="field">
@@ -3634,7 +4135,7 @@ function renderShifts() {
             <select name="area" data-shift-area>${renderOptions(areasForForm, (item) => item, (item) => item, initialArea)}</select>
           </label>
           <label class="field">
-            <span>Empleado</span>
+            <span>Empleado para este turno</span>
             <select name="employeeId" data-shift-employee>${renderOptions(initialAreaEmployees, (item) => item.id, (item) => item.name, initialAreaEmployees[0]?.id)}</select>
           </label>
           <label class="field">
@@ -3743,28 +4244,18 @@ function renderSidebar() {
 
   if (currentUser?.view === "admin") {
     switcherPanel.hidden = false;
-    const employeeOptions = renderOptions(
-      appState.employees,
-      (item) => item.id,
-      (item) => `${item.name} · ${getRoleName(item)}`,
-      appState.ui.currentEmployeeId,
-    );
     switcherPanel.innerHTML = `
       <div class="section-title">
         <h2>Panel empresa</h2>
-        <p>Desde aca controlas el negocio completo sin pantallas de mas.</p>
+        <p>Vista general del restaurante completo.</p>
       </div>
       <div class="info-note mode-explainer">
-        <strong>Que podes hacer</strong>
-        <span>Crear horarios, revisar vacaciones, dar de alta y baja personal, organizar inventario, preparar pedidos y configurar el negocio.</span>
+        <strong>Como usarlo</strong>
+        <span>Entra a cada seccion desde el menu. En Turnos elegis a quien asignar horarios; en Empleados cargas plantilla o altas; en Inventario y Pedidos trabajas por area.</span>
       </div>
-      <label class="field">
-        <span>Empleado que estas revisando</span>
-        <select id="employee-selector">${employeeOptions}</select>
-      </label>
-      <div class="info-note">
-        <strong>Para que sirve</strong>
-        <span>Te deja cambiar rapido de persona para revisar su ficha, sus turnos y sus vacaciones dentro del panel empresa.</span>
+      <div class="info-note compact-note">
+        <strong>Modo prueba</strong>
+        <span>Documentos laborales y nominas quedan ocultos para evitar cargar datos sensibles durante la demo.</span>
       </div>
     `;
   } else {
@@ -3784,6 +4275,10 @@ function renderSidebar() {
           ? "Turnos, vacaciones, inventario y pedidos de tu zona."
           : "Turnos, vacaciones, fichaje y avisos."}</span>
       </div>
+      <div class="info-note compact-note">
+        <strong>Modo prueba</strong>
+        <span>Usar datos ficticios. Documentos y nominas no aparecen en esta version.</span>
+      </div>
     `;
   }
 
@@ -3800,6 +4295,7 @@ function renderSidebar() {
       <li>${currentUser?.email ?? employee.email}</li>
       <li>Perfil: ${roleName}</li>
       <li>${appState.business.name}</li>
+      ${appState.settings.trialMode ? "<li>Modo prueba restaurante</li>" : ""}
     </ul>
     <div class="action-row" style="margin-top: 18px;">
       <button class="action-btn secondary" data-action="reset-demo">Restaurar demo</button>
@@ -3809,7 +4305,7 @@ function renderSidebar() {
   `;
 }
 
-function handleFormSubmit(event) {
+async function handleFormSubmit(event) {
   event.preventDefault();
   const form = event.currentTarget;
   const formType = form.dataset.form;
@@ -3837,10 +4333,12 @@ function handleFormSubmit(event) {
     if (!role) return;
     if (appState.ui.currentView === "manager" && role.area !== currentEmployee.area) return;
     const employeeId = uid("emp");
+    const employeeName = data.get("name").trim();
+    const employeeEmail = data.get("email").trim() || makeDemoEmail(employeeName, employeeId);
     appState.employees.push({
       id: employeeId,
-      name: data.get("name").trim(),
-      email: data.get("email").trim(),
+      name: employeeName,
+      email: employeeEmail,
       roleId,
       area: role?.area ?? "General",
       contractStart: data.get("contractStart"),
@@ -3850,6 +4348,68 @@ function handleFormSubmit(event) {
       weeklyHours: Number(data.get("weeklyHours")),
     });
     appState.ui.currentEmployeeId = employeeId;
+  }
+
+  if (formType === "bulk-employees") {
+    if (!canManageEmployees()) return;
+    const currentEmployee = getCurrentEmployee();
+    const file = data.get("employeeCsv");
+    const pastedText = String(data.get("employeeCsvText") || "").trim();
+    const csvText = file && file.size ? await file.text() : pastedText;
+    const rows = parseCsvRows(csvText);
+    if (!rows.length) {
+      alert("Pega o sube un CSV con empleados.");
+      return;
+    }
+
+    let imported = 0;
+    let skipped = 0;
+    rows.forEach((row) => {
+      const name = String(row.nombre || row.name || "").trim();
+      const area = String(row.area || currentEmployee.area || "General").trim();
+      const roleName = String(row.puesto || row.rol || row.role || "Empleado").trim();
+      const email = String(row.email_demo || row.email || "").trim() || makeDemoEmail(name);
+      const weeklyHours = Number(row.horas_semanales || row.horas || row.weekly_hours || 40);
+      const annualVacationDays = Number(row.vacaciones_anuales || row.vacaciones || appState.settings.annualVacationDays);
+      const contractStart = String(row.fecha_alta_ficticia || row.fecha_alta || row.contract_start || getTodayKey()).trim();
+      const normalizedArea = area || "General";
+
+      if (!name) {
+        skipped += 1;
+        return;
+      }
+      if (appState.ui.currentView === "manager" && normalizedArea !== currentEmployee.area) {
+        skipped += 1;
+        return;
+      }
+      const duplicate = appState.employees.some((employee) => (
+        normalizeImportValue(employee.email) && normalizeImportValue(email)
+          ? normalizeImportValue(employee.email) === normalizeImportValue(email)
+          : normalizeImportValue(employee.name) === normalizeImportValue(name)
+            && normalizeImportValue(employee.area) === normalizeImportValue(normalizedArea)
+      ));
+      if (duplicate) {
+        skipped += 1;
+        return;
+      }
+
+      const role = findOrCreateImportedRole(roleName, normalizedArea);
+      appState.employees.push({
+        id: uid("emp"),
+        name,
+        email,
+        roleId: role.id,
+        area: role.area,
+        contractStart,
+        annualVacationDays: Number.isFinite(annualVacationDays) ? annualVacationDays : appState.settings.annualVacationDays,
+        usedVacationDays: 0,
+        status: "Activa",
+        weeklyHours: Number.isFinite(weeklyHours) ? weeklyHours : 40,
+      });
+      imported += 1;
+    });
+
+    alert(`Importacion terminada: ${imported} empleados cargados${skipped ? `, ${skipped} filas omitidas` : ""}.`);
   }
 
   if (formType === "shift") {
@@ -4055,6 +4615,86 @@ function handleFormSubmit(event) {
       area,
       unit: String(data.get("unit") || "").trim(),
     });
+  }
+
+  if (formType === "supplier") {
+    const employee = getCurrentEmployee();
+    if (!(canEditOrders(employee) || appState.ui.currentView === "admin")) return;
+    const area = String(data.get("area") || getAreaForView(employee)).trim();
+    if (!canAccessArea(employee, area)) return;
+    appState.suppliers.unshift({
+      id: uid("sup"),
+      name: String(data.get("name") || "").trim(),
+      area,
+      category: String(data.get("category") || "").trim(),
+      whatsapp: String(data.get("whatsapp") || "").trim(),
+      products: String(data.get("products") || "")
+        .split(/\r?\n|,/)
+        .map((item) => item.trim())
+        .filter(Boolean),
+      usualOrder: String(data.get("usualOrder") || "").trim(),
+      notes: "",
+    });
+  }
+
+  if (formType === "supplier-order") {
+    const employee = getCurrentEmployee();
+    if (!(canEditOrders(employee) || appState.ui.currentView === "admin")) return;
+    const supplier = getSupplierById(String(data.get("supplierId") || ""));
+    if (!supplier || !canAccessArea(employee, supplier.area)) return;
+    appState.orders.unshift({
+      id: uid("order"),
+      supplierId: supplier.id,
+      area: supplier.area,
+      item: String(data.get("item") || "").trim(),
+      unit: String(data.get("unit") || "").trim(),
+      quantity: Number(data.get("quantity") || 1),
+      status: String(data.get("status") || "Borrador"),
+      note: String(data.get("note") || "").trim(),
+      createdAt: new Date().toISOString(),
+      editableBy: [getRoleName(employee), "Administrador"],
+    });
+  }
+
+  if (formType === "bulk-inventory") {
+    const employee = getCurrentEmployee();
+    if (!canEditInventory(employee)) return;
+    const file = data.get("inventoryCsv");
+    const pastedText = String(data.get("inventoryCsvText") || "").trim();
+    const csvText = file && file.size ? await file.text() : pastedText;
+    const rows = parseCsvRows(csvText);
+    if (!rows.length) {
+      alert("Pega o sube una plantilla de inventario.");
+      return;
+    }
+
+    let imported = 0;
+    let skipped = 0;
+    rows.forEach((row) => {
+      const name = String(row.producto || row.nombre || row.name || "").trim();
+      const area = String(row.area || getAreaForView(employee)).trim();
+      const unit = String(row.unidad || row.unit || row.formato || "").trim();
+      if (!name || !canAccessArea(employee, area)) {
+        skipped += 1;
+        return;
+      }
+      const duplicate = appState.inventory.some((item) => (
+        normalizeImportValue(item.name) === normalizeImportValue(name)
+        && normalizeImportValue(item.area) === normalizeImportValue(area)
+      ));
+      if (duplicate) {
+        skipped += 1;
+        return;
+      }
+      appState.inventory.push({
+        id: uid("inv"),
+        name,
+        area,
+        unit,
+      });
+      imported += 1;
+    });
+    alert(`Inventario importado: ${imported} productos cargados${skipped ? `, ${skipped} filas omitidas` : ""}.`);
   }
 
   if (formType === "temperature-equipment") {
@@ -4348,7 +4988,21 @@ function bindEvents() {
   document.querySelectorAll("[data-open-form]").forEach((button) => {
     button.onclick = () => {
       const form = document.getElementById(button.dataset.openForm);
-      if (form) form.hidden = !form.hidden;
+      if (!form) return;
+      const willOpen = form.hidden;
+      document.querySelectorAll(".inline-form").forEach((item) => {
+        item.hidden = true;
+        item.classList.remove("form-opened");
+      });
+      form.hidden = !willOpen;
+      if (willOpen) {
+        form.classList.add("form-opened");
+        window.setTimeout(() => {
+          form.scrollIntoView({ behavior: "smooth", block: "start" });
+          const firstField = form.querySelector("input, select, textarea");
+          if (firstField) firstField.focus({ preventScroll: true });
+        }, 60);
+      }
     };
   });
 
@@ -4417,6 +5071,14 @@ function bindEvents() {
     button.onclick = () => duplicateWeekShifts();
   });
 
+  document.querySelectorAll("[data-action='load-large-demo']").forEach((button) => {
+    button.onclick = () => {
+      loadLargeRestaurantDemo();
+      renderApp();
+      alert("Demo grande cargada: empleados, inventario, turnos, pedidos y temperaturas ficticias.");
+    };
+  });
+
   document.querySelectorAll("[data-action='send-to-order']").forEach((button) => {
     button.onclick = () => prefillOrderFromInventory(button.dataset.id);
   });
@@ -4457,6 +5119,10 @@ function bindEvents() {
 
   document.querySelectorAll("[data-action='delete-order-line']").forEach((button) => {
     button.onclick = () => deleteOrderLine(button.dataset.id);
+  });
+
+  document.querySelectorAll("[data-action='repeat-order']").forEach((button) => {
+    button.onclick = () => repeatSupplierOrder(button.dataset.id);
   });
 
   document.querySelectorAll("[data-action='enable-notifications']").forEach((button) => {
@@ -4530,6 +5196,7 @@ function bindEvents() {
 
   document.querySelectorAll("[data-action='reset-demo']").forEach((button) => {
     button.onclick = () => {
+      window.localStorage.removeItem(STORAGE_KEY);
       appState = structuredClone(defaultState);
       renderApp();
     };
