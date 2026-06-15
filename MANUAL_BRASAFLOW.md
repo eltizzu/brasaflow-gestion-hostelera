@@ -1,660 +1,405 @@
-﻿# Manual De Uso De BrasaFlow
+# Manual de uso de BrasaFlow
 
-## 1. Introduccion
+BrasaFlow ayuda a ordenar la gestion interna de un negocio hostelero.
 
-BrasaFlow Es Una App De Gestion Para Hosteleria. Esta Pensada Para Que Cada Persona Del Negocio Tenga Acceso Solo A Lo Que Necesita.
+Esta pensado para que cada persona vea solo lo que necesita: empleado, encargado o empresa.
 
-La Idea General Es Esta:
+## 1. Para que sirve
 
-- El Empleado Usa La App Desde El Celular.
-- El Encargado Gestiona Su Area.
-- La Empresa O Administracion Controla Todo El Negocio.
+BrasaFlow sirve para gestionar:
 
-Este Manual Explica Dos Cosas:
+- Turnos.
+- Fichajes.
+- Vacaciones y ausencias.
+- Chats internos.
+- Inventario base.
+- Pedidos internos.
+- Recepcion de pedidos.
+- Temperaturas.
+- Documentos.
+- Recetas.
+- Alergenos.
+- Empleados y puestos.
+- Configuracion del negocio.
 
-- Que Puede Hacer La App.
-- Como Hacer Cada Accion Paso A Paso.
+En pocas palabras: BrasaFlow es el centro interno del negocio.
 
-## 2. Perfiles De Uso
+## 2. Perfiles de uso
 
 ### Empleado
 
-El Empleado Puede:
+Puede:
 
-- Ver Sus Turnos.
-- Fichar Entrada Y Salida.
-- Ver Sus Vacaciones.
-- Pedir Vacaciones O Ausencias.
-- Consultar Chats.
-- Ver Sus Documentos.
-- Consultar Inventario De Su Zona.
-- Consultar Temperaturas De Su Zona.
+- Ver sus turnos.
+- Fichar entrada y salida.
+- Ver sus vacaciones.
+- Pedir vacaciones o ausencias.
+- Consultar chats.
+- Ver sus documentos.
+- Consultar inventario de su zona.
 
 ### Encargado
 
-El Encargado Puede:
+Puede:
 
-- Ver Y Gestionar Turnos De Su Area.
-- Revisar Solicitudes De Vacaciones De Su Area.
-- Cargar O Consultar Inventario De Su Area.
-- Preparar Pedidos De Su Area.
-- Cargar Equipos Y Temperaturas De Su Area.
-- Cargar Documentos De Empleados De Su Area.
-- Consultar Y, Si Corresponde, Editar Recetas De Cocina.
-- Consultar La Base Interna De Alergenos Si Trabaja En Cocina.
+- Gestionar turnos de su area.
+- Revisar vacaciones de su equipo.
+- Consultar inventario.
+- Preparar pedidos.
+- Cargar temperaturas.
+- Consultar documentos de su area.
+- Revisar recetas y alergenos si trabaja con cocina.
 
-### Empresa / Administracion
+### Empresa
 
-La Empresa Puede:
+Puede:
 
-- Ver A Todo El Personal.
-- Cambiar Entre Empleados.
-- Gestionar Turnos, Vacaciones Y Fichajes De Todo El Negocio.
-- Configurar La Marca Y El Negocio.
-- Cargar Documentos.
-- Revisar Todas Las Areas.
+- Ver todo el negocio.
+- Gestionar empleados.
+- Cambiar turnos, vacaciones y fichajes.
+- Cargar documentos.
+- Configurar la marca.
+- Revisar todas las areas.
 
-## 3. Como Entrar A La App
-
-### Paso A Paso
+## 3. Como entrar
 
 1. Abrir BrasaFlow.
-2. Escribir Email Y Contraseña.
-3. Pulsar En `Entrar`.
-4. La App Abrira La Vista Correspondiente A Ese Usuario.
+2. Escribir email y contrasena.
+3. Pulsar `Entrar`.
+4. La app abre la vista que corresponde a ese usuario.
 
-### Que Pasa Despues De Entrar
+En esta demo, el acceso ya se valida desde el servidor local. No hace falta explicar nada tecnico al usuario: simplemente entra con el perfil que se le haya dado para la prueba.
 
-- Si Entras Como Empleado, Veras Tu Parte.
-- Si Entras Como Encargado, Veras Las Herramientas De Tu Area.
-- Si Entras Como Empresa, Veras El Panel Global.
+## 4. Como moverse
 
-## 4. Como Moverse Dentro De La App
+El menu lateral permite cambiar de seccion.
 
-El Menu Lateral Permite Cambiar Entre Secciones.
+Las secciones principales son:
 
-Las Secciones Principales Son:
+- Resumen.
+- Turnos.
+- Fichaje.
+- Vacaciones.
+- Chats.
+- Inventario.
+- Pedidos.
+- Temperaturas.
+- Alergenos.
+- Recetas.
+- Documentos.
+- Empleados.
+- Configuracion.
 
-- Resumen
-- Turnos
-- Fichaje
-- Vacaciones
-- Chats
-- Inventario
-- Pedidos
-- Temperaturas
-- Alergenos
-- Recetas
-- Documentos
-- Empleados
-- Configuracion
-
-### Como Cambiar De Seccion
-
-1. Buscar El Nombre De La Seccion En El Menu.
-2. Pulsar Sobre Esa Opcion.
-3. La Zona Central Mostrara Esa Pantalla.
+En movil, la vista se adapta para que sea mas comoda de usar.
 
 ## 5. Resumen
 
-La Pantalla `Resumen` Sirve Para Ver Lo Mas Importante Rapido.
+La pantalla `Resumen` muestra lo mas importante del dia.
 
-### Que Se Ve En Resumen
+Segun el perfil, puede mostrar:
 
-Segun El Perfil, Puede Mostrar:
+- Proximo turno.
+- Estado del fichaje.
+- Vacaciones disponibles.
+- Informacion del perfil.
+- Pendientes del area.
 
-- Estado Del Dia.
-- Proximo Turno.
-- Estado Del Fichaje.
-- Saldo De Vacaciones.
-- Informacion Del Perfil Actual.
-
-### Como Usarlo
-
-1. Entrar En `Resumen`.
-2. Leer Los Bloques Superiores.
-3. Revisar Si Hay Algo Pendiente Para El Dia.
-4. Si Hace Falta, Ir A La Seccion Correspondiente Desde El Menu.
+Usala como primera parada al entrar.
 
 ## 6. Turnos
 
-La Seccion `Turnos` Sirve Para Ver Y Organizar Horarios.
+La seccion `Turnos` sirve para ver y organizar horarios.
 
-### 6.1 Como Ver Turnos Si Eres Empleado
+### Ver turnos
 
-1. Entrar En `Turnos`.
-2. Revisar La Semana Visible.
-3. Mirar El Dia, La Hora Y La Nota Del Turno.
+1. Entrar en `Turnos`.
+2. Revisar la semana.
+3. Ver dia, hora y nota del turno.
 
-### 6.2 Como Crear Un Turno
+### Crear un turno
 
-Esto Lo Hace Encargado O Empresa.
+Lo hace un encargado o la empresa.
 
-1. Entrar En `Turnos`.
-2. Pulsar `Crear Turno`.
-3. Elegir El Rango O Semana.
-4. Elegir El Area.
-5. Elegir El Empleado.
-6. Elegir Hora De Entrada.
-7. Elegir Hora De Salida.
-8. Marcar Uno O Varios Dias.
-9. Escribir Una Nota Si Hace Falta.
-10. Pulsar `Guardar Turno`.
+1. Entrar en `Turnos`.
+2. Pulsar `Crear turno`.
+3. Elegir semana, area y empleado.
+4. Elegir hora de entrada y salida.
+5. Marcar los dias.
+6. Agregar una nota si hace falta.
+7. Pulsar `Guardar turno`.
 
-### 6.3 Como Cargar La Semana Completa De Un Empleado
+### Usar plantillas
 
-1. Entrar En `Turnos`.
-2. Buscar El Bloque `Cargar Semana Completa`.
-3. Elegir El Empleado.
-4. Elegir El Rango.
-5. Activar Los Dias Que Trabaja.
-6. Elegir Horario De Entrada Y Salida En Cada Dia.
-7. Escribir Una Nota General Si Hace Falta.
-8. Pulsar `Guardar Semana Del Empleado`.
+Las plantillas sirven para no cargar la misma semana una y otra vez.
 
-### 6.4 Como Editar Un Turno
+Puedes:
 
-1. Entrar En `Turnos`.
-2. Bajar A La Tabla O Buscar El Turno Visible.
-3. Pulsar `Editar`.
-4. Cambiar Lo Necesario.
-5. Pulsar `Guardar Turno`.
-
-### 6.5 Como Borrar Un Turno
-
-1. Entrar En `Turnos`.
-2. Buscar El Turno.
-3. Pulsar `Borrar`.
-
-### 6.6 Como Guardar Una Plantilla
-
-1. Entrar En `Turnos`.
-2. Buscar `Guardar Como Plantilla`.
-3. Escribir El Nombre De La Plantilla.
-4. Elegir El Empleado Base.
-5. Elegir La Semana Origen.
-6. Pulsar `Guardar Plantilla`.
-
-### 6.7 Como Aplicar Una Plantilla
-
-1. Entrar En `Turnos`.
-2. Buscar `Aplicar Plantilla`.
-3. Elegir El Empleado.
-4. Elegir La Semana.
-5. Elegir La Plantilla.
-6. Escribir Una Nota Si Hace Falta.
-7. Pulsar `Aplicar Plantilla`.
-
-### 6.8 Como Duplicar Una Semana
-
-1. Entrar En `Turnos`.
-2. Elegir La Semana Que Quieres Usar Como Base.
-3. Pulsar `Duplicar`.
-4. La App Copiara Los Turnos A La Siguiente Semana Disponible.
+- Guardar una semana como plantilla.
+- Aplicar una plantilla a otro empleado.
+- Duplicar una semana.
 
 ## 7. Fichaje
 
-La Seccion `Fichaje` Sirve Para Registrar Entrada Y Salida.
+La seccion `Fichaje` sirve para registrar entrada y salida.
 
-### 7.1 Como Fichar Entrada
+### Fichar entrada
 
-1. Entrar En `Fichaje`.
-2. Pulsar `Fichar Entrada`.
-3. Si El Negocio Usa Ubicacion, La App Intentara Validarla.
-4. Si Todo Esta Bien, El Fichaje Quedara Abierto.
+1. Entrar en `Fichaje`.
+2. Pulsar `Fichar entrada`.
+3. La app registra el inicio de la jornada.
 
-### 7.2 Como Fichar Salida
+### Fichar salida
 
-1. Entrar En `Fichaje`.
-2. Pulsar `Fichar Salida`.
-3. La App Cerrara La Jornada Y Calculara Las Horas.
+1. Entrar en `Fichaje`.
+2. Pulsar `Fichar salida`.
+3. La app cierra la jornada y calcula las horas.
 
-### 7.3 Como Ver Tus Horas
+### Ver horas
 
-1. Entrar En `Fichaje`.
-2. Revisar:
-   - Horas De Hoy.
-   - Horas De La Semana.
-   - Horas Del Mes.
-3. Mirar Los Ultimos Fichajes En La Tabla.
+En la misma pantalla puedes revisar:
 
-### 7.4 Como Revisa Fichajes La Empresa
+- Horas de hoy.
+- Horas de la semana.
+- Horas del mes.
+- Ultimos fichajes.
 
-1. Entrar En `Fichaje`.
-2. Revisar La Tabla De Fichajes Visibles.
-3. Cambiar De Empleado Si Hace Falta.
-4. Comprobar Jornadas Abiertas, Horas Y Estado.
+## 8. Vacaciones y ausencias
 
-## 8. Vacaciones Y Ausencias
+Esta seccion sirve para pedir, aprobar y revisar vacaciones.
 
-La Seccion `Vacaciones` Sirve Para Ver Saldo, Pedir Dias Y Aprobar Solicitudes.
+### Pedir vacaciones o ausencia
 
-### 8.1 Como Ver El Saldo De Vacaciones
+1. Entrar en `Vacaciones`.
+2. Elegir el tipo.
+3. Elegir fecha de inicio y fecha de fin.
+4. Guardar la solicitud.
 
-1. Entrar En `Vacaciones`.
-2. Mirar Los Bloques De:
-   - Dias Acumulados.
-   - Dias Usados.
-   - Dias Disponibles.
+### Aprobar o rechazar
 
-### 8.2 Como Pedir Vacaciones O Ausencia
+Lo hace un encargado o la empresa.
 
-1. Entrar En `Vacaciones`.
-2. Pulsar El Boton Para Abrir El Formulario Si Corresponde.
-3. Elegir El Tipo:
-   - Vacaciones
-   - Ausencia
-4. Elegir Fecha De Inicio.
-5. Elegir Fecha De Fin.
-6. Pulsar `Guardar`.
+1. Entrar en `Vacaciones`.
+2. Buscar la solicitud.
+3. Pulsar `Aprobar` o `Rechazar`.
 
-### 8.3 Como Aprueba O Rechaza El Encargado O La Empresa
-
-1. Entrar En `Vacaciones`.
-2. Buscar La Solicitud En La Tabla.
-3. Pulsar `Aprobar` O `Rechazar`.
-
-### 8.4 Que Hace La App Cuando Se Aprueba
-
-- Actualiza El Estado.
-- Ajusta El Saldo Si Son Vacaciones.
-- Tiene En Cuenta La Ausencia En La Planificacion De Turnos.
+Cuando se aprueban vacaciones, la app actualiza el saldo y lo tiene en cuenta para planificar turnos.
 
 ## 9. Chats
 
-La Seccion `Chats` Sirve Para La Comunicacion Interna.
+Los chats sirven para comunicacion interna.
 
-Puede Haber:
+Puede haber:
 
-- Chat General.
-- Chat De Cocina.
-- Chat De Sala.
+- Chat general.
+- Chat de cocina.
+- Chat de sala.
 
-### 9.1 Como Entrar A Un Chat
-
-1. Entrar En `Chats`.
-2. Pulsar La Pestaña Del Canal Que Quieras.
-
-### 9.2 Como Enviar Un Mensaje
-
-1. Entrar En `Chats`.
-2. Elegir El Canal.
-3. Escribir El Mensaje.
-4. Marcar Si Es Urgente Si Hace Falta.
-5. Pulsar Enviar O Guardar Segun La Vista Disponible.
-
-### 9.3 Para Que Sirven Los Mensajes Urgentes
-
-Los Mensajes Urgentes Quedan Mas Resaltados Para Llamar La Atencion Del Equipo.
+Los mensajes urgentes quedan resaltados para que el equipo los vea rapido.
 
 ## 10. Inventario
 
-La Seccion `Inventario` Es Una Base De Productos Por Zona.
+El inventario es una base de productos por area.
 
-No Es Un Control Fino De Stock En Tiempo Real.
+No es un control exacto de stock en tiempo real. Sirve para saber que productos se usan y preparar pedidos internos.
 
-### 10.1 Para Que Sirve
+### Agregar un producto
 
-Sirve Para Saber Que Productos Suele Tener Cada Zona.
+1. Entrar en `Inventario`.
+2. Pulsar `Agregar producto`.
+3. Escribir nombre.
+4. Elegir area.
+5. Indicar como se suele pedir.
+6. Guardar.
 
-Ejemplos:
+### Pasar un producto a pedido
 
-- Cocina
-- Sala
-
-### 10.2 Como Agregar Un Producto Base
-
-1. Entrar En `Inventario`.
-2. Pulsar `Agregar Producto` Si Tienes Permiso.
-3. Escribir El Nombre Del Producto.
-4. Elegir El Area.
-5. Completar `Como Se Suele Pedir` Si Hace Falta.
-6. Pulsar `Guardar Producto`.
-
-### 10.3 Como Consultar Inventario
-
-1. Entrar En `Inventario`.
-2. Buscar El Area Correspondiente.
-3. Revisar La Lista Base De Productos.
-
-### 10.4 Como Pasar Un Producto A Pedido
-
-1. Entrar En `Inventario`.
-2. Buscar El Producto.
-3. Pulsar `Pedir` O `Editar Pedido`.
-4. La App Te Llevara A `Pedidos`.
+1. Buscar el producto.
+2. Pulsar `Pedir`.
+3. La app lleva a la seccion `Pedidos`.
 
 ## 11. Pedidos
 
-La Seccion `Pedidos` Sirve Para Seguir Lo Que Ya Marcaste Desde `Inventario` Y Para Registrar La Recepcion.
+La seccion `Pedidos` ayuda a preparar y revisar pedidos internos.
 
-### 11.1 Como Crear Un Pedido Desde Inventario
+Tiene tres partes:
 
-1. Entrar En `Inventario`.
-2. Buscar El Producto Que Hace Falta.
-3. Pulsar `Pedir`.
-4. La App Te Llevara A `Pedidos`.
+- Pedido actual: lo que se esta armando.
+- Recepcion del pedido: lo que llega al local.
+- Historial reciente: lo que ya fue recibido o cerrado.
 
-### 11.2 Como Completar El Pedido Actual
+### Registrar recepcion
 
-1. Entrar En `Pedidos`.
-2. Elegir El Area Activa Si Hace Falta.
-3. Buscar El Bloque `Pedido Actual`.
-4. Completar La Cantidad.
-5. Agregar Una Nota Si Hace Falta.
-6. Ajustar El Estado Si Corresponde.
-7. Pulsar `Guardar Pedido Actual`.
-
-### 11.3 Como Se Ordena Esta Seccion
-
-- `Pedido Actual`: Lo Que Todavia Estas Armando O Revisando.
-- `Recepcion Del Pedido`: Lo Que Ya Quedo Cerrado Y Esta Listo Para Recibirse.
-- `Historial Reciente`: Lo Que Ya Fue Recibido O Resuelto.
-
-### 11.4 Como Registrar La Recepcion Del Pedido
-
-1. Entrar En `Pedidos`.
-2. Ir Al Bloque `Recepcion Del Pedido`.
-3. Escribir Cuanto Se Recibio.
-4. Agregar Observacion Si Falto Algo O Si Vino Mal.
-5. Pulsar `Guardar Recepcion`.
-
-### 11.5 Que Permite Ver La Recepcion
-
-- Si Coincide Con Lo Pedido.
-- Si Faltaron Unidades.
-- Si Sobraron Unidades.
-- Si Hay Incidencias.
-
-### 11.6 Albaranes
-
-Hoy BrasaFlow No Funciona Como Un Modulo Completo De Albaranes Formales, Pero Ya Permite:
-
-- Preparar El Pedido.
-- Registrar Lo Recibido.
-- Anotar Diferencias E Incidencias.
+1. Entrar en `Pedidos`.
+2. Ir a `Recepcion del pedido`.
+3. Escribir cuanto llego.
+4. Agregar una observacion si falto algo o vino mal.
+5. Guardar.
 
 ## 12. Temperaturas
 
-La Seccion `Temperaturas` Sirve Para Registrar Controles De Equipos.
+La seccion `Temperaturas` sirve para registrar controles de equipos.
 
-### 12.1 Como Agregar Un Equipo
+Ejemplos:
 
-Lo Hace Encargado O Empresa.
+- Neveras.
+- Camaras.
+- Congeladores.
+- Equipos de cocina.
 
-1. Entrar En `Temperaturas`.
-2. Pulsar `Agregar Equipo`.
-3. Escribir El Nombre Del Equipo.
-4. Elegir El Area.
-5. Escribir El Rango Esperado Si Hace Falta.
-6. Pulsar `Guardar Equipo`.
+### Cargar una temperatura
 
-### 12.2 Como Cargar Una Temperatura
+1. Entrar en `Temperaturas`.
+2. Pulsar `Cargar temperatura`.
+3. Elegir equipo.
+4. Escribir temperatura.
+5. Agregar observacion si hace falta.
+6. Guardar.
 
-1. Entrar En `Temperaturas`.
-2. Pulsar `Cargar Temperatura`.
-3. Elegir El Equipo.
-4. Escribir La Temperatura.
-5. Agregar Una Observacion Si Hace Falta.
-6. Pulsar `Guardar Temperatura`.
+## 13. Documentos
 
-### 12.3 Como Consultar Registros
+La seccion `Documentos` centraliza archivos internos.
 
-1. Entrar En `Temperaturas`.
-2. Revisar La Tabla De Equipos Cargados.
-3. Revisar La Tabla De Ultimos Registros.
+Puede usarse para:
 
-## 13. Documentos Laborales
+- Contratos.
+- Nominas.
+- Certificados.
+- Comunicados.
+- Otros documentos del equipo.
 
-La Seccion `Documentos` Sirve Para Centralizar Nominas, Contratos Y Otros Archivos Internos.
+El empleado solo ve sus propios documentos.
 
-### 13.1 Como Cargar Un Documento
+### Cargar un documento
 
-Lo Hace Empresa O Encargado Segun Permiso.
-
-1. Entrar En `Documentos`.
-2. Pulsar `Cargar Documento`.
-3. Elegir El Tipo.
-4. Elegir El Empleado.
-5. Escribir El Titulo.
-6. Escribir El Periodo Si Corresponde.
-7. Elegir La Visibilidad.
-8. Escribir Un Resumen.
-9. Pulsar `Guardar Documento`.
-
-### 13.2 Como Ver Un Documento
-
-1. Entrar En `Documentos`.
-2. Buscar El Documento En La Tabla O En Recientes.
-3. Pulsar `Abrir / Exportar`.
-
-### 13.3 Como Filtrar Documentos
-
-1. Entrar En `Documentos`.
-2. Pulsar El Tipo De Documento En Los Filtros De Arriba.
-3. La Vista Se Actualizara.
-
-### 13.4 Como Lo Ve El Empleado
-
-El Empleado:
-
-- Solo Ve Sus Documentos.
-- No Ve Los De Otras Personas.
+1. Entrar en `Documentos`.
+2. Pulsar `Cargar documento`.
+3. Elegir tipo.
+4. Elegir empleado.
+5. Escribir titulo y periodo.
+6. Definir visibilidad.
+7. Guardar.
 
 ## 14. Recetas
 
-La Seccion `Recetas` Sirve Para Guardar La Base De Cocina.
+La seccion `Recetas` guarda informacion interna de cocina.
 
-### 14.1 Como Crear Una Receta
+Puede incluir:
 
-1. Entrar En `Recetas`.
-2. Pulsar `Agregar Receta`.
-3. Escribir El Nombre.
-4. Escribir El Rendimiento.
-5. Cargar Los Ingredientes, Uno Por Linea.
-6. Marcar Los Alergenos.
-7. Escribir Notas Internas Si Hace Falta.
-8. Escribir Una Nota Corta Para Sala.
-9. Pulsar `Guardar Receta`.
-
-### 14.2 Como Editar Una Receta
-
-1. Entrar En `Recetas`.
-2. Buscar La Receta.
-3. Pulsar `Editar`.
-4. Cambiar Lo Necesario.
-5. Pulsar `Guardar Cambios`.
-
-### 14.3 Como Eliminar Una Receta
-
-1. Entrar En `Recetas`.
-2. Buscar La Receta.
-3. Pulsar `Eliminar`.
-
-### 14.4 Como Buscar Una Receta
-
-1. Entrar En `Recetas`.
-2. Usar El Buscador.
-3. Escribir El Nombre Del Plato, Ingrediente O Palabra Relacionada.
+- Ingredientes.
+- Rendimiento.
+- Alergenos.
+- Notas internas.
+- Nota corta para sala.
 
 ## 15. Alergenos
 
-La Seccion `Alergenos` Funciona Como Base Interna De Cocina Y Empresa.
+La seccion `Alergenos` muestra una vista rapida de las recetas y sus alergenos.
 
-### 15.1 Para Que Sirve
+Sirve para revisar:
 
-- Ver Que Recetas Ya Tienen Los Alergenos Cargados.
-- Detectar Que Fichas Todavia Falta Completar.
-- Mantener Una Base Interna Clara Sin abrir toda la receta.
+- Que recetas ya tienen alergenos cargados.
+- Que fichas faltan completar.
+- Que platos contienen un alergeno concreto.
 
-### 15.2 Como Consultar Una Ficha
-
-1. Entrar En `Alergenos`.
-2. Usar El Buscador.
-3. Escribir El Nombre Del Plato O Un Alergeno.
-4. Leer La Tarjeta De La Receta.
-
-### 15.3 Que Informacion Da
-
-- Alergenos Marcados.
-- Nota Interna Asociada.
-- Aviso Si Falta Completar La Ficha.
-
-### 15.4 Como Filtrar Por Alergeno
-
-1. Entrar En `Alergenos`.
-2. Pulsar En El Filtro Del Alergeno Que Quieras.
-3. La App Mostrara Solo Las Recetas Relacionadas.
-
-### 15.5 Como Se Actualiza
-
-Se Alimenta Desde `Recetas`. Si Se Cambia Una Receta, La Vista De Alergenos Tambien Cambia.
-
-### 15.6 Nota De Producto
-
-En BrasaFlow Queda Como Base Interna.
-
-La Consulta Rapida Frente Al Cliente Tiene Mas Sentido En La Futura App De `Comandas`.
+La informacion se alimenta desde `Recetas`.
 
 ## 16. Empleados
 
-La Seccion `Empleados` Sirve Para Gestionar Personas, Puestos Y Permisos.
+La seccion `Empleados` sirve para gestionar personas, puestos y permisos.
 
-### 16.1 Como Dar De Alta Un Empleado
+### Dar de alta un empleado
 
-1. Entrar En `Empleados`.
-2. Pulsar `Alta De Empleado`.
-3. Escribir Nombre.
-4. Escribir Email.
-5. Elegir El Rol.
-6. Elegir Fecha De Alta.
-7. Escribir Horas Semanales.
-8. Ajustar Dias De Vacaciones Si Hace Falta.
-9. Pulsar `Guardar Empleado`.
+1. Entrar en `Empleados`.
+2. Pulsar `Alta de empleado`.
+3. Escribir nombre y email.
+4. Elegir rol.
+5. Completar fecha de alta, horas y vacaciones.
+6. Guardar.
 
-### 16.2 Como Crear Un Puesto
+### Crear un puesto
 
-1. Entrar En `Empleados`.
-2. Pulsar `Nuevo Puesto`.
-3. Escribir El Nombre Del Puesto.
-4. Elegir El Area.
-5. Marcar Los Permisos.
-6. Pulsar `Guardar Puesto`.
-
-### 16.3 Como Revisar El Equipo
-
-1. Entrar En `Empleados`.
-2. Revisar El Bloque `Equipo Actual`.
-3. Revisar El Bloque `Puestos Configurados`.
+1. Entrar en `Empleados`.
+2. Pulsar `Nuevo puesto`.
+3. Escribir nombre del puesto.
+4. Elegir area.
+5. Marcar permisos.
+6. Guardar.
 
 ## 17. Configuracion
 
-La Seccion `Configuracion` Es Solo Para Empresa.
+La seccion `Configuracion` es para la empresa.
 
-### 17.1 Como Cambiar La Marca Del Negocio
+Permite ajustar:
 
-1. Entrar En `Configuracion`.
-2. Pulsar `Personalizar App`.
-3. Cambiar:
-   - Nombre Del Negocio
-   - Ciudad
-   - Slogan
-   - Logo Corto
-   - Colores
-4. Pulsar `Guardar Configuracion`.
+- Nombre del negocio.
+- Ciudad.
+- Slogan.
+- Logo corto.
+- Colores.
+- Dias anuales de vacaciones.
+- Reglas de fichaje.
+- Datos del local principal.
 
-### 17.2 Como Ajustar Reglas Del Negocio
+## 18. Exportar informacion
 
-Desde La Misma Seccion Se Puede Ajustar:
+Algunas secciones permiten abrir o exportar informacion en formato limpio.
 
-- Dias Anuales De Vacaciones
-- Modo De Acumulacion
-- Retencion De Chats
-- Nombre Del Local Principal
-- Radio De Fichaje
-- Coordenadas Del Local
-- Regla De Fichaje Por Ubicacion
+Ejemplos:
 
-## 18. Exportaciones Y PDF
+- Turnos.
+- Fichajes.
+- Temperaturas.
+- Documentos.
 
-BrasaFlow Ya Permite Abrir O Exportar Informacion En Formato Limpio.
+Para usarlo:
 
-### 18.1 Que Se Puede Exportar
+1. Entrar en la seccion.
+2. Pulsar `Exportar PDF` o `Abrir / Exportar`.
+3. Guardar o imprimir desde el navegador.
 
-- Turnos
-- Fichajes
-- Temperaturas
-- Documentos
+## 19. Uso recomendado en el dia a dia
 
-### 18.2 Como Exportar
+### Empleado
 
-1. Entrar En La Seccion Correspondiente.
-2. Pulsar `Exportar PDF` O `Abrir / Exportar`.
-3. La App Abrira Una Vista Lista Para Imprimir O Guardar Como PDF.
+1. Entrar desde el movil.
+2. Revisar `Resumen`.
+3. Ver turnos.
+4. Fichar entrada o salida.
+5. Consultar chats.
+6. Revisar documentos.
+7. Pedir vacaciones si hace falta.
 
-## 19. Como Usar La App En El Dia A Dia
+### Encargado
 
-### 19.1 Flujo Del Empleado
+1. Revisar su area.
+2. Organizar turnos.
+3. Revisar vacaciones pendientes.
+4. Consultar inventario.
+5. Preparar pedidos.
+6. Cargar temperaturas.
 
-1. Entrar Desde El Celular.
-2. Revisar Resumen.
-3. Ver Turnos.
-4. Fichar Entrada O Salida.
-5. Consultar Chats.
-6. Revisar Documentos.
-7. Pedir Vacaciones Si Hace Falta.
+### Empresa
 
-### 19.2 Flujo Del Encargado
+1. Revisar el panel general.
+2. Gestionar empleados y puestos.
+3. Revisar turnos, fichajes y vacaciones.
+4. Cargar o revisar documentos.
+5. Ajustar configuracion del negocio.
 
-1. Entrar A La App.
-2. Revisar El Equipo De Su Area.
-3. Organizar Turnos.
-4. Revisar Vacaciones Pendientes.
-5. Consultar Inventario Base.
-6. Preparar Pedidos.
-7. Cargar Temperaturas O Revisar Registros.
+## 20. Estado de esta demo
 
-### 19.3 Flujo De La Empresa
+Esta version esta pensada para presentacion y prueba guiada.
 
-1. Entrar Al Panel General.
-2. Revisar Empleados Y Puestos.
-3. Revisar Turnos, Fichajes Y Vacaciones.
-4. Cargar O Revisar Documentos.
-5. Ajustar Configuracion Del Negocio.
+Permite mostrar:
 
-## 20. Resumen Final
-
-BrasaFlow Reune En Un Solo Lugar:
-
-- Gestion De Personal
-- Turnos
-- Fichaje
-- Vacaciones
-- Chats
-- Inventario Base
-- Pedidos
-- Recepcion De Pedidos
-- Temperaturas
-- Documentos Laborales
-- Recetas
-- Alergenos
-
-La Clave Del Producto Es Que Cada Persona Vea Solo Lo Que Necesita Y Que La App Sea Facil De Usar, Especialmente Desde El Celular.
-
-## 21. Estado De Esta Version Demo
-
-Esta Version Esta Pensada Para Presentacion Y Prueba Guiada.
-
-Permite Mostrar:
-
-- Acceso Por Perfil.
-- Vista De Empleado.
-- Vista De Encargado.
-- Vista De Empresa.
-- Gestion De Turnos.
+- Acceso por perfil.
+- Vista de empleado.
+- Vista de encargado.
+- Vista de empresa.
+- Gestion de turnos.
 - Fichaje.
-- Vacaciones Y Ausencias.
-- Chats Internos.
+- Vacaciones y ausencias.
+- Chats internos.
 - Documentos.
 - Inventario.
 - Pedidos.
@@ -662,25 +407,24 @@ Permite Mostrar:
 - Temperaturas.
 - Recetas.
 - Alergenos.
-- Configuracion Del Negocio.
-- Logo Y Marca Del Negocio.
+- Configuracion del negocio.
 
-## 22. Que Tener En Cuenta Al Presentarla
+Los datos de la demo son ficticios. No conviene cargar informacion real de empleados, documentos, clientes o empresas.
 
-- Los Datos Son De Demo.
-- No Deben Cargarse Datos Reales De Empleados O Empresas.
-- La App Muestra El Flujo Del Producto, No Una Version Final Con Login Real Y Base De Datos Productiva.
-- El Objetivo Es Que El Cliente Entienda Como Se Ordena La Operativa Interna.
+## 21. Como guarda cambios
 
-## 23. Relacion Con Las Apps Hermanas
+Cuando se usa con servidor local, la demo guarda los cambios en esta instalacion de prueba.
 
-BrasaFlow Es El Centro Operativo Del Ecosistema.
+Cuando se abre como archivo estatico, algunos cambios pueden quedar solo en el navegador.
 
-Las Apps Hermanas No Lo Reemplazan:
+## 22. Relacion con las apps hermanas
 
-- BrasaReservas Ordena Lo Que Pasa Antes Del Servicio.
-- BrasaComandas Ordenara Lo Que Pasa Durante El Servicio.
-- BrasaConnect Ordena La Relacion Con Proveedores.
+BrasaFlow es el centro operativo interno.
 
-BrasaFlow Debe Seguir Siendo La App De Gestion Interna: personal, turnos, fichaje, vacaciones, documentos, inventario, pedidos internos, temperaturas, recetas y configuracion.
+Las apps hermanas no lo reemplazan:
 
+- BrasaReservas ordena lo que pasa antes del servicio.
+- BrasaComandas ordena lo que pasa durante el servicio.
+- BrasaConnect ordena la relacion con proveedores.
+
+Mensaje simple: **BrasaFlow ordena el negocio por dentro para que el equipo trabaje con mas claridad.**

@@ -1,0 +1,4 @@
+producto,area,cantidad,unidad,proveedor,estado,nota
+Leche,Cocina,12,litros,Proveedor ejemplo,Pendiente,Pedido semanal
+Servilletas,Sala,8,paquetes,Proveedor ejemplo,Pendiente,Reponer antes del fin de semana
+Botellas agua,Sala,48,unidades,Proveedor ejemplo,Enviado,Pedido habitual

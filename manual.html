@@ -19,19 +19,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
-  .header {
-    background: var(--primary);
-    color: white;
-    padding: 0 2rem;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 12px rgba(200,111,49,0.3);
-  }
+  .header { background: var(--primary); color: white; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(200,111,49,0.3); }
   .header-left { display: flex; align-items: center; gap: 1rem; }
   .header-logo { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.25rem; }
   .header-subtitle { font-size: 0.875rem; opacity: 0.8; }
@@ -42,6 +30,7 @@
   .sidebar-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 0 1.25rem 0.75rem; font-weight: 600; }
   .sidebar a { display: block; padding: 0.45rem 1.25rem; color: var(--text-muted); text-decoration: none; font-size: 0.875rem; border-left: 3px solid transparent; }
   .sidebar a:hover { color: var(--primary); background: var(--primary-ultra); border-left-color: var(--primary); }
+  .sidebar-group { padding: 0.75rem 1.25rem 0.25rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; margin-top: 0.5rem; }
   .main { flex: 1; padding: 3rem 4rem; max-width: 860px; }
   .doc-hero { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border-radius: 16px; padding: 2.5rem; margin-bottom: 3rem; }
   .doc-hero h1 { font-family: 'Sora', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
@@ -60,15 +49,19 @@
   .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
   .card h4 { font-size: 0.9rem; font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; }
-  .card p, .card ul { font-size: 0.85rem; color: var(--text-muted); }
-  .card ul { padding-left: 1.25rem; }
+  .card ul { font-size: 0.85rem; padding-left: 1.25rem; color: var(--text-muted); }
   .card li { margin-bottom: 0.2rem; }
-  code { background: var(--code-bg); color: var(--primary); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: monospace; font-size: 0.875em; border: 1px solid var(--border); }
+  code { background: var(--code-bg); color: var(--primary); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.875em; border: 1px solid var(--border); }
   .info-box { background: var(--primary-ultra); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1rem 0; font-size: 0.9rem; }
+  .ecosystem-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  .ecosystem-table th { background: var(--primary); color: white; padding: 0.6rem 1rem; text-align: left; }
+  .ecosystem-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+  .ecosystem-table tr:last-child td { border-bottom: none; }
   @media (max-width: 900px) { .sidebar { display: none; } .main { padding: 2rem 1.5rem; } }
 </style>
 </head>
 <body>
+
 <header class="header">
   <div class="header-left">
     <span class="header-logo">BrasaFlow</span>
@@ -76,12 +69,15 @@
   </div>
   <a href="index.html" class="back-btn">← Volver a la landing</a>
 </header>
+
 <div class="layout">
   <nav class="sidebar">
     <div class="sidebar-title">Contenido</div>
-    <a href="#intro">Introducción</a>
+    <a href="#para-que-sirve">Para que sirve</a>
     <a href="#perfiles">Perfiles</a>
-    <a href="#acceso">Acceso y navegación</a>
+    <a href="#como-entrar">Como entrar</a>
+    <div class="sidebar-group">Secciones</div>
+    <a href="#resumen">Resumen</a>
     <a href="#turnos">Turnos</a>
     <a href="#fichaje">Fichaje</a>
     <a href="#vacaciones">Vacaciones</a>
@@ -90,121 +86,138 @@
     <a href="#pedidos">Pedidos</a>
     <a href="#temperaturas">Temperaturas</a>
     <a href="#documentos">Documentos</a>
-    <a href="#recetas">Recetas</a>
-    <a href="#alergenos">Alérgenos</a>
+    <a href="#recetas">Recetas y Alergenos</a>
     <a href="#empleados">Empleados</a>
-    <a href="#configuracion">Configuración</a>
-    <a href="#flujos">Flujos del día a día</a>
-    <a href="#ecosistema">Ecosistema Brasa</a>
+    <a href="#configuracion">Configuracion</a>
+    <div class="sidebar-group">Mas</div>
+    <a href="#dia-a-dia">Dia a dia</a>
+    <a href="#ecosistema">Apps hermanas</a>
   </nav>
+
   <main class="main">
+
     <div class="doc-hero">
       <h1>Manual de Uso — BrasaFlow</h1>
-      <p>Gestión interna de hostelería: turnos, fichaje, vacaciones, inventario, pedidos, documentos y más.</p>
+      <p>El centro operativo interno del negocio hostelero. Turnos, fichajes, vacaciones, inventario, documentos y mucho mas.</p>
       <div class="doc-meta">
-        <span>📅 Última actualización: 21 de mayo 2026</span>
-        <span>🍽️ Para negocios de hostelería</span>
+        <span>Actualizado: 16 de junio 2026</span>
+        <span>Para personas no tecnicas</span>
       </div>
     </div>
 
-    <section class="section" id="intro">
-      <h2>Introducción</h2>
-      <p>BrasaFlow es una app de gestión para hostelería pensada para que cada persona del negocio tenga acceso solo a lo que necesita:</p>
-      <ul>
-        <li>El <strong>empleado</strong> usa la app desde el móvil</li>
-        <li>El <strong>encargado</strong> gestiona su área</li>
-        <li>La <strong>empresa/administración</strong> controla todo el negocio</li>
-      </ul>
+    <section class="section" id="para-que-sirve">
+      <h2>Para que sirve</h2>
+      <p>BrasaFlow ayuda a ordenar la gestion interna de un negocio hostelero. Esta pensado para que cada persona vea solo lo que necesita: empleado, encargado o empresa.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h4>Equipo</h4>
+          <ul><li>Turnos</li><li>Fichajes</li><li>Vacaciones</li><li>Empleados y puestos</li></ul>
+        </div>
+        <div class="card">
+          <h4>Operativa</h4>
+          <ul><li>Inventario</li><li>Pedidos internos</li><li>Temperaturas</li><li>Chats</li></ul>
+        </div>
+        <div class="card">
+          <h4>Cocina</h4>
+          <ul><li>Recetas</li><li>Alergenos</li><li>Documentos</li><li>Configuracion</li></ul>
+        </div>
+      </div>
+      <div class="info-box">BrasaFlow es el centro interno del negocio. Responde a la pregunta: <strong>"como organizo mi negocio por dentro"</strong>.</div>
     </section>
 
     <section class="section" id="perfiles">
-      <h2>Perfiles</h2>
+      <h2>Perfiles de uso</h2>
       <div class="card-grid">
         <div class="card">
           <h4>👤 Empleado</h4>
           <ul>
             <li>Ver sus turnos</li>
-            <li>Fichar entrada/salida</li>
+            <li>Fichar entrada y salida</li>
             <li>Ver y pedir vacaciones</li>
-            <li>Consultar chats y documentos</li>
+            <li>Consultar chats</li>
+            <li>Ver sus documentos</li>
             <li>Consultar inventario de su zona</li>
           </ul>
         </div>
         <div class="card">
-          <h4>🎯 Encargado</h4>
+          <h4>🔑 Encargado</h4>
           <ul>
-            <li>Gestionar turnos de su área</li>
-            <li>Aprobar vacaciones</li>
-            <li>Inventario y pedidos de su área</li>
-            <li>Temperaturas y documentos</li>
-            <li>Recetas y alérgenos</li>
+            <li>Gestionar turnos del area</li>
+            <li>Revisar vacaciones del equipo</li>
+            <li>Consultar inventario</li>
+            <li>Preparar pedidos</li>
+            <li>Cargar temperaturas</li>
+            <li>Revisar recetas y alergenos</li>
           </ul>
         </div>
         <div class="card">
-          <h4>🏢 Empresa / Admin</h4>
+          <h4>🏢 Empresa</h4>
           <ul>
-            <li>Panel global de todo el negocio</li>
-            <li>Turnos, fichajes, vacaciones globales</li>
-            <li>Configurar marca y negocio</li>
-            <li>Gestionar empleados y puestos</li>
+            <li>Ver todo el negocio</li>
+            <li>Gestionar empleados</li>
+            <li>Cambiar turnos y fichajes</li>
+            <li>Cargar documentos</li>
+            <li>Configurar la marca</li>
+            <li>Revisar todas las areas</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <section class="section" id="acceso">
-      <h2>Acceso y navegación</h2>
+    <section class="section" id="como-entrar">
+      <h2>Como entrar</h2>
       <ol class="steps">
         <li>Abrir BrasaFlow</li>
-        <li>Escribir email y contraseña</li>
+        <li>Escribir email y contrasena</li>
         <li>Pulsar <code>Entrar</code></li>
-        <li>La app abre la vista correspondiente a ese usuario</li>
+        <li>La app abre la vista que corresponde a ese usuario</li>
       </ol>
-      <p>El menú lateral permite cambiar entre secciones: Resumen, Turnos, Fichaje, Vacaciones, Chats, Inventario, Pedidos, Temperaturas, Alérgenos, Recetas, Documentos, Empleados y Configuración.</p>
+      <div class="info-box">En la demo el acceso se valida desde el servidor local. El usuario simplemente entra con el perfil asignado, sin explicaciones tecnicas.</div>
+    </section>
+
+    <section class="section" id="resumen">
+      <h2>Resumen</h2>
+      <p>La pantalla <code>Resumen</code> muestra lo mas importante del dia. Usala como primera parada al entrar.</p>
+      <p>Segun el perfil puede mostrar: proximo turno, estado del fichaje, vacaciones disponibles, informacion del perfil y pendientes del area.</p>
     </section>
 
     <section class="section" id="turnos">
       <h2>Turnos</h2>
+      <h3>Ver turnos</h3>
+      <ol class="steps">
+        <li>Entrar en <code>Turnos</code></li>
+        <li>Revisar la semana</li>
+        <li>Ver dia, hora y nota del turno</li>
+      </ol>
       <h3>Crear un turno</h3>
+      <p>Lo hace un encargado o la empresa.</p>
       <ol class="steps">
-        <li>Entrar en <code>Turnos</code></li>
-        <li>Pulsar <code>Crear Turno</code></li>
-        <li>Elegir rango o semana, área y empleado</li>
-        <li>Definir hora de entrada y salida</li>
-        <li>Marcar uno o varios días</li>
-        <li>Escribir nota si hace falta</li>
-        <li>Pulsar <code>Guardar Turno</code></li>
+        <li>Pulsar <code>Crear turno</code></li>
+        <li>Elegir semana, area y empleado</li>
+        <li>Elegir hora de entrada y salida</li>
+        <li>Marcar los dias</li>
+        <li>Agregar nota si hace falta</li>
+        <li>Pulsar <code>Guardar turno</code></li>
       </ol>
-
-      <h3>Cargar semana completa de un empleado</h3>
-      <ol class="steps">
-        <li>Entrar en <code>Turnos</code></li>
-        <li>Buscar el bloque <code>Cargar Semana Completa</code></li>
-        <li>Elegir empleado y rango</li>
-        <li>Activar los días que trabaja y definir horarios</li>
-        <li>Guardar semana del empleado</li>
-      </ol>
-
-      <h3>Plantillas de turnos</h3>
-      <p>Puedes guardar una semana como plantilla y luego aplicarla a cualquier empleado en cualquier semana. También puedes duplicar una semana directamente a la siguiente.</p>
+      <h3>Plantillas</h3>
+      <p>Las plantillas sirven para no cargar la misma semana una y otra vez. Puedes guardar una semana como plantilla, aplicarla a otro empleado o duplicar una semana.</p>
     </section>
 
     <section class="section" id="fichaje">
       <h2>Fichaje</h2>
-      <div class="card-grid">
-        <div class="card">
-          <h4>Fichar entrada</h4>
-          <p>Ir a Fichaje → Pulsar <code>Fichar Entrada</code>. La app valida la ubicación si el negocio lo tiene configurado.</p>
-        </div>
-        <div class="card">
-          <h4>Fichar salida</h4>
-          <p>Ir a Fichaje → Pulsar <code>Fichar Salida</code>. La app cierra la jornada y calcula las horas.</p>
-        </div>
-        <div class="card">
-          <h4>Ver horas</h4>
-          <p>Horas de hoy, de la semana y del mes. La empresa puede revisar fichajes de todos los empleados.</p>
-        </div>
-      </div>
+      <h3>Fichar entrada</h3>
+      <ol class="steps">
+        <li>Entrar en <code>Fichaje</code></li>
+        <li>Pulsar <code>Fichar entrada</code></li>
+        <li>La app registra el inicio de la jornada</li>
+      </ol>
+      <h3>Fichar salida</h3>
+      <ol class="steps">
+        <li>Entrar en <code>Fichaje</code></li>
+        <li>Pulsar <code>Fichar salida</code></li>
+        <li>La app cierra la jornada y calcula las horas</li>
+      </ol>
+      <p>En la misma pantalla puedes revisar horas de hoy, de la semana, del mes y ultimos fichajes.</p>
     </section>
 
     <section class="section" id="vacaciones">
@@ -212,170 +225,157 @@
       <h3>Pedir vacaciones</h3>
       <ol class="steps">
         <li>Entrar en <code>Vacaciones</code></li>
-        <li>Elegir tipo: Vacaciones o Ausencia</li>
+        <li>Elegir el tipo</li>
         <li>Elegir fecha de inicio y fin</li>
-        <li>Guardar</li>
+        <li>Guardar la solicitud</li>
       </ol>
-
-      <h3>Aprobar o rechazar (encargado/empresa)</h3>
+      <h3>Aprobar o rechazar</h3>
       <ol class="steps">
         <li>Entrar en <code>Vacaciones</code></li>
-        <li>Buscar la solicitud en la tabla</li>
+        <li>Buscar la solicitud</li>
         <li>Pulsar <code>Aprobar</code> o <code>Rechazar</code></li>
       </ol>
-      <div class="info-box">Al aprobar, la app actualiza el estado, ajusta el saldo si son vacaciones y tiene en cuenta la ausencia en la planificación de turnos.</div>
+      <div class="info-box">Cuando se aprueban vacaciones, la app actualiza el saldo y lo tiene en cuenta para planificar turnos.</div>
     </section>
 
     <section class="section" id="chats">
-      <h2>Chats internos</h2>
-      <p>La sección Chats gestiona la comunicación interna del negocio. Puede haber: Chat General, Chat de Cocina, Chat de Sala.</p>
-      <p>Los mensajes urgentes quedan más resaltados para llamar la atención del equipo.</p>
+      <h2>Chats</h2>
+      <p>Los chats sirven para comunicacion interna. Puede haber chat general, chat de cocina y chat de sala. Los mensajes urgentes quedan resaltados para que el equipo los vea rapido.</p>
     </section>
 
     <section class="section" id="inventario">
       <h2>Inventario</h2>
-      <p>Base de productos por zona (cocina, sala). Sirve para saber qué productos suele tener cada área y pasar necesidades a Pedidos.</p>
+      <p>Base de productos por area. No es un control exacto de stock en tiempo real. Sirve para saber que productos se usan y preparar pedidos internos.</p>
+      <h3>Agregar un producto</h3>
       <ol class="steps">
         <li>Entrar en <code>Inventario</code></li>
-        <li>Pulsar <code>Agregar Producto</code></li>
-        <li>Escribir nombre, elegir área y cómo se suele pedir</li>
-        <li>Guardar Producto</li>
+        <li>Pulsar <code>Agregar producto</code></li>
+        <li>Escribir nombre y elegir area</li>
+        <li>Indicar como se suele pedir</li>
+        <li>Guardar</li>
       </ol>
-      <div class="info-box">Desde Inventario puedes marcar un producto para pedirlo y la app te lleva directamente a la sección Pedidos.</div>
+      <p>Para pasar un producto a pedido, buscarlo y pulsar <code>Pedir</code>. La app lleva directamente a <code>Pedidos</code>.</p>
     </section>
 
     <section class="section" id="pedidos">
       <h2>Pedidos</h2>
-      <p>Sigue lo que marcaste desde Inventario y registra la recepción.</p>
-      <div class="card-grid">
-        <div class="card"><h4>Pedido actual</h4><p>Lo que todavía estás armando o revisando.</p></div>
-        <div class="card"><h4>Recepción del pedido</h4><p>Lo que ya quedó cerrado y está listo para recibirse.</p></div>
-        <div class="card"><h4>Historial reciente</h4><p>Lo que ya fue recibido o resuelto.</p></div>
-      </div>
-      <h3>Registrar recepción</h3>
+      <p>Ayuda a preparar y revisar pedidos internos. Tres partes: <strong>Pedido actual</strong> (armando), <strong>Recepcion</strong> (lo que llega) e <strong>Historial reciente</strong>.</p>
+      <h3>Registrar recepcion</h3>
       <ol class="steps">
-        <li>Entrar en <code>Pedidos</code> → Bloque <code>Recepción del Pedido</code></li>
-        <li>Escribir cuánto se recibió</li>
-        <li>Agregar observación si faltó algo o vino mal</li>
-        <li>Pulsar <code>Guardar Recepción</code></li>
+        <li>Ir a <code>Recepcion del pedido</code></li>
+        <li>Escribir cuanto llego</li>
+        <li>Agregar observacion si falto algo o vino mal</li>
+        <li>Guardar</li>
       </ol>
     </section>
 
     <section class="section" id="temperaturas">
       <h2>Temperaturas</h2>
-      <p>Registro de controles de equipos (cámaras, neveras, hornos) por zona.</p>
-      <h3>Cargar temperatura</h3>
+      <p>Registra controles de equipos: neveras, camaras, congeladores y equipos de cocina.</p>
       <ol class="steps">
-        <li>Entrar en <code>Temperaturas</code></li>
-        <li>Pulsar <code>Cargar Temperatura</code></li>
-        <li>Elegir el equipo</li>
-        <li>Escribir la temperatura y observación si hace falta</li>
-        <li>Guardar Temperatura</li>
+        <li>Pulsar <code>Cargar temperatura</code></li>
+        <li>Elegir equipo</li>
+        <li>Escribir temperatura</li>
+        <li>Agregar observacion si hace falta</li>
+        <li>Guardar</li>
       </ol>
     </section>
 
     <section class="section" id="documentos">
-      <h2>Documentos laborales</h2>
-      <p>Centraliza nóminas, contratos y archivos internos. El empleado solo ve sus propios documentos.</p>
-      <h3>Cargar documento</h3>
+      <h2>Documentos</h2>
+      <p>Centraliza archivos internos: contratos, nominas, certificados, comunicados. El empleado solo ve sus propios documentos.</p>
+      <h3>Cargar un documento</h3>
       <ol class="steps">
-        <li>Entrar en <code>Documentos</code></li>
-        <li>Pulsar <code>Cargar Documento</code></li>
-        <li>Elegir tipo, empleado, título y periodo</li>
-        <li>Definir visibilidad y escribir un resumen</li>
-        <li>Guardar Documento</li>
+        <li>Pulsar <code>Cargar documento</code></li>
+        <li>Elegir tipo y empleado</li>
+        <li>Escribir titulo y periodo</li>
+        <li>Definir visibilidad</li>
+        <li>Guardar</li>
       </ol>
     </section>
 
     <section class="section" id="recetas">
-      <h2>Recetas</h2>
-      <p>Base de cocina con ingredientes, alérgenos y notas para el equipo de sala.</p>
-      <h3>Crear receta</h3>
-      <ol class="steps">
-        <li>Entrar en <code>Recetas</code></li>
-        <li>Pulsar <code>Agregar Receta</code></li>
-        <li>Nombre, rendimiento, ingredientes, alérgenos y nota de sala</li>
-        <li>Guardar Receta</li>
-      </ol>
-    </section>
-
-    <section class="section" id="alergenos">
-      <h2>Alérgenos</h2>
-      <p>Vista de base interna que muestra qué recetas ya tienen los alérgenos cargados y cuáles faltan completar. Se alimenta desde la sección Recetas.</p>
-      <div class="info-box">Filtra por alérgeno para ver todas las recetas relacionadas con ese ingrediente.</div>
+      <h2>Recetas y Alergenos</h2>
+      <p><code>Recetas</code> guarda informacion interna de cocina: ingredientes, rendimiento, alergenos, notas internas y nota corta para sala.</p>
+      <p><code>Alergenos</code> muestra una vista rapida de que recetas tienen alergenos cargados, que fichas faltan y que platos contienen un alergeno concreto. La informacion se alimenta desde <code>Recetas</code>.</p>
     </section>
 
     <section class="section" id="empleados">
       <h2>Empleados</h2>
       <h3>Dar de alta un empleado</h3>
       <ol class="steps">
-        <li>Entrar en <code>Empleados</code></li>
-        <li>Pulsar <code>Alta de Empleado</code></li>
-        <li>Nombre, email, rol y fecha de alta</li>
-        <li>Horas semanales y días de vacaciones</li>
-        <li>Guardar Empleado</li>
+        <li>Pulsar <code>Alta de empleado</code></li>
+        <li>Escribir nombre y email</li>
+        <li>Elegir rol</li>
+        <li>Completar fecha de alta, horas y vacaciones</li>
+        <li>Guardar</li>
       </ol>
-      <h3>Crear puesto</h3>
+      <h3>Crear un puesto</h3>
       <ol class="steps">
-        <li>Pulsar <code>Nuevo Puesto</code></li>
-        <li>Escribir nombre, área y marcar permisos</li>
-        <li>Guardar Puesto</li>
+        <li>Pulsar <code>Nuevo puesto</code></li>
+        <li>Escribir nombre del puesto y elegir area</li>
+        <li>Marcar permisos</li>
+        <li>Guardar</li>
       </ol>
     </section>
 
     <section class="section" id="configuracion">
-      <h2>Configuración</h2>
-      <p>Solo accesible para el perfil Empresa. Permite personalizar la app del negocio.</p>
-      <div class="card-grid">
-        <div class="card"><h4>Marca del negocio</h4><ul><li>Nombre y ciudad</li><li>Slogan y logo</li><li>Colores corporativos</li></ul></div>
-        <div class="card"><h4>Reglas de RRHH</h4><ul><li>Días de vacaciones anuales</li><li>Modo de acumulación</li><li>Retención de chats</li></ul></div>
-        <div class="card"><h4>Fichaje</h4><ul><li>Radio de fichaje</li><li>Coordenadas del local</li><li>Regla de ubicación</li></ul></div>
-      </div>
+      <h2>Configuracion y exportar</h2>
+      <p>La seccion <code>Configuracion</code> es para la empresa. Permite ajustar nombre, ciudad, slogan, logo, colores, dias de vacaciones y reglas de fichaje.</p>
+      <p>Algunas secciones permiten exportar informacion (turnos, fichajes, temperaturas, documentos). Pulsar <code>Exportar PDF</code> y guardar desde el navegador.</p>
     </section>
 
-    <section class="section" id="flujos">
-      <h2>Flujos del día a día</h2>
+    <section class="section" id="dia-a-dia">
+      <h2>Uso recomendado en el dia a dia</h2>
       <div class="card-grid">
         <div class="card">
-          <h4>Flujo del empleado</h4>
-          <ol style="padding-left:1.25rem; font-size:0.85rem; color:var(--text-muted);">
+          <h4>👤 Empleado</h4>
+          <ul>
+            <li>Entrar desde el movil</li>
             <li>Revisar Resumen</li>
-            <li>Ver Turnos</li>
-            <li>Fichar entrada/salida</li>
-            <li>Consultar Chats</li>
-            <li>Revisar Documentos</li>
-          </ol>
+            <li>Ver turnos</li>
+            <li>Fichar entrada o salida</li>
+            <li>Consultar chats y documentos</li>
+            <li>Pedir vacaciones si hace falta</li>
+          </ul>
         </div>
         <div class="card">
-          <h4>Flujo del encargado</h4>
-          <ol style="padding-left:1.25rem; font-size:0.85rem; color:var(--text-muted);">
-            <li>Revisar equipo del área</li>
-            <li>Organizar Turnos</li>
+          <h4>🔑 Encargado</h4>
+          <ul>
+            <li>Revisar su area</li>
+            <li>Organizar turnos</li>
             <li>Revisar vacaciones pendientes</li>
-            <li>Inventario y pedidos</li>
+            <li>Consultar inventario</li>
+            <li>Preparar pedidos</li>
             <li>Cargar temperaturas</li>
-          </ol>
+          </ul>
         </div>
         <div class="card">
-          <h4>Flujo de la empresa</h4>
-          <ol style="padding-left:1.25rem; font-size:0.85rem; color:var(--text-muted);">
-            <li>Revisar empleados y puestos</li>
-            <li>Turnos, fichajes y vacaciones</li>
+          <h4>🏢 Empresa</h4>
+          <ul>
+            <li>Revisar el panel general</li>
+            <li>Gestionar empleados y puestos</li>
+            <li>Revisar turnos y fichajes</li>
             <li>Cargar documentos</li>
-            <li>Ajustar configuración</li>
-          </ol>
+            <li>Ajustar configuracion</li>
+          </ul>
         </div>
       </div>
+      <div class="info-box">Los datos de la demo son ficticios. No conviene cargar informacion real de empleados, documentos o empresas.</div>
     </section>
 
     <section class="section" id="ecosistema">
-      <h2>Ecosistema Brasa</h2>
-      <p>BrasaFlow es el centro operativo. Las apps hermanas no lo reemplazan, cada una tiene su momento:</p>
-      <div class="card-grid">
-        <div class="card"><h4>BrasaReservas</h4><p>Ordena lo que pasa <em>antes</em> del servicio: reservas, sala y lista de espera.</p></div>
-        <div class="card"><h4>BrasaComandas</h4><p>Ordena lo que pasa <em>durante</em> el servicio: comandas, cocina, barra y cuenta.</p></div>
-        <div class="card"><h4>BrasaConnect</h4><p>Ordena la relación con <em>proveedores</em>: catálogos, pedidos y albaranes.</p></div>
-      </div>
+      <h2>Relacion con las apps hermanas</h2>
+      <p>BrasaFlow es el centro operativo interno. Las apps hermanas no lo reemplazan, cada una tiene su momento:</p>
+      <table class="ecosystem-table">
+        <thead><tr><th>App</th><th>Para que sirve</th><th>Momento</th></tr></thead>
+        <tbody>
+          <tr><td><strong>BrasaFlow</strong></td><td>Gestion interna del negocio</td><td>Antes, durante y despues</td></tr>
+          <tr><td><strong>BrasaReservas</strong></td><td>Reservas, sala y clientes</td><td>Antes del servicio</td></tr>
+          <tr><td><strong>BrasaComandas</strong></td><td>Mesas, comandas, cocina y barra</td><td>Durante el servicio</td></tr>
+          <tr><td><strong>BrasaConnect</strong></td><td>Proveedores, pedidos y albaranes</td><td>Compras y recepcion</td></tr>
+        </tbody>
+      </table>
     </section>
 
   </main>

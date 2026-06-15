@@ -6,149 +6,232 @@
 <title>Manual de Uso — BrasaConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --primary:#c86f31; --primary-light:#d8843f; --primary-ultra:#fdf3eb; --bg:#f5efe4; --text:#2f2419; --text-muted:#8a6a50; --border:#e8d5c0; --card:#ffffff; --code-bg:#fef6ef; }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
-  .header{background:var(--primary);color:white;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(200,111,49,.3);}
-  .header-left{display:flex;align-items:center;gap:1rem;}
-  .header-logo{font-family:'Sora',sans-serif;font-weight:700;font-size:1.25rem;}
-  .header-subtitle{font-size:.875rem;opacity:.8;}
-  .back-btn{background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.3);padding:.4rem 1rem;border-radius:6px;text-decoration:none;font-size:.85rem;}
-  .back-btn:hover{background:rgba(255,255,255,.25);}
-  .layout{display:flex;min-height:calc(100vh - 64px);}
-  .sidebar{width:240px;flex-shrink:0;background:var(--card);border-right:1px solid var(--border);padding:1.5rem 0;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;}
-  .sidebar-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);padding:0 1.25rem .75rem;font-weight:600;}
-  .sidebar a{display:block;padding:.45rem 1.25rem;color:var(--text-muted);text-decoration:none;font-size:.875rem;border-left:3px solid transparent;}
-  .sidebar a:hover{color:var(--primary);background:var(--primary-ultra);border-left-color:var(--primary);}
-  .main{flex:1;padding:3rem 4rem;max-width:860px;}
-  .doc-hero{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;border-radius:16px;padding:2.5rem;margin-bottom:3rem;}
-  .doc-hero h1{font-family:'Sora',sans-serif;font-size:2rem;margin-bottom:.5rem;}
-  .doc-hero p{opacity:.85;}
-  .doc-meta{display:flex;gap:1.5rem;margin-top:1.25rem;font-size:.8rem;opacity:.75;}
-  .section{margin-bottom:3rem;scroll-margin-top:80px;}
-  .section h2{font-family:'Sora',sans-serif;font-size:1.4rem;color:var(--primary);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--border);}
-  .section h3{font-size:1.05rem;font-weight:600;margin:1.5rem 0 .5rem;}
-  .section p{margin-bottom:.75rem;color:#4a3520;}
-  .section ul,.section ol{padding-left:1.5rem;margin-bottom:1rem;color:#4a3520;}
-  .section li{margin-bottom:.3rem;}
-  .steps{counter-reset:step;list-style:none;padding:0;margin:1rem 0;}
-  .steps li{counter-increment:step;display:flex;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--border);}
-  .steps li:last-child{border-bottom:none;}
-  .steps li::before{content:counter(step);background:var(--primary);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:2px;}
-  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1rem 0;}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;}
-  .card h4{font-size:.9rem;font-weight:600;color:var(--primary);margin-bottom:.5rem;}
-  .card ul{font-size:.85rem;padding-left:1.25rem;color:var(--text-muted);}
-  .card li{margin-bottom:.2rem;}
-  code{background:var(--code-bg);color:var(--primary);padding:.15rem .4rem;border-radius:4px;font-family:monospace;font-size:.875em;border:1px solid var(--border);}
-  .info-box{background:var(--primary-ultra);border-left:4px solid var(--primary);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin:1rem 0;font-size:.9rem;}
-  @media(max-width:900px){.sidebar{display:none;}.main{padding:2rem 1.5rem;}}
+  :root {
+    --primary: #7c5c2a;
+    --primary-light: #956e38;
+    --primary-ultra: #faf3e8;
+    --bg: #f5efe4;
+    --text: #2f2419;
+    --text-muted: #8a6a50;
+    --border: #e8d5c0;
+    --card: #ffffff;
+    --code-bg: #fef6ef;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .header { background: var(--primary); color: white; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(124,92,42,0.3); }
+  .header-left { display: flex; align-items: center; gap: 1rem; }
+  .header-logo { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.25rem; }
+  .header-subtitle { font-size: 0.875rem; opacity: 0.8; }
+  .back-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.4rem 1rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+  .back-btn:hover { background: rgba(255,255,255,0.25); }
+  .layout { display: flex; min-height: calc(100vh - 64px); }
+  .sidebar { width: 260px; flex-shrink: 0; background: var(--card); border-right: 1px solid var(--border); padding: 1.5rem 0; position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto; }
+  .sidebar-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 0 1.25rem 0.75rem; font-weight: 600; }
+  .sidebar a { display: block; padding: 0.45rem 1.25rem; color: var(--text-muted); text-decoration: none; font-size: 0.875rem; border-left: 3px solid transparent; }
+  .sidebar a:hover { color: var(--primary); background: var(--primary-ultra); border-left-color: var(--primary); }
+  .main { flex: 1; padding: 3rem 4rem; max-width: 860px; }
+  .doc-hero { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border-radius: 16px; padding: 2.5rem; margin-bottom: 3rem; }
+  .doc-hero h1 { font-family: 'Sora', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
+  .doc-hero p { opacity: 0.85; }
+  .doc-meta { display: flex; gap: 1.5rem; margin-top: 1.25rem; font-size: 0.8rem; opacity: 0.75; }
+  .section { margin-bottom: 3rem; scroll-margin-top: 80px; }
+  .section h2 { font-family: 'Sora', sans-serif; font-size: 1.4rem; color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  .section h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+  .section p { margin-bottom: 0.75rem; color: #4a3520; }
+  .section ul, .section ol { padding-left: 1.5rem; margin-bottom: 1rem; color: #4a3520; }
+  .section li { margin-bottom: 0.3rem; }
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 1rem 0; }
+  .steps li { counter-increment: step; display: flex; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before { content: counter(step); background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+  .card h4 { font-size: 0.9rem; font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; }
+  .card ul { font-size: 0.85rem; padding-left: 1.25rem; color: var(--text-muted); }
+  .card li { margin-bottom: 0.2rem; }
+  code { background: var(--code-bg); color: var(--primary); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.875em; border: 1px solid var(--border); }
+  .info-box { background: var(--primary-ultra); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1rem 0; font-size: 0.9rem; }
+  @media (max-width: 900px) { .sidebar { display: none; } .main { padding: 2rem 1.5rem; } }
 </style>
 </head>
 <body>
+
 <header class="header">
   <div class="header-left">
     <span class="header-logo">BrasaConnect</span>
     <span class="header-subtitle">Manual de uso</span>
   </div>
-  <a href="https://brasaflow-gestion-hostelera.vercel.app" class="back-btn">← Ecosistema Brasa</a>
+  <a href="index.html" class="back-btn">← Volver a la landing</a>
 </header>
+
 <div class="layout">
   <nav class="sidebar">
     <div class="sidebar-title">Contenido</div>
-    <a href="#que-es">¿Qué es BrasaConnect?</a>
-    <a href="#acceso">Acceso</a>
-    <a href="#vistas">Tres vistas</a>
-    <a href="#negocio">Vista Negocio</a>
-    <a href="#proveedor">Vista Proveedor</a>
-    <a href="#red">Vista Red</a>
-    <a href="#pedidos">Pedidos y albaranes</a>
-    <a href="#ecosistema">Ecosistema Brasa</a>
+    <a href="#para-que-sirve">Para que sirve</a>
+    <a href="#como-entrar">Como entrar</a>
+    <a href="#vistas">Vistas de demo</a>
+    <a href="#vista-negocio">Vista Negocio</a>
+    <a href="#vista-proveedor">Vista Proveedor</a>
+    <a href="#vista-red">Vista Red</a>
+    <a href="#albaranes">Albaranes</a>
+    <a href="#historial">Historial</a>
+    <a href="#flujo">Flujo recomendado</a>
+    <a href="#ecosistema">Ecosistema</a>
   </nav>
+
   <main class="main">
+
     <div class="doc-hero">
       <h1>Manual de Uso — BrasaConnect</h1>
-      <p>Conecta tu negocio hostelero con proveedores: catálogos, pedidos y albaranes en un solo lugar.</p>
-      <div class="doc-meta"><span>📅 Última actualización: 21 de mayo 2026</span></div>
+      <p>Ordena la relacion entre el negocio y sus proveedores: catalogo, pedido, albaran, recepcion e historial compartido.</p>
+      <div class="doc-meta">
+        <span>Actualizado: 16 de junio 2026</span>
+        <span>Para personas no tecnicas</span>
+      </div>
     </div>
 
-    <section class="section" id="que-es">
-      <h2>¿Qué es BrasaConnect?</h2>
-      <p>BrasaConnect es la app del ecosistema Brasa para conectar negocios hosteleros con sus proveedores:</p>
-      <div class="card-grid">
-        <div class="card"><h4>🏪 El negocio</h4><ul><li>Ve proveedores conectados</li><li>Consulta catálogos</li><li>Crea pedidos</li><li>Revisa albaranes</li></ul></div>
-        <div class="card"><h4>🚚 El proveedor</h4><ul><li>Ve pedidos recibidos</li><li>Actualiza estados</li><li>Gestiona su catálogo</li><li>Mantiene su perfil</li></ul></div>
-        <div class="card"><h4>🔗 Ambos</h4><ul><li>Comparten historial ordenado</li><li>Registran incidencias</li><li>Confirman recepciones</li></ul></div>
-      </div>
-      <div class="info-box">BrasaConnect no reemplaza a BrasaFlow. Ordena la relación entre el negocio y sus proveedores.</div>
+    <section class="section" id="para-que-sirve">
+      <h2>Para que sirve</h2>
+      <p>BrasaConnect ayuda a ordenar la relacion entre un negocio hostelero y sus proveedores. Sirve para que:</p>
+      <ul>
+        <li>El negocio vea proveedores, catalogos, pedidos y albaranes</li>
+        <li>El proveedor vea pedidos recibidos, estados, catalogo y perfil</li>
+        <li>Ambos tengan un historial claro de lo que paso</li>
+      </ul>
+      <div class="info-box"><strong>BrasaConnect ordena compras y proveedores.</strong> Responde a: "como organizo mis compras y proveedores".</div>
     </section>
 
-    <section class="section" id="acceso">
-      <h2>Acceso</h2>
-      <p>Abrir la app en el navegador. El selector superior permite cambiar el punto de vista entre Negocio, Proveedor y Red.</p>
+    <section class="section" id="como-entrar">
+      <h2>Como entrar</h2>
+      <p>Abrir <code>index.html</code> o, si se usa servidor local: <code>http://127.0.0.1:4280/index.html</code></p>
     </section>
 
     <section class="section" id="vistas">
-      <h2>Tres vistas de demo</h2>
+      <h2>Vistas de demo</h2>
+      <p>La app tiene tres vistas que se cambian desde el selector superior:</p>
       <div class="card-grid">
-        <div class="card"><h4>Negocio</h4><p>Perspectiva del restaurante o bar que gestiona sus compras y proveedores.</p></div>
-        <div class="card"><h4>Proveedor</h4><p>Perspectiva del distribuidor que recibe pedidos y gestiona su catálogo.</p></div>
-        <div class="card"><h4>Red</h4><p>Vista global de la relación entre negocios y proveedores conectados.</p></div>
+        <div class="card">
+          <h4>🏪 Negocio</h4>
+          <ul>
+            <li>Lo que ve el restaurante, bar o cafeteria</li>
+            <li>Proveedores, catalogos, pedidos, albaranes</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>🚚 Proveedor</h4>
+          <ul>
+            <li>Lo que ve la empresa que vende productos</li>
+            <li>Pedidos, estados, catalogo, perfil</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>🌐 Red</h4>
+          <ul>
+            <li>Vista de descubrimiento</li>
+            <li>Proveedores disponibles y conexiones</li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="negocio">
+    <section class="section" id="vista-negocio">
       <h2>Vista Negocio</h2>
-      <p>Representa al restaurante, bar, cafetería o negocio hostelero. Puede: ver resumen de actividad, ver proveedores conectados, consultar catálogos, crear pedidos, revisar estados, ver albaranes, marcar recepciones y registrar incidencias.</p>
+      <p>Representa al restaurante, bar, cafeteria o negocio hostelero. Permite ver resumen, proveedores conectados, catalogos, pedidos, albaranes e incidencias.</p>
 
-      <h3>Crear un pedido desde catálogo</h3>
+      <h3>Crear un pedido</h3>
       <ol class="steps">
-        <li>Entrar en vista <code>Negocio</code></li>
-        <li>Ir a <code>Catálogo</code></li>
-        <li>Elegir un producto y crear pedido demo</li>
+        <li>Ir a <code>Catalogo</code></li>
+        <li>Elegir un producto</li>
+        <li>Pulsar la accion para crear pedido de demo</li>
         <li>Ir a <code>Pedidos</code></li>
-        <li>Abrir el pedido generado y revisar artículos, total, estado e historial</li>
+        <li>Abrir el pedido generado y revisar articulos, total, estado e historial</li>
       </ol>
 
-      <h3>Revisar un pedido</h3>
-      <ol class="steps">
-        <li>Entrar en <code>Pedidos</code></li>
-        <li>Seleccionar un pedido</li>
-        <li>Revisar: proveedor, fecha de entrega, estado, artículos, total, timeline y albarán asociado</li>
-      </ol>
-    </section>
-
-    <section class="section" id="proveedor">
-      <h2>Vista Proveedor</h2>
-      <p>Representa al distribuidor o suministrador. Puede: ver pedidos recibidos, actualizar el estado de cada pedido, gestionar su catálogo de productos y mantener su perfil de empresa.</p>
-    </section>
-
-    <section class="section" id="red">
-      <h2>Vista Red</h2>
-      <p>Vista global que muestra las conexiones entre negocios y proveedores, el historial compartido y el estado general de las relaciones comerciales.</p>
-    </section>
-
-    <section class="section" id="pedidos">
-      <h2>Pedidos y albaranes</h2>
-      <h3>Marcar recepción o incidencia</h3>
+      <h3>Marcar recepcion o incidencia</h3>
       <ol class="steps">
         <li>Entrar en <code>Pedidos</code> o <code>Albaranes</code></li>
-        <li>Buscar el pedido</li>
-        <li>Marcar lo recibido o registrar la incidencia con observaciones</li>
-        <li>Guardar recepción</li>
+        <li>Revisar el pedido</li>
+        <li>Marcar recepcion si todo esta correcto</li>
+        <li>Marcar incidencia si hay una diferencia</li>
       </ol>
-      <div class="info-box">Puedes registrar qué llegó bien, qué faltó y qué vino en mal estado para tener un historial claro con cada proveedor.</div>
+    </section>
+
+    <section class="section" id="vista-proveedor">
+      <h2>Vista Proveedor</h2>
+      <p>Representa a una empresa que vende producto a hosteleria. Permite ver pedidos recibidos, avanzar estados, registrar albaranes y mantener catalogo actualizado.</p>
+
+      <h3>Avanzar un pedido</h3>
+      <ol class="steps">
+        <li>Cambiar a vista <code>Proveedor</code></li>
+        <li>Entrar en <code>Pedidos</code> y seleccionar uno</li>
+        <li>Avanzar estado</li>
+        <li>Revisar el timeline</li>
+      </ol>
+
+      <h3>Registrar un albaran</h3>
+      <ol class="steps">
+        <li>Abrir un pedido en vista Proveedor</li>
+        <li>Usar la accion de registrar albaran</li>
+        <li>Revisar que el pedido queda con albaran asociado</li>
+      </ol>
+
+      <h3>Agregar producto al catalogo</h3>
+      <ol class="steps">
+        <li>Ir a <code>Catalogo</code></li>
+        <li>Completar datos del producto</li>
+        <li>Guardar y revisar que aparece en el catalogo</li>
+      </ol>
+    </section>
+
+    <section class="section" id="vista-red">
+      <h2>Vista Red</h2>
+      <p>Representa el lado marketplace. Permite ver proveedores disponibles, revisar categoria, zona de reparto y condiciones, y solicitar conexion con nuevos proveedores.</p>
+
+      <h3>Solicitar conexion</h3>
+      <ol class="steps">
+        <li>Cambiar a vista <code>Red</code></li>
+        <li>Elegir un proveedor que no este conectado</li>
+        <li>Pulsar la accion de solicitar conexion</li>
+        <li>Volver a vista <code>Negocio</code> y revisar proveedores</li>
+      </ol>
+    </section>
+
+    <section class="section" id="albaranes">
+      <h2>Albaranes</h2>
+      <p>Los albaranes relacionan el pedido con la entrega. En la demo se puede ver: numero de albaran, pedido asociado, proveedor, estado e incidencia si existe.</p>
+      <div class="info-box">En producto real esta parte podria incluir archivos PDF, fotos, firma, lectura con IA y comparacion contra pedido.</div>
+    </section>
+
+    <section class="section" id="historial">
+      <h2>Historial</h2>
+      <p>El historial permite ver que paso con un pedido: cuando fue creado, cuando el proveedor confirmo, cuando se preparo, cuando llego el albaran y cuando se reviso la recepcion. La idea es que el pedido no quede perdido en conversaciones sueltas.</p>
+      <div class="info-box">Los datos de la demo son ficticios. No conviene usar datos reales de empresas, clientes o proveedores en una prueba.</div>
+    </section>
+
+    <section class="section" id="flujo">
+      <h2>Flujo recomendado para probar</h2>
+      <ol class="steps">
+        <li>Entrar en <code>Red</code> y ver proveedores disponibles</li>
+        <li>Solicitar conexion con uno</li>
+        <li>Cambiar a <code>Negocio</code> y entrar en <code>Catalogo</code></li>
+        <li>Crear pedido de demo</li>
+        <li>Entrar en <code>Pedidos</code> y abrir el detalle</li>
+        <li>Cambiar a <code>Proveedor</code> y avanzar estado</li>
+        <li>Registrar albaran</li>
+        <li>Volver a <code>Negocio</code> y revisar historial e incidencia</li>
+      </ol>
     </section>
 
     <section class="section" id="ecosistema">
-      <h2>Ecosistema Brasa</h2>
-      <p>BrasaConnect trabaja junto a las otras apps del ecosistema sin reemplazarlas:</p>
-      <div class="card-grid">
-        <div class="card"><h4>BrasaFlow</h4><p>Centro operativo interno: turnos, fichaje, vacaciones y personal.</p></div>
-        <div class="card"><h4>BrasaReservas</h4><p>Gestión de reservas y sala antes del servicio.</p></div>
-        <div class="card"><h4>BrasaComandas</h4><p>Comandas y cocina durante el servicio.</p></div>
-      </div>
+      <h2>Relacion con el ecosistema</h2>
+      <ul>
+        <li><strong>BrasaFlow</strong> — puede usar datos de BrasaConnect para mejorar inventario interno</li>
+        <li><strong>BrasaComandas</strong> — sus consumos reales pueden ayudar a prever compras</li>
+        <li><strong>BrasaReservas</strong> y <strong>BrasaComandas</strong> — generan la demanda que BrasaConnect ayuda a abastecer</li>
+      </ul>
     </section>
+
   </main>
 </div>
 </body>

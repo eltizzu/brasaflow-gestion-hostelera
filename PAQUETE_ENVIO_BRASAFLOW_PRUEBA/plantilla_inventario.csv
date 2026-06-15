@@ -1,0 +1,6 @@
+producto,area,categoria,stock_actual,stock_minimo,unidad,proveedor_habitual,notas
+Tomate triturado,Cocina,Despensa,12,8,latas,Proveedor ejemplo,Ejemplo ficticio
+Harina,Cocina,Despensa,18,10,kg,Proveedor ejemplo,Ejemplo ficticio
+Leche,Cocina,Frescos,9,12,litros,Proveedor ejemplo,Ejemplo ficticio
+Servilletas,Sala,Consumibles,6,8,paquetes,Proveedor ejemplo,Ejemplo ficticio
+Botellas agua,Sala,Bebidas,30,24,unidades,Proveedor ejemplo,Ejemplo ficticio

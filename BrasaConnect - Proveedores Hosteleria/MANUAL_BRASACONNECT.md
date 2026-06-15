@@ -1,176 +1,172 @@
-# Manual De Uso De BrasaConnect
+# Manual de uso de BrasaConnect
 
-## 1. Que Es BrasaConnect
+BrasaConnect ayuda a ordenar la relacion entre un negocio hostelero y sus proveedores.
 
-BrasaConnect Es Una App Hermana De BrasaFlow Para Conectar Negocios Hosteleros Con Proveedores.
+Es la app del ecosistema Brasa pensada para catalogos, pedidos, albaranes, recepciones e incidencias.
 
-La Idea Es Simple:
+## 1. Para que sirve
 
-- El Negocio Ve Proveedores, Catalogos, Pedidos Y Albaranes.
-- El Proveedor Ve Pedidos Recibidos, Estados, Catalogo Y Perfil.
-- Ambos Comparten Un Historial Ordenado.
+BrasaConnect sirve para que:
 
-BrasaConnect No Reemplaza A BrasaFlow. Ordena La Relacion Entre El Negocio Y Sus Proveedores.
+- El negocio vea proveedores, catalogos, pedidos y albaranes.
+- El proveedor vea pedidos recibidos, estados, catalogo y perfil.
+- Ambos tengan un historial claro de lo que paso.
 
-## 2. Como Entrar
+En pocas palabras: BrasaConnect ordena compras y proveedores.
+
+## 2. Como entrar
 
 Abrir:
 
 `index.html`
 
-Si Se Usa Servidor Local:
+Si se usa servidor local:
 
 `http://127.0.0.1:4280/index.html`
 
-## 3. Que Se Ve Al Entrar
+## 3. Vistas de demo
 
-La App Tiene Tres Vistas De Demo:
+La app tiene tres vistas:
 
-- `Negocio`
-- `Proveedor`
-- `Red`
+- `Negocio`: lo que ve el restaurante, bar o cafeteria.
+- `Proveedor`: lo que ve la empresa que vende productos.
+- `Red`: una vista de descubrimiento y conexiones.
 
-El Selector Superior Permite Cambiar El Punto De Vista.
+El selector superior permite cambiar el punto de vista.
 
-En Movil, El Selector `Ir a seccion` Permite Cambiar Rapido Entre Pantallas.
+En movil, el selector `Ir a seccion` permite cambiar rapido entre pantallas.
 
 ## 4. Vista Negocio
 
-Esta Vista Representa Al Restaurante, Bar, Cafeteria O Negocio Hostelero.
+Representa al restaurante, bar, cafeteria o negocio hostelero.
 
-### Que Puede Hacer
+Permite:
 
-- Ver Resumen De Actividad.
-- Ver Proveedores Conectados.
-- Consultar Catalogos.
-- Crear Pedidos Desde Catalogo.
-- Revisar Pedidos.
-- Ver Estado De Cada Pedido.
-- Consultar Albaranes.
-- Marcar Recepcion.
-- Registrar Incidencias.
-- Ver Perfil Del Negocio.
+- Ver resumen de actividad.
+- Ver proveedores conectados.
+- Consultar catalogos.
+- Crear pedidos desde catalogo.
+- Revisar pedidos.
+- Ver estado de cada pedido.
+- Consultar albaranes.
+- Marcar recepcion.
+- Registrar incidencias.
+- Ver perfil del negocio.
 
-### Como Crear Un Pedido
+### Crear un pedido
 
-1. Entrar En Vista `Negocio`.
-2. Ir A `Catalogo`.
-3. Elegir Un Producto.
-4. Pulsar La Accion Para Crear Pedido Demo.
-5. Ir A `Pedidos`.
-6. Abrir El Pedido Generado.
-7. Revisar Articulos, Total, Estado E Historial.
+1. Entrar en vista `Negocio`.
+2. Ir a `Catalogo`.
+3. Elegir un producto.
+4. Pulsar la accion para crear pedido de demo.
+5. Ir a `Pedidos`.
+6. Abrir el pedido generado.
+7. Revisar articulos, total, estado e historial.
 
-### Como Revisar Un Pedido
+### Revisar un pedido
 
-1. Entrar En `Pedidos`.
-2. Seleccionar Un Pedido.
-3. Revisar:
-   - Proveedor.
-   - Fecha De Entrega.
-   - Estado.
-   - Articulos.
-   - Total.
-   - Timeline.
-   - Albaran Asociado.
+1. Entrar en `Pedidos`.
+2. Seleccionar un pedido.
+3. Revisar proveedor, fecha de entrega, estado, articulos, total, timeline y albaran asociado.
 
-### Como Marcar Recepcion O Incidencia
+### Marcar recepcion o incidencia
 
-1. Entrar En `Pedidos` O `Albaranes`.
-2. Revisar El Pedido.
-3. Marcar Recepcion Si Todo Esta Correcto.
-4. Marcar Incidencia Si Hay Diferencia.
+1. Entrar en `Pedidos` o `Albaranes`.
+2. Revisar el pedido.
+3. Marcar recepcion si todo esta correcto.
+4. Marcar incidencia si hay una diferencia.
 
 ## 5. Vista Proveedor
 
-Esta Vista Representa A Una Empresa Que Vende Producto A Hosteleria.
+Representa a una empresa que vende producto a hosteleria.
 
-### Que Puede Hacer
+Permite:
 
-- Ver Resumen De Pedidos Recibidos.
-- Ver Pedidos Pendientes.
-- Avanzar Estados.
-- Registrar Albaranes Demo.
-- Ver Catalogo.
-- Agregar Productos.
-- Mantener Perfil Visible.
+- Ver pedidos recibidos.
+- Ver pedidos pendientes.
+- Avanzar estados.
+- Registrar albaranes de demo.
+- Ver catalogo.
+- Agregar productos.
+- Mantener perfil visible.
 
-### Como Avanzar Un Pedido
+### Avanzar un pedido
 
-1. Cambiar A Vista `Proveedor`.
-2. Entrar En `Pedidos`.
-3. Seleccionar Un Pedido.
-4. Avanzar Estado.
-5. Revisar El Timeline.
+1. Cambiar a vista `Proveedor`.
+2. Entrar en `Pedidos`.
+3. Seleccionar un pedido.
+4. Avanzar estado.
+5. Revisar el timeline.
 
-### Como Registrar Un Albaran Demo
+### Registrar un albaran de demo
 
-1. Entrar En Vista `Proveedor`.
-2. Abrir Un Pedido.
-3. Usar La Accion De Registrar Albaran.
-4. Revisar Que El Pedido Queda Con Albaran Asociado.
+1. Entrar en vista `Proveedor`.
+2. Abrir un pedido.
+3. Usar la accion de registrar albaran.
+4. Revisar que el pedido queda con albaran asociado.
 
-### Como Agregar Producto Al Catalogo
+### Agregar producto al catalogo
 
-1. Entrar En Vista `Proveedor`.
-2. Ir A `Catalogo`.
-3. Completar Datos Del Producto.
+1. Entrar en vista `Proveedor`.
+2. Ir a `Catalogo`.
+3. Completar datos del producto.
 4. Guardar.
-5. Revisar Que Aparece En Catalogo.
+5. Revisar que aparece en catalogo.
 
 ## 6. Vista Red
 
-Esta Vista Representa El Lado Marketplace O Red De Contactos.
+Representa el lado marketplace o red de contactos.
 
-### Que Puede Hacer
+Permite:
 
-- Ver Proveedores Disponibles.
-- Revisar Categoria.
-- Revisar Zona De Reparto.
-- Revisar Condiciones.
-- Solicitar Conexion.
-- Descubrir Nuevos Proveedores.
+- Ver proveedores disponibles.
+- Revisar categoria.
+- Revisar zona de reparto.
+- Revisar condiciones.
+- Solicitar conexion.
+- Descubrir nuevos proveedores.
 
-### Como Solicitar Conexion
+### Solicitar conexion
 
-1. Cambiar A Vista `Red`.
-2. Revisar La Lista De Proveedores.
-3. Elegir Uno Que No Este Conectado.
-4. Pulsar La Accion De Solicitar Conexion.
-5. Volver A Vista `Negocio` Y Revisar Proveedores.
+1. Cambiar a vista `Red`.
+2. Revisar la lista de proveedores.
+3. Elegir uno que no este conectado.
+4. Pulsar la accion de solicitar conexion.
+5. Volver a vista `Negocio`.
+6. Revisar proveedores.
 
 ## 7. Albaranes
 
-Los Albaranes Sirven Para Relacionar El Pedido Con La Entrega.
+Los albaranes relacionan el pedido con la entrega.
 
-En La Demo Se Puede Mostrar:
+En la demo se puede mostrar:
 
-- Numero De Albaran.
-- Pedido Asociado.
+- Numero de albaran.
+- Pedido asociado.
 - Proveedor.
 - Estado.
-- Incidencia Si Existe.
+- Incidencia si existe.
 
-En Producto Real, Esta Parte Podria Incluir Archivos PDF, Fotos, Firma, Lectura Con IA Y Comparacion Contra Pedido.
+En producto real, esta parte podria incluir archivos PDF, fotos, firma, lectura con IA y comparacion contra pedido.
 
 ## 8. Historial
 
-El Historial Permite Ver Que Paso Con Un Pedido.
+El historial permite ver que paso con un pedido.
 
 Ejemplos:
 
-- Pedido Creado.
-- Proveedor Confirmo.
-- Pedido Preparado.
-- Albaran Registrado.
-- Recepcion Revisada.
-- Incidencia Marcada.
+- Pedido creado.
+- Proveedor confirmo.
+- Pedido preparado.
+- Albaran registrado.
+- Recepcion revisada.
+- Incidencia marcada.
 
-La Idea Es Que El Pedido No Quede Perdido En Conversaciones Sueltas.
+La idea es que el pedido no quede perdido en conversaciones sueltas.
 
-## 9. Datos De Demo
+## 9. Datos de demo
 
-Todos Los Datos Son Ficticios:
+Todos los datos son ficticios:
 
 - Negocios.
 - Proveedores.
@@ -180,59 +176,55 @@ Todos Los Datos Son Ficticios:
 - Albaranes.
 - Incidencias.
 
-No Deben Usarse Datos Reales De Empresas, Clientes, Facturacion O Proveedores.
+No conviene usar datos reales de empresas, clientes, facturacion o proveedores en una prueba.
 
-## 10. Como Guarda Cambios
+## 10. Como guarda cambios
 
-En Demo Local Con Servidor, Puede Guardar Contra El Archivo De Estado.
+Cuando se usa con servidor local, la demo guarda los cambios en esta instalacion de prueba.
 
-En Demo Web Estatica, Guarda Los Cambios En El Navegador Del Visitante.
+Cuando se abre como web estatica, algunos cambios pueden quedar solo en el navegador del visitante.
 
-Esto Permite Que Cada Persona Pruebe La Demo Sin Afectar A Otros Usuarios.
+## 11. Flujo recomendado para probar
 
-## 11. Flujo Recomendado Para Probar
+1. Entrar en `Red`.
+2. Ver proveedores disponibles.
+3. Solicitar conexion.
+4. Cambiar a `Negocio`.
+5. Entrar en `Catalogo`.
+6. Crear pedido de demo.
+7. Entrar en `Pedidos`.
+8. Abrir el detalle.
+9. Cambiar a `Proveedor`.
+10. Avanzar estado.
+11. Registrar albaran.
+12. Volver a `Negocio`.
+13. Revisar historial e incidencia.
 
-1. Entrar En `Red`.
-2. Ver Proveedores Disponibles.
-3. Solicitar Conexion.
-4. Cambiar A `Negocio`.
-5. Entrar En `Catalogo`.
-6. Crear Pedido Demo.
-7. Entrar En `Pedidos`.
-8. Abrir El Detalle.
-9. Cambiar A `Proveedor`.
-10. Avanzar Estado.
-11. Registrar Albaran.
-12. Volver A `Negocio`.
-13. Revisar Historial E Incidencia.
-
-## 12. Que Esta Listo Para Mostrar
+## 12. Que esta listo para mostrar
 
 - Vista Negocio.
 - Vista Proveedor.
 - Vista Red.
-- Proveedores Conectados.
+- Proveedores conectados.
 - Catalogo.
-- Pedido Desde Catalogo.
-- Estados De Pedido.
+- Pedido desde catalogo.
+- Estados de pedido.
 - Timeline.
 - Albaranes.
 - Incidencias.
 - Perfil.
-- Integracion Conceptual Con BrasaFlow.
+- Relacion conceptual con BrasaFlow.
 
-## 13. Que Falta Para Producto Real
+## 13. Que falta para producto real
 
-- Login Real.
-- Base De Datos.
-- Permisos Por Empresa.
-- Invitaciones Reales.
-- Archivos Reales De Albaran.
+- Login y permisos completos por empresa.
+- Invitaciones reales.
+- Archivos reales de albaran.
 - Notificaciones.
-- Busqueda Avanzada.
-- Integracion Real Con BrasaFlow.
-- Lectura De Albaranes Con IA.
+- Busqueda avanzada.
+- Integracion final con BrasaFlow.
+- Lectura de albaranes con IA.
 
-## 14. Mensaje Simple Para Explicar La App
+## 14. Mensaje simple para explicar la app
 
-BrasaConnect Ordena La Relacion Entre Restaurante Y Proveedor: catalogo, pedido, confirmacion, albaran, recepcion e historial compartido.
+BrasaConnect ordena la relacion entre restaurante y proveedor: catalogo, pedido, confirmacion, albaran, recepcion e historial compartido.

@@ -46,11 +46,11 @@
     { id: "role-5", name: "Administrador", area: "General", permissions: ["all"] },
   ],
   users: [
-    { id: "user-1", name: "Lucia Moreno", email: "lucia@brasaflow-demo.com", password: "1234", view: "employee", employeeId: "emp-1" },
-    { id: "user-2", name: "Paula Serra", email: "paula@brasaflow-demo.com", password: "1234", view: "manager", employeeId: "emp-3" },
-    { id: "user-3", name: "Admin BrasaFlow", email: "admin@brasaflow-demo.com", password: "1234", view: "admin", employeeId: "emp-1" },
-    { id: "user-4", name: "Lucia Moreno", email: "cocina@brasaflow-demo.com", password: "1234", view: "manager", employeeId: "emp-1" },
-    { id: "user-5", name: "Mario Vidal", email: "sala@brasaflow-demo.com", password: "1234", view: "employee", employeeId: "emp-4" },
+    { id: "user-1", name: "Lucia Moreno", email: "lucia@brasaflow-demo.com", view: "employee", employeeId: "emp-1" },
+    { id: "user-2", name: "Paula Serra", email: "paula@brasaflow-demo.com", view: "manager", employeeId: "emp-3" },
+    { id: "user-3", name: "Admin BrasaFlow", email: "admin@brasaflow-demo.com", view: "admin", employeeId: "emp-1" },
+    { id: "user-4", name: "Lucia Moreno", email: "cocina@brasaflow-demo.com", view: "manager", employeeId: "emp-1" },
+    { id: "user-5", name: "Mario Vidal", email: "sala@brasaflow-demo.com", view: "employee", employeeId: "emp-4" },
   ],
   employees: [
     {
@@ -415,9 +415,13 @@ function hydrateState(parsed = {}) {
       area: employee.area === "Barra" ? "Sala" : employee.area,
     }));
     const savedUsers = Array.isArray(parsed.users) ? parsed.users : [];
+    const sanitizeUser = (user) => {
+      const { password, ...safeUser } = user;
+      return safeUser;
+    };
     const normalizedUsers = [
-      ...defaultState.users,
-      ...savedUsers.filter((user) => !defaultState.users.some((defaultUser) => defaultUser.id === user.id)),
+      ...defaultState.users.map(sanitizeUser),
+      ...savedUsers.map(sanitizeUser).filter((user) => !defaultState.users.some((defaultUser) => defaultUser.id === user.id)),
     ];
     const normalizedTemperatureEquipment = (parsed.temperatureEquipment ?? defaultState.temperatureEquipment).map((item) => ({
       ...item,
@@ -504,6 +508,7 @@ async function saveStateNow() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "same-origin",
       body: snapshot,
     });
   } catch {}
@@ -721,6 +726,24 @@ function getRoleById(roleId) {
 
 function getCurrentUser() {
   return appState.users?.find((user) => user.id === appState.ui.currentUserId) ?? null;
+}
+
+function upsertSessionUser(user) {
+  if (!user?.id) return null;
+  const safeUser = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    view: user.view,
+    employeeId: user.employeeId,
+  };
+  const index = appState.users.findIndex((item) => item.id === safeUser.id);
+  if (index === -1) {
+    appState.users.push(safeUser);
+  } else {
+    appState.users[index] = { ...appState.users[index], ...safeUser };
+  }
+  return safeUser;
 }
 
 function getEmployeeById(employeeId) {
@@ -1887,7 +1910,9 @@ function escapeHtml(text) {
   return String(text)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function escapeAttribute(text) {
@@ -1901,7 +1926,7 @@ function renderOptions(items, getValue, getLabel, selectedValue) {
     .map((item) => {
       const value = getValue(item);
       const selected = value === selectedValue ? "selected" : "";
-      return `<option value="${escapeHtml(value)}" ${selected}>${escapeHtml(getLabel(item))}</option>`;
+      return `<option value="${escapeAttribute(value)}" ${selected}>${escapeHtml(getLabel(item))}</option>`;
     })
     .join("");
 }
@@ -1984,12 +2009,13 @@ function renderAuth() {
         <div class="auth-demo">
           <h2>Cuentas demo</h2>
           <ul class="mini-list">
-            <li>Empleado cocina: lucia@brasaflow-demo.com / 1234</li>
-            <li>Empleado sala: sala@brasaflow-demo.com / 1234</li>
-            <li>Encargado cocina: cocina@brasaflow-demo.com / 1234</li>
-            <li>Encargado sala: paula@brasaflow-demo.com / 1234</li>
-            <li>Empresa: admin@brasaflow-demo.com / 1234</li>
+            <li>Empleado cocina: lucia@brasaflow-demo.com</li>
+            <li>Empleado sala: sala@brasaflow-demo.com</li>
+            <li>Encargado cocina: cocina@brasaflow-demo.com</li>
+            <li>Encargado sala: paula@brasaflow-demo.com</li>
+            <li>Empresa: admin@brasaflow-demo.com</li>
           </ul>
+          <p class="muted" style="margin-top: 12px;">La clave de prueba se valida en el servidor local de la demo.</p>
           <p class="muted" style="margin-top: 12px;">Usar informacion ficticia. No cargar nominas, contratos, documentos reales ni datos personales sensibles.</p>
         </div>
       </div>
@@ -2042,7 +2068,7 @@ function renderDashboard() {
     <div class="section-header">
       <div>
         <h3>Resumen del dia</h3>
-        <p>${appState.ui.currentView === "admin" ? "Vista rapida del negocio para empezar la prueba sin perderse." : `${employee.name} entra como ${getRoleName(employee)} y ve solo lo que le corresponde.`}</p>
+        <p>${appState.ui.currentView === "admin" ? "Vista rapida del negocio para empezar la prueba sin perderse." : `${escapeHtml(employee.name)} entra como ${escapeHtml(getRoleName(employee))} y ve solo lo que le corresponde.`}</p>
       </div>
       <div class="action-row">
         <button class="action-btn primary" data-section-target="shifts">Ver turnos</button>
@@ -2283,7 +2309,7 @@ function renderChat() {
     <div class="cards-grid">
       <article class="stat-card">
         <span class="status-pill ok">Canal activo</span>
-        <strong>${activeArea}</strong>
+        <strong>${escapeHtml(activeArea)}</strong>
         <small class="muted">${channelMessages.length} mensajes visibles</small>
       </article>
       <article class="stat-card">
@@ -2294,15 +2320,15 @@ function renderChat() {
     </div>
     <div class="chat-tabs">
       ${chatAreas.map((area) => `
-        <button class="chat-tab ${area === activeArea ? "active" : ""}" data-chat-area="${area}">
-          ${area}
+        <button class="chat-tab ${area === activeArea ? "active" : ""}" data-chat-area="${escapeAttribute(area)}">
+          ${escapeHtml(area)}
         </button>
       `).join("")}
     </div>
     <div class="chat-room">
       <div class="chat-room-header">
         <div>
-          <h4>Canal ${activeArea}</h4>
+          <h4>Canal ${escapeHtml(activeArea)}</h4>
           <p>Solo mensajes recientes y faciles de seguir.</p>
         </div>
       </div>
@@ -2310,10 +2336,10 @@ function renderChat() {
         ${channelMessages.length ? channelMessages.map((chat) => `
           <article class="chat-message ${chat.urgent ? "urgent" : ""} ${chat.author === employee.name ? "own" : ""}">
             <div class="chat-meta">
-              <strong>${chat.author}</strong>
+              <strong>${escapeHtml(chat.author)}</strong>
               <span>${formatChatTimestamp(chat.createdAt)}</span>
             </div>
-            <p>${chat.message}</p>
+            <p>${escapeHtml(chat.message)}</p>
             ${chat.urgent ? `<span class="priority-pill high">Urgente</span>` : ""}
           </article>
         `).join("") : `
@@ -2321,9 +2347,9 @@ function renderChat() {
         `}
       </div>
       <form data-form="chat" class="chat-composer">
-        <input type="hidden" name="area" value="${activeArea}">
+        <input type="hidden" name="area" value="${escapeAttribute(activeArea)}">
         <label class="chat-composer-box">
-          <textarea name="message" rows="2" required placeholder="Escribe un mensaje en ${activeArea}..."></textarea>
+          <textarea name="message" rows="2" required placeholder="Escribe un mensaje en ${escapeAttribute(activeArea)}..."></textarea>
         </label>
         <div class="chat-composer-actions">
           <label class="check-row chat-urgent-toggle">
@@ -2357,7 +2383,7 @@ function renderAttendance() {
   sectionEl.innerHTML = `
     <div class="section-header">
       <div>
-        <h3>${appState.ui.currentView === "employee" ? "Mi fichaje" : appState.ui.currentView === "manager" ? `Fichaje de ${employee.area}` : "Control de fichaje"}</h3>
+        <h3>${appState.ui.currentView === "employee" ? "Mi fichaje" : appState.ui.currentView === "manager" ? `Fichaje de ${escapeHtml(employee.area)}` : "Control de fichaje"}</h3>
         <p>${appState.ui.currentView === "employee"
           ? "Entrada, salida y horas en una sola vista."
           : "Horas, jornadas abiertas e incidencias en una vista clara."}</p>
@@ -2551,7 +2577,7 @@ function renderInventory() {
           <article class="list-card">
             <div class="section-header compact-header">
               <div>
-                <h4>${area}</h4>
+                <h4>${escapeHtml(area)}</h4>
                 <p>${areaItems.length} productos base</p>
               </div>
             </div>
@@ -2568,12 +2594,12 @@ function renderInventory() {
                   ${areaItems.map((item) => {
                     return `
                       <tr>
-                        <td>${item.name}</td>
-                        <td>${item.unit || `<small class="muted">Sin detalle</small>`}</td>
-                        <td><span class="tag">${item.area}</span></td>
+                        <td>${escapeHtml(item.name)}</td>
+                        <td>${item.unit ? escapeHtml(item.unit) : `<small class="muted">Sin detalle</small>`}</td>
+                        <td><span class="tag">${escapeHtml(item.area)}</span></td>
                       </tr>
                     `;
-                  }).join("") || `<tr><td colspan="3"><div class="empty-note">Todavia no hay productos cargados en ${area}.</div></td></tr>`}
+                  }).join("") || `<tr><td colspan="3"><div class="empty-note">Todavia no hay productos cargados en ${escapeHtml(area)}.</div></td></tr>`}
                 </tbody>
               </table>
             </div>
@@ -2875,10 +2901,10 @@ function renderEmployees() {
         <div class="employee-grid">
           ${visibleEmployeeList.map((employee) => `
             <article class="employee-card">
-              <span class="employee-name">${employee.name}</span>
-              <p>${getRoleName(employee)} · ${employee.area}</p>
+              <span class="employee-name">${escapeHtml(employee.name)}</span>
+              <p>${escapeHtml(getRoleName(employee))} · ${escapeHtml(employee.area)}</p>
               <div class="pill-row">
-                <span class="status-pill ${statusClass(employee.status)}">${employee.status}</span>
+                <span class="status-pill ${statusClass(employee.status)}">${escapeHtml(employee.status)}</span>
                 <span class="tag">${employee.weeklyHours}h semanales</span>
               </div>
             </article>
@@ -2890,9 +2916,9 @@ function renderEmployees() {
         <div class="stack">
           ${visibleRoleList.map((role) => `
             <div class="list-card compact-card">
-              <h4>${role.name}</h4>
-              <p>${role.area}</p>
-              <small class="muted">Permisos: ${role.permissions.join(", ")}</small>
+              <h4>${escapeHtml(role.name)}</h4>
+              <p>${escapeHtml(role.area)}</p>
+              <small class="muted">Permisos: ${escapeHtml(role.permissions.join(", "))}</small>
             </div>
           `).join("")}
         </div>
@@ -3010,7 +3036,7 @@ function renderTemperatures() {
       <article class="stat-card">
         <span class="status-pill ok">Equipos visibles</span>
         <strong>${visibleEquipment.length}</strong>
-        <small class="muted">${appState.ui.currentView === "admin" ? "Todos los equipos cargados" : `Solo ${employee.area}`}</small>
+        <small class="muted">${appState.ui.currentView === "admin" ? "Todos los equipos cargados" : `Solo ${escapeHtml(employee.area)}`}</small>
       </article>
       <article class="stat-card">
         <span class="status-pill ok">Registros de hoy</span>
@@ -3081,10 +3107,10 @@ function renderTemperatures() {
                 const latest = latestTemperatureLogForEquipment(item.id);
                 return `
                   <tr>
-                    <td>${item.name}</td>
-                    <td>${item.area}</td>
+                    <td>${escapeHtml(item.name)}</td>
+                    <td>${escapeHtml(item.area)}</td>
                     <td>${latest ? `${latest.value} C · ${formatChatTimestamp(latest.recordedAt)}` : `<small class="muted">Sin registros</small>`}</td>
-                    <td>${item.target || `<small class="muted">Sin rango cargado</small>`}</td>
+                    <td>${item.target ? escapeHtml(item.target) : `<small class="muted">Sin rango cargado</small>`}</td>
                   </tr>
                 `;
               }).join("") || `<tr><td colspan="4"><div class="empty-note">Todavia no hay equipos cargados.</div></td></tr>`}
@@ -3484,10 +3510,10 @@ function renderDocuments() {
             const docEmployee = getEmployeeById(item.employeeId);
             return `
               <tr>
-                ${appState.ui.currentView === "employee" ? "" : `<td>${docEmployee?.name ?? "Empleado"}</td>`}
-                <td>${item.type}</td>
-                <td>${item.title}</td>
-                <td>${item.period || `<small class="muted">Sin periodo</small>`}</td>
+                ${appState.ui.currentView === "employee" ? "" : `<td>${escapeHtml(docEmployee?.name ?? "Empleado")}</td>`}
+                <td>${escapeHtml(item.type)}</td>
+                <td>${escapeHtml(item.title)}</td>
+                <td>${item.period ? escapeHtml(item.period) : `<small class="muted">Sin periodo</small>`}</td>
                 <td>${formatChatTimestamp(item.uploadedAt)}</td>
                 <td><button class="badge-btn" data-action="export-document" data-id="${item.id}">Abrir / exportar</button></td>
               </tr>
@@ -3504,17 +3530,17 @@ function renderDocuments() {
           <article class="list-card">
             <div class="section-header compact-header">
               <div>
-                <h4>${item.title}</h4>
-                <p>${item.type} · ${item.period || "Sin periodo"}</p>
+                <h4>${escapeHtml(item.title)}</h4>
+                <p>${escapeHtml(item.type)} · ${escapeHtml(item.period || "Sin periodo")}</p>
               </div>
               <div class="action-row">
                 <button class="badge-btn" data-action="export-document" data-id="${item.id}">Abrir / exportar</button>
               </div>
             </div>
-            <p class="muted">${item.summary || "Sin resumen"}</p>
+            <p class="muted">${escapeHtml(item.summary || "Sin resumen")}</p>
             <div class="pill-row" style="margin-top: 10px;">
-              ${appState.ui.currentView === "employee" ? "" : `<span class="tag">${docEmployee?.name ?? "Empleado"}</span>`}
-              <span class="tag">${item.visibility}</span>
+              ${appState.ui.currentView === "employee" ? "" : `<span class="tag">${escapeHtml(docEmployee?.name ?? "Empleado")}</span>`}
+              <span class="tag">${escapeHtml(item.visibility)}</span>
               <span class="tag">${formatChatTimestamp(item.uploadedAt)}</span>
             </div>
           </article>
@@ -3986,7 +4012,7 @@ function renderShifts() {
   sectionEl.innerHTML = `
     <div class="section-header">
       <div>
-        <h3>${appState.ui.currentView === "employee" ? "Mis turnos" : appState.ui.currentView === "manager" ? `Turnos de ${employee.area}` : "Planificacion completa"}</h3>
+        <h3>${appState.ui.currentView === "employee" ? "Mis turnos" : appState.ui.currentView === "manager" ? `Turnos de ${escapeHtml(employee.area)}` : "Planificacion completa"}</h3>
         <p>Horarios claros por semana, con carga simple y plantillas listas para reutilizar.</p>
       </div>
       <div class="action-row">
@@ -4021,7 +4047,7 @@ function renderShifts() {
       ${conflicts.length ? `
         <div class="conflict-banner">
           <strong>Conflictos detectados:</strong>
-          <span>${conflicts.map((conflict) => `${getEmployeeById(conflict.employeeId)?.name} el ${getShiftDateLabel(conflict.week, conflict.day)}`).join(" · ")}</span>
+          <span>${conflicts.map((conflict) => `${escapeHtml(getEmployeeById(conflict.employeeId)?.name ?? "Empleado")} el ${escapeHtml(getShiftDateLabel(conflict.week, conflict.day))}`).join(" · ")}</span>
         </div>
       ` : ""}
       <div class="inline-form">
@@ -4183,9 +4209,9 @@ function renderShifts() {
                 const availability = getDayAvailability(shift.employeeId, shift.week, shift.day);
                 return `
                   <div class="shift-chip ${hasConflict ? "conflict" : ""} ${availability.level === "pending" ? "warning" : ""}">
-                    <strong>${shift.time}</strong>
-                    <span>${shiftEmployee?.name ?? "-"}</span>
-                    <small>${shift.area}${availability.level === "pending" ? " · Ausencia pendiente" : ""}</small>
+                    <strong>${escapeHtml(shift.time)}</strong>
+                    <span>${escapeHtml(shiftEmployee?.name ?? "-")}</span>
+                    <small>${escapeHtml(shift.area)}${availability.level === "pending" ? " · Ausencia pendiente" : ""}</small>
                   </div>
                 `;
               }).join("") : `<div class="empty-note">Sin turnos</div>`}
@@ -4210,10 +4236,10 @@ function renderShifts() {
           ${shifts.map((shift) => `
             <tr>
               <td>${getShiftDateLabel(shift.week, shift.day)}</td>
-              <td><span class="tag">${shift.area}</span></td>
-              <td>${getEmployeeById(shift.employeeId)?.name ?? "-"}</td>
-              <td>${shift.time}</td>
-              <td><small>${shift.note}${getDayAvailability(shift.employeeId, shift.week, shift.day).level === "pending" ? " · Ausencia pendiente" : ""}</small></td>
+              <td><span class="tag">${escapeHtml(shift.area)}</span></td>
+              <td>${escapeHtml(getEmployeeById(shift.employeeId)?.name ?? "-")}</td>
+              <td>${escapeHtml(shift.time)}</td>
+              <td><small>${escapeHtml(shift.note)}${getDayAvailability(shift.employeeId, shift.week, shift.day).level === "pending" ? " · Ausencia pendiente" : ""}</small></td>
               ${canManageShifts ? `
                 <td>
                   <div class="pill-row">
@@ -4267,7 +4293,7 @@ function renderSidebar() {
       </div>
       <div class="info-note mode-explainer compact-note">
         <strong>${roleName}</strong>
-        <span>${currentUser?.name ?? employee.name}</span>
+        <span>${escapeHtml(currentUser?.name ?? employee.name)}</span>
       </div>
       <div class="info-note compact-note">
         <strong>Acceso rapido</strong>
@@ -4291,7 +4317,7 @@ function renderSidebar() {
   document.querySelector(".highlight-panel").innerHTML = `
     <h2>Sesion activa</h2>
     <ul class="mini-list">
-      <li>${currentUser?.name ?? employee.name}</li>
+      <li>${escapeHtml(currentUser?.name ?? employee.name)}</li>
       <li>${currentUser?.email ?? employee.email}</li>
       <li>Perfil: ${roleName}</li>
       <li>${appState.business.name}</li>
@@ -4301,7 +4327,7 @@ function renderSidebar() {
       <button class="action-btn secondary" data-action="reset-demo">Restaurar demo</button>
       <button class="action-btn primary" data-action="logout">Cerrar sesion</button>
     </div>
-    <small class="muted" style="display:block; margin-top: 12px;">Usuario activo: ${currentUser?.name ?? employee.name}</small>
+    <small class="muted" style="display:block; margin-top: 12px;">Usuario activo: ${escapeHtml(currentUser?.name ?? employee.name)}</small>
   `;
 }
 
@@ -4934,12 +4960,25 @@ async function handleFormSubmit(event) {
 function bindAuthEvents() {
   const loginForm = document.getElementById("login-form");
   if (!loginForm) return;
-  loginForm.onsubmit = (event) => {
+  loginForm.onsubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(loginForm);
     const email = String(data.get("email") || "").trim().toLowerCase();
     const password = String(data.get("password") || "");
-    const user = appState.users.find((item) => item.email.toLowerCase() === email && item.password === password);
+    let user = null;
+    try {
+      const response = await fetch("/api/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        const payload = await response.json();
+        user = upsertSessionUser(payload.user);
+      }
+    } catch {}
+
     if (!user) {
       alert("Credenciales incorrectas.");
       return;
@@ -5188,7 +5227,13 @@ function bindEvents() {
   });
 
   document.querySelectorAll("[data-action='logout']").forEach((button) => {
-    button.onclick = () => {
+    button.onclick = async () => {
+      try {
+        await fetch("/api/session", {
+          method: "DELETE",
+          credentials: "same-origin",
+        });
+      } catch {}
       appState.ui.currentUserId = null;
       renderApp();
     };
@@ -5205,6 +5250,17 @@ function bindEvents() {
 
 async function bootstrapApp() {
   appState = await loadState();
+  try {
+    const response = await fetch("/api/session", { credentials: "same-origin" });
+    if (response.ok) {
+      const payload = await response.json();
+      const user = upsertSessionUser(payload.user);
+      if (user) {
+        appState.ui.currentUserId = user.id;
+        syncSessionWithUser(user);
+      }
+    }
+  } catch {}
   lastPersistedSnapshot = JSON.stringify(getPersistedState());
   renderApp();
 }

@@ -1,0 +1,19 @@
+Hola, te paso BrasaFlow para una prueba privada.
+
+La idea es probar si te serviria para organizar horarios, fichajes, vacaciones, inventario, pedidos, temperaturas y comunicacion interna del equipo.
+
+No cargues datos sensibles todavia: nada de nominas, contratos, DNI, datos bancarios ni documentos reales.
+
+Si queres que te deje la demo mas parecida a tu restaurante, completame estas plantillas con datos ficticios o aproximados:
+
+- empleados
+- inventario
+- turnos
+- pedidos
+- temperaturas
+
+Como son casi 20 personas, con completar la plantilla de empleados y unos 25 a 40 productos de inventario ya alcanza para una prueba bastante realista.
+
+La plantilla de empleados y la de inventario se pueden cargar directo en la app desde el panel de empresa.
+
+Despues te paso la URL y las cuentas para entrar.

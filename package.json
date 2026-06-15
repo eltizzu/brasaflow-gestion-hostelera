@@ -1,0 +1,17 @@
+{
+  "name": "brasa-product-foundation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local product foundation for the Brasa hospitality app suite.",
+  "scripts": {
+    "test": "node --no-warnings --test",
+    "db:init": "node --no-warnings scripts/init-db.js",
+    "db:seed": "node --no-warnings scripts/seed-demo-state.js",
+    "start:flow": "node server.js",
+    "start:reservas": "node \"BrasaReservas - Reservas Hosteleria/server.js\"",
+    "start:comandas": "node \"BrasaComandas - Comandas Hosteleria/server.js\"",
+    "start:connect": "node \"BrasaConnect - Proveedores Hosteleria/server.js\""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

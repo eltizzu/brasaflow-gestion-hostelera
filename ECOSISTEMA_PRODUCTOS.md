@@ -1,394 +1,127 @@
-# Ecosistema De Productos
+# Guia simple del ecosistema Brasa
 
-## 1. Idea General
+Esta guia explica, en pocas palabras, para que sirve cada app del ecosistema.
 
-La Mejor Forma De Hacer Crecer Este Proyecto No Es Meter Todo Dentro De Una Misma App.
+La idea principal es simple: no meter todo en una sola app. Cada herramienta tiene su momento dentro del negocio hostelero.
 
-Lo Mas Sano Es Separarlo En Productos Hermanos:
+## Vista rapida
 
-- `BrasaFlow`
-- `BrasaComandas`
-- `BrasaReservas`
-- `BrasaConnect`
-- Otros Productos Futuros
+| App | Para que sirve | Momento del negocio |
+| --- | --- | --- |
+| BrasaFlow | Gestion interna del negocio | Antes, durante y despues del dia |
+| BrasaReservas | Reservas, sala y clientes | Antes del servicio |
+| BrasaComandas | Mesas, comandas, cocina y barra | Durante el servicio |
+| BrasaConnect | Proveedores, pedidos y albaranes | Compras y recepcion |
 
-Asi Cada Herramienta Tiene Un Rol Claro, Sin Volverse Pesada, Confusa O Llena De Funciones Que No Se Usan Igual.
+## BrasaFlow
 
-## 2. Que Se Queda En BrasaFlow
+BrasaFlow es el centro interno del negocio.
 
-BrasaFlow Debe Quedar Como La App De `Gestion Interna Y Operativa Del Negocio`.
+Sirve para ordenar:
 
-### Personal Y Operacion Interna
+- Empleados.
+- Turnos.
+- Fichajes.
+- Vacaciones.
+- Documentos.
+- Inventario interno.
+- Pedidos internos.
+- Temperaturas.
+- Recetas.
+- Alergenos.
+- Configuracion del negocio.
 
-- Empleados
-- Roles
-- Puestos
-- Areas
-- Altas Y Bajas
-- Turnos
-- Plantillas De Turnos
-- Vacaciones Y Ausencias
-- Fichaje
-- Control De Horas
-- Documentos Laborales
+En pocas palabras: BrasaFlow responde a la pregunta **"como organizo mi negocio por dentro"**.
 
-### Comunicacion Y Orden Interno
+## BrasaReservas
 
-- Chat General
-- Chat Por Area
-- Avisos Internos
+BrasaReservas ordena lo que pasa antes de que el cliente llegue o se siente.
 
-### Operativa Base Del Local
+Sirve para:
 
-- Inventario Base Por Area
-- Pedidos
-- Recepcion De Pedidos
-- Historial De Pedidos
-- Control De Temperaturas
+- Recibir reservas.
+- Confirmar o cancelar reservas.
+- Ver la ocupacion prevista.
+- Organizar mesas.
+- Gestionar lista de espera.
+- Guardar datos basicos de clientes.
+- Recordar preferencias o notas internas.
 
-### Conocimiento Interno De Cocina
+En pocas palabras: BrasaReservas responde a la pregunta **"como preparo la llegada del cliente"**.
 
-- Recetas
-- Ingredientes
-- Rendimientos
-- Notas Internas
-- Base De Alergenos
+## BrasaComandas
 
-### Configuracion
+BrasaComandas ordena el servicio en vivo.
 
-- Marca Del Negocio
-- Colores
-- Logo
-- Reglas Generales
-- Local Principal
-- Parametros De Fichaje
+Sirve para:
 
-## 3. Que Conviene Pasar A BrasaComandas
+- Abrir mesas.
+- Tomar comandas.
+- Enviar platos a cocina.
+- Enviar bebidas a barra.
+- Ver productos pendientes.
+- Marcar productos listos.
+- Cerrar cuentas.
+- Consultar el historial del servicio.
 
-BrasaComandas Debe Quedar Como La Herramienta De `Servicio En Sala, Cocina Y Barra En Tiempo Real`.
+En pocas palabras: BrasaComandas responde a la pregunta **"como atiendo mejor durante el servicio"**.
 
-### Toma De Pedidos
+## BrasaConnect
 
-- Cargar Comandas Desde Celular O Terminal
-- Enviar Comandas A Cocina
-- Enviar Comandas A Barra
-- Separar Por Mesa, Pedido O Cliente
+BrasaConnect ordena la relacion entre el negocio y sus proveedores.
 
-### Seguimiento En Tiempo Real
+Sirve para:
 
-- Pendiente
-- En Preparacion
-- Listo
-- Entregado
-- Cancelado
+- Ver proveedores.
+- Consultar catalogos.
+- Crear pedidos.
+- Seguir estados de pedido.
+- Revisar albaranes.
+- Marcar recepciones.
+- Registrar incidencias.
+- Guardar historial por proveedor.
 
-### Notificaciones Al Camarero
+En pocas palabras: BrasaConnect responde a la pregunta **"como organizo mis compras y proveedores"**.
 
-- Pedido Recibido
-- Plato En Preparacion
-- Plato Listo
-- Incidencia
-- Producto Agotado
+## Como trabajan juntas
 
-### Consulta Rapida De Servicio
+Las apps son hermanas. Cada una puede usarse por separado, pero juntas forman un flujo completo:
 
-- Ver Que Hay Disponible
-- Ver Que No Hay Disponible
-- Ver Alergenos Rapido
-- Ver Observaciones Del Plato
-- Filtrar Opciones Si Un Cliente Dice:
-  - Sin Gluten
-  - Sin Lactosa
-  - Sin Huevo
-  - Etc
+1. BrasaReservas ayuda a saber cuantos clientes vienen.
+2. BrasaFlow ayuda a preparar personal, turnos y operativa.
+3. BrasaComandas ayuda a trabajar durante el servicio.
+4. BrasaConnect ayuda a comprar, recibir y controlar proveedores.
 
-### Analitica De Servicio
+## Estado actual de las demos
 
-- Tiempo De Preparacion Por Plato
-- Tiempo Medio De Cocina
-- Tiempo Medio De Barra
-- Cuellos De Botella
-- Horas De Mayor Carga
-- Platos Que Mas Se Demoran
+Estas apps estan preparadas para mostrar la idea, probar flujos y explicar el producto.
 
-## 4. Que Datos Comparte BrasaFlow Con Comandas
+En esta version:
 
-Las Dos Apps No Tienen Que Estar Mezcladas, Pero Si Pueden Compartir Informacion.
+- Los datos son de prueba.
+- Los cambios se guardan en la instalacion local de la demo cuando se usa servidor.
+- En modo web estatico, algunos cambios pueden guardarse solo en el navegador.
+- Las conexiones entre apps se muestran como flujo de producto, pero no todas son integraciones finales.
 
-### Desde BrasaFlow Hacia Comandas
+## Que no hacer en una demo
 
-- Recetas
-- Alergenos
-- Productos Base
-- Disponibilidad Marcada Internamente
-- Areas Del Negocio
-- Turnos Del Equipo
+Para presentar o probar el ecosistema, conviene evitar:
 
-### Desde Comandas Hacia BrasaFlow
+- Cargar datos reales de empleados.
+- Cargar documentos reales.
+- Cargar datos sensibles de clientes.
+- Usar facturacion real.
+- Usar albaranes o precios reales de proveedores.
 
-- Tiempos Reales De Servicio
-- Consumo De Productos
-- Productos Muy Pedidos
-- Productos Agotados
-- Informacion Operativa Para Analisis
+## Mensaje simple para presentar el ecosistema
 
-## 5. Que Conviene Pasar A BrasaConnect
+Brasa es un ecosistema de apps para hosteleria.
 
-BrasaConnect Debe Quedar Como La Herramienta De `Conexion Entre Negocios Hosteleros Y Proveedores`.
+Cada app ordena una parte del negocio:
 
-### Relacion Con Proveedores
+- BrasaFlow ordena la gestion interna.
+- BrasaReservas ordena la llegada del cliente.
+- BrasaComandas ordena el servicio en vivo.
+- BrasaConnect ordena proveedores y compras.
 
-- Perfil Del Proveedor
-- Catalogo De Productos
-- Zonas De Reparto
-- Dias De Entrega
-- Pedido Minimo
-- Condiciones Comerciales
-
-### Pedidos Conectados
-
-- Pedido Desde Catalogo
-- Confirmacion Del Proveedor
-- Estados Del Pedido
-- Historial Compartido
-- Repetir Pedidos Anteriores
-- Incidencias De Recepcion
-
-### Albaranes Y Costes
-
-- Subida De Albaranes
-- Albaranes Asociados A Pedidos
-- Comparacion Entre Pedido Y Recibido
-- Base Futura Para Coste De Recetas
-- Lectura Asistida Por IA Mas Adelante
-
-### Marketplace O Red
-
-- Perfil De Negocio
-- Perfil De Proveedor
-- Busqueda De Proveedores Por Categoria O Zona
-- Solicitud De Conexion
-- Proveedores Habituales
-- Proveedores Recomendados
-
-## 6. Que Datos Comparte BrasaFlow Con BrasaConnect
-
-BrasaConnect No Tiene Que Estar Mezclado Con BrasaFlow, Pero Si Deben Poder Compartir Informacion.
-
-### Desde BrasaFlow Hacia BrasaConnect
-
-- Negocio
-- Areas Del Local
-- Inventario Base
-- Productos Que Se Piden Habitualmente
-- Pedidos Internos
-- Recepciones
-- Incidencias
-
-### Desde BrasaConnect Hacia BrasaFlow
-
-- Pedidos Confirmados
-- Historial Por Proveedor
-- Albaranes
-- Precios Reales
-- Diferencias Entre Pedido Y Recepcion
-- Datos Para Coste De Recetas
-
-## 7. Que Conviene Pasar A BrasaReservas
-
-BrasaReservas Debe Quedar Como La Herramienta De `Reservas, Sala, Lista De Espera Y Clientes`.
-
-### Reservas
-
-- Reservas Del Dia
-- Reservas Por Servicio
-- Estados De Reserva
-- Confirmaciones
-- Cancelaciones
-- No-Show
-
-### Sala
-
-- Mesas
-- Capacidad
-- Ocupacion
-- Lista De Espera
-- Clientes Sentados
-- Liberacion De Mesas
-
-### Clientes
-
-- Ficha De Cliente
-- Historial De Visitas
-- Preferencias
-- Notas Internas
-- Alergias Declaradas Si El Cliente Las Informa
-
-## 8. Que Datos Comparte BrasaFlow Con BrasaReservas
-
-### Desde BrasaReservas Hacia BrasaFlow
-
-- Prevision De Comensales
-- Horas De Mayor Carga
-- Grupos Grandes
-- Eventos
-- Necesidad De Refuerzo
-
-### Desde BrasaFlow Hacia BrasaReservas
-
-- Turnos De Sala
-- Personal Disponible
-- Areas Del Negocio
-- Configuracion Del Local
-
-## 9. Cosas Que Hoy Tienen Mas Sentido En BrasaFlow
-
-Estas Funciones Sirven, Pero Su Uso Es Mas Interno Que De Servicio:
-
-- Cargar Recetas
-- Cargar Alergenos
-- Revisar Documentos
-- Fichar
-- Aprobar Vacaciones
-- Preparar Pedidos
-- Registrar Temperaturas
-
-## 10. Cosas Que Hoy Tienen Mas Sentido En Comandas
-
-Estas Funciones Son Mucho Mas Potentes Frente Al Cliente O Durante El Servicio:
-
-- Ver Si Un Plato Tiene Gluten
-- Filtrar Que Puede Comer Un Cliente
-- Ver Si Algo Esta Agotado
-- Recibir Aviso De Que Un Plato Esta Listo
-- Ver El Estado Del Pedido En Vivo
-- Coordinar Cocina, Sala Y Barra
-
-## 11. Cosas Que Hoy Tienen Mas Sentido En BrasaReservas
-
-Estas Funciones Son Mas Potentes Antes De Que Empiece El Servicio:
-
-- Gestionar Reservas
-- Confirmar O Cancelar Reservas
-- Controlar No-Shows
-- Organizar Lista De Espera
-- Ver Ocupacion Prevista
-- Consultar Historial Del Cliente
-- Preparar Carga De Sala Y Cocina
-
-## 12. Cosas Que Hoy Tienen Mas Sentido En BrasaConnect
-
-Estas Funciones Son Mas Potentes En La Relacion Negocio-Proveedor:
-
-- Buscar Proveedores
-- Ver Catalogos De Proveedores
-- Hacer Pedidos A Proveedores
-- Confirmar Estados Del Pedido
-- Recibir Albaranes
-- Ver Historial Por Proveedor
-- Comparar Pedido Contra Recepcion
-- Gestionar Incidencias De Entrega
-
-## 13. Reglas De Producto Para No Mezclar
-
-### BrasaFlow
-
-Debe Responder A Esta Pregunta:
-
-`Como Organizo El Negocio Por Dentro`
-
-### BrasaComandas
-
-Debe Responder A Esta Pregunta:
-
-`Como Atiendo Mejor Y Mas Rapido Durante El Servicio`
-
-### BrasaReservas
-
-Debe Responder A Esta Pregunta:
-
-`Como Organizo Las Reservas Y La Ocupacion Antes Del Servicio`
-
-### BrasaConnect
-
-Debe Responder A Esta Pregunta:
-
-`Como Conecto Mi Negocio Con Mis Proveedores`
-
-## 14. Decisiones Tomadas
-
-Por Ahora Dejamos Asi:
-
-- `BrasaFlow` Sigue Siendo La App De Gestion Interna
-- `Alergenos` Puede Existir Dentro De BrasaFlow Como Base Interna
-- La Consulta Rapida De Alergenos Para Camarero Queda Pensada Sobre Todo Para `BrasaComandas`
-- Todo Lo Que Sea Reservas, Lista De Espera, Ocupacion Y Ficha De Cliente Va Para `BrasaReservas`
-- Todo Lo Que Sea Tiempo Real De Platos, Estados Y Notificaciones Al Camarero Va Para `BrasaComandas`
-- Todo Lo Que Sea Catalogo De Proveedor, Red De Proveedores, Pedidos Conectados Y Albaranes Compartidos Va Para `BrasaConnect`
-
-## 15. Productos Futuros Ya Detectados
-
-### BrasaComandas
-
-- Toma De Pedidos
-- Cocina Y Barra En Tiempo Real
-- Estados Del Servicio
-- Avisos Al Camarero
-- Datos De Tiempos
-
-### BrasaReservas
-
-- Reservas Del Dia
-- Mesa Y Sala
-- Lista De Espera
-- Estados De Reserva
-- Clientes E Historial
-- Prevision De Ocupacion
-
-### BrasaConnect
-
-- Perfiles De Negocios Y Proveedores
-- Catalogos De Proveedores
-- Pedidos Conectados
-- Historial Compartido
-- Albaranes
-- Incidencias De Recepcion
-- Marketplace O Red De Proveedores
-
-### Centralizador De Mensajes
-
-- Instagram
-- Facebook
-- WhatsApp
-- Correo
-- Marketplaces
-- Bandeja Unificada
-
-### App De Reservas
-
-- Reservas Del Restaurante
-- Vista Conectada Con La Operativa
-- Relacion Con Turnos Y Carga Del Local
-
-### App De Citas Para Belleza
-
-- Peluquerias
-- Uñas
-- Estetica
-- Agenda
-- Recordatorios
-- WhatsApp
-
-## 16. Conclusion
-
-La Decision Correcta No Es Hacer Una App Gigante.
-
-La Decision Correcta Es Crear Un Ecosistema:
-
-- `BrasaFlow` Para Gestion Interna
-- `BrasaReservas` Para Reservas, Sala Y Clientes
-- `BrasaComandas` Para Servicio En Tiempo Real
-- `BrasaConnect` Para Conectar Negocios Y Proveedores
-- Otros Productos Hermanos Para Problemas Distintos
-
-Asi Cada Producto Se Mantiene Claro, Vendible Y Facil De Entender.
+La clave es que cada persona use una herramienta clara, sin mezclar todo en una pantalla gigante.

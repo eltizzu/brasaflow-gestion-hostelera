@@ -167,24 +167,25 @@ const defaultState = {
 let appState = structuredClone(defaultState);
 let saveTimer = null;
 const STORAGE_KEY = "brasaconnect-demo-state";
+const STATE_WRITE_TOKEN = "brasa-local-demo-write";
 
 const viewCopy = {
   business: {
-    kicker: "Vista negocio",
-    title: "Compra mejor sin perder historial",
-    description: "El negocio ve proveedores, revisa catalogos, hace pedidos y guarda albaranes e incidencias.",
+    kicker: "Perfil restaurante",
+    title: "Encuentra proveedores y repite pedidos sin perder historial",
+    description: "El restaurante ve perfiles, catalogos, pedidos anteriores, albaranes e incidencias en un mismo lugar.",
     entity: "La Terraza Central",
   },
   supplier: {
-    kicker: "Vista proveedor",
-    title: "Recibe pedidos y gestiona entregas",
-    description: "El proveedor ve pedidos recibidos, confirma estados, mantiene catalogo y sube albaranes.",
+    kicker: "Perfil proveedor",
+    title: "Recibe pedidos mas ordenados de tus clientes",
+    description: "El proveedor mantiene su catalogo, recibe pedidos, actualiza estados y registra albaranes.",
     entity: "Distribuciones Sur",
   },
   network: {
-    kicker: "Vista red",
-    title: "Descubre proveedores para hosteleria",
-    description: "La red permite buscar proveedores, ver perfiles, catalogos y solicitar conexion.",
+    kicker: "Marketplace de hosteleria",
+    title: "Una red para descubrir y conectar proveedores",
+    description: "El marketplace permite buscar proveedores, ver perfiles, revisar catalogos y solicitar conexion.",
     entity: "Red BrasaConnect",
   },
 };
@@ -193,6 +194,30 @@ const visibleSectionsByView = {
   business: ["dashboard", "suppliers", "catalog", "orders", "delivery-notes", "network", "settings"],
   supplier: ["dashboard", "catalog", "orders", "delivery-notes", "settings"],
   network: ["dashboard", "suppliers", "network"],
+};
+
+const sectionLabelsByView = {
+  business: {
+    dashboard: "Inicio",
+    suppliers: "Proveedores habituales",
+    catalog: "Catalogos",
+    orders: "Pedidos",
+    "delivery-notes": "Albaranes",
+    network: "Explorar marketplace",
+    settings: "Perfil restaurante",
+  },
+  supplier: {
+    dashboard: "Inicio",
+    catalog: "Mi catalogo",
+    orders: "Pedidos recibidos",
+    "delivery-notes": "Albaranes enviados",
+    settings: "Perfil proveedor",
+  },
+  network: {
+    dashboard: "Inicio",
+    suppliers: "Proveedores disponibles",
+    network: "Explorar red",
+  },
 };
 
 function money(value) {
@@ -206,6 +231,10 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value);
 }
 
 function getSupplier(id) {
@@ -233,7 +262,7 @@ function statusClass(status) {
 
 function renderOptions(items, selectedValue) {
   return items
-    .map((item) => `<option value="${escapeHtml(item.value)}" ${item.value === selectedValue ? "selected" : ""}>${escapeHtml(item.label)}</option>`)
+    .map((item) => `<option value="${escapeAttribute(item.value)}" ${item.value === selectedValue ? "selected" : ""}>${escapeHtml(item.label)}</option>`)
     .join("");
 }
 
@@ -282,7 +311,10 @@ function scheduleSave() {
     try {
       await fetch("/api/state", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-Brasa-State-Token": STATE_WRITE_TOKEN,
+        },
         body: JSON.stringify(appState),
       });
     } catch (error) {
@@ -301,12 +333,14 @@ function renderHero() {
 
 function renderNavigation() {
   const visibleSections = new Set(visibleSectionsByView[appState.ui.currentView]);
+  const labels = sectionLabelsByView[appState.ui.currentView];
   if (!visibleSections.has(appState.ui.currentSection)) {
     appState.ui.currentSection = "dashboard";
   }
 
   document.querySelectorAll(".nav-link").forEach((button) => {
     const visible = visibleSections.has(button.dataset.section);
+    button.textContent = labels[button.dataset.section] || button.textContent.trim();
     button.hidden = !visible;
     button.classList.toggle("active", button.dataset.section === appState.ui.currentSection);
   });
@@ -328,21 +362,35 @@ function renderDashboard() {
   const notesWithIssues = appState.deliveryNotes.filter((note) => note.status === "Con incidencia").length;
   const catalogCount = appState.catalog.filter((item) => item.available).length;
   const modeText = appState.ui.currentView === "supplier"
-    ? "Pedidos recibidos, catalogo y albaranes."
+    ? "Perfil de proveedor: catalogo, pedidos recibidos, estados y albaranes."
     : appState.ui.currentView === "network"
-      ? "Busqueda y descubrimiento de proveedores."
-      : "Proveedores, pedidos, historial y recepcion.";
+      ? "Marketplace: busqueda, perfiles y solicitud de conexion."
+      : "Perfil restaurante: proveedores conectados, catalogos, pedidos e historial.";
 
   document.getElementById("dashboard-section").innerHTML = `
     <div class="section-header">
       <div>
-        <h3>Resumen</h3>
+        <h3>Inicio</h3>
         <p>${modeText}</p>
       </div>
       <div class="action-row">
         <button class="action-btn primary" data-section-target="orders">Ver pedidos</button>
         <button class="action-btn secondary" data-section-target="network">Explorar red</button>
       </div>
+    </div>
+    <div class="connect-explainer">
+      <article>
+        <strong>Que es</strong>
+        <span>Una red privada de proveedores para hosteleria. Funciona como marketplace, pero orientado a pedidos reales, historial y albaranes.</span>
+      </article>
+      <article>
+        <strong>Como se prueba</strong>
+        <span>Restaurante muestra la compra. Proveedor muestra quien vende. Marketplace muestra la busqueda y conexion entre ambos.</span>
+      </article>
+      <article>
+        <strong>Para que sirve</strong>
+        <span>Es la base de la conexion futura con BrasaFlow: pedidos internos pueden terminar en pedidos conectados a proveedores reales.</span>
+      </article>
     </div>
     <div class="metrics-grid">
       <article class="metric-card">
@@ -368,7 +416,7 @@ function renderDashboard() {
     </div>
     ${renderDemoPath()}
     <div class="cards-grid" style="margin-top: 16px;">
-      ${renderFlowCard("Negocio", "Busca proveedor, arma pedido y confirma recepcion.")}
+      ${renderFlowCard("Restaurante", "Busca proveedor, arma pedido y confirma recepcion.")}
       ${renderFlowCard("Proveedor", "Recibe pedido, confirma estado y sube albaran.")}
       ${renderFlowCard("Historial", "Cada pedido queda guardado con estado, nota e incidencia.")}
     </div>
@@ -390,13 +438,13 @@ function renderDemoPath() {
     <div class="demo-path">
       <article>
         <span>1</span>
-        <strong>Conectar</strong>
-        <small>El negocio encuentra proveedor.</small>
+        <strong>Descubrir</strong>
+        <small>El restaurante encuentra proveedor.</small>
       </article>
       <article>
         <span>2</span>
         <strong>Pedir</strong>
-        <small>Pedido desde catalogo.</small>
+        <small>Pedido desde catalogo o historial.</small>
       </article>
       <article>
         <span>3</span>
@@ -428,8 +476,8 @@ function renderSuppliers() {
   document.getElementById("suppliers-section").innerHTML = `
     <div class="section-header">
       <div>
-        <h3>Proveedores</h3>
-        <p>${appState.ui.currentView === "network" ? "Perfiles disponibles en la red." : "Proveedores conectados con el negocio."}</p>
+        <h3>${appState.ui.currentView === "network" ? "Explorar proveedores" : "Mis proveedores"}</h3>
+        <p>${appState.ui.currentView === "network" ? "Perfiles disponibles para descubrir, comparar y solicitar conexion." : "Proveedores ya conectados con el restaurante."}</p>
       </div>
       <button class="action-btn primary" data-section-target="network">Buscar nuevos</button>
     </div>
@@ -453,8 +501,8 @@ function renderSupplierCard(supplier) {
       </div>
       <small class="muted">Zona: ${escapeHtml(supplier.zone)} · Entrega: ${escapeHtml(supplier.deliveryDays)} · Minimo: ${escapeHtml(supplier.minimumOrder)}</small>
       <div class="action-row">
-        <button class="action-btn secondary" data-supplier="${supplier.id}" data-section-target="catalog">Ver catalogo</button>
-        ${supplier.connected ? `<button class="action-btn primary" data-supplier="${supplier.id}" data-section-target="orders">Hacer pedido</button>` : `<button class="action-btn primary" data-action="connect-supplier" data-supplier="${supplier.id}">Solicitar conexion</button>`}
+        <button class="action-btn secondary" data-supplier="${escapeAttribute(supplier.id)}" data-section-target="catalog">Ver catalogo</button>
+        ${supplier.connected ? `<button class="action-btn primary" data-supplier="${escapeAttribute(supplier.id)}" data-section-target="orders">Hacer pedido</button>` : `<button class="action-btn primary" data-action="connect-supplier" data-supplier="${escapeAttribute(supplier.id)}">Solicitar conexion</button>`}
       </div>
     </article>
   `;
@@ -480,7 +528,7 @@ function renderCatalog() {
       </label>
     </div>
     <div class="filter-row">
-      ${categories.map((category) => `<button class="chip-btn ${category === appState.ui.activeCategory ? "active" : ""}" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`).join("")}
+      ${categories.map((category) => `<button class="chip-btn ${category === appState.ui.activeCategory ? "active" : ""}" data-category="${escapeAttribute(category)}">${escapeHtml(category)}</button>`).join("")}
     </div>
     <div class="cards-grid" style="margin-top: 16px;">
       ${visibleCatalog.length ? visibleCatalog.map(renderCatalogCard).join("") : `<div class="empty-note">No hay productos para este filtro.</div>`}
@@ -525,7 +573,7 @@ function renderCatalogCard(item) {
       </div>
       <span class="catalog-price">${money(item.price)}</span>
       <small class="muted">${escapeHtml(item.format)} · ${escapeHtml(item.category)} · ${escapeHtml(supplier.name)}</small>
-      <button class="action-btn primary" data-action="quick-order" data-product="${item.id}" ${item.available ? "" : "disabled"}>Crear pedido</button>
+      <button class="action-btn primary" data-action="quick-order" data-product="${escapeAttribute(item.id)}" ${item.available ? "" : "disabled"}>Crear pedido</button>
     </article>
   `;
 }
@@ -555,7 +603,7 @@ function renderOrders() {
 
 function renderOrderCard(order) {
   const supplier = getSupplier(order.supplierId);
-  const itemSummary = order.items.map((item) => `${item.quantity} x ${item.name}`).join(", ");
+  const itemSummary = order.items.map((item) => `${escapeHtml(item.quantity)} x ${escapeHtml(item.name)}`).join(", ");
   const nextStatus = nextOrderStatus(order.status);
   return `
     <article class="order-card">
@@ -568,8 +616,8 @@ function renderOrderCard(order) {
       ${order.note ? `<small class="muted">Nota: ${escapeHtml(order.note)}</small>` : ""}
       ${order.incident ? `<div class="empty-note">${escapeHtml(order.incident)}</div>` : ""}
       <div class="action-row">
-        <button class="action-btn secondary" data-action="select-order" data-order="${order.id}">Ver detalle</button>
-        ${nextStatus ? `<button class="action-btn primary" data-action="advance-order" data-order="${order.id}">${escapeHtml(nextStatus)}</button>` : ""}
+        <button class="action-btn secondary" data-action="select-order" data-order="${escapeAttribute(order.id)}">Ver detalle</button>
+        ${nextStatus ? `<button class="action-btn primary" data-action="advance-order" data-order="${escapeAttribute(order.id)}">${escapeHtml(nextStatus)}</button>` : ""}
       </div>
     </article>
   `;
@@ -633,9 +681,9 @@ function renderOrderDetail(order) {
         </div>
       </div>
       <div class="action-row">
-        ${nextStatus ? `<button class="action-btn primary" data-action="advance-order" data-order="${order.id}">${escapeHtml(nextStatus)}</button>` : ""}
-        <button class="action-btn secondary" data-action="create-delivery-note" data-order="${order.id}">Registrar albaran</button>
-        <button class="action-btn secondary" data-action="mark-incident" data-order="${order.id}">Marcar incidencia</button>
+        ${nextStatus ? `<button class="action-btn primary" data-action="advance-order" data-order="${escapeAttribute(order.id)}">${escapeHtml(nextStatus)}</button>` : ""}
+        <button class="action-btn secondary" data-action="create-delivery-note" data-order="${escapeAttribute(order.id)}">Registrar albaran</button>
+        <button class="action-btn secondary" data-action="mark-incident" data-order="${escapeAttribute(order.id)}">Marcar incidencia</button>
       </div>
     </aside>
   `;
@@ -698,8 +746,8 @@ function renderNetwork() {
   document.getElementById("network-section").innerHTML = `
     <div class="section-header">
       <div>
-        <h3>Red de proveedores</h3>
-        <p>Marketplace controlado para descubrir proveedores y solicitar conexion.</p>
+        <h3>Explorar marketplace</h3>
+        <p>Catalogo abierto de proveedores: se revisa el perfil, se ve que venden y se solicita conexion.</p>
       </div>
     </div>
     <div class="market-grid">
@@ -719,7 +767,7 @@ function renderSettings() {
     </div>
     <div class="cards-grid">
       <article class="card">
-        <span class="pill ok">${isSupplier ? "Proveedor" : "Negocio"}</span>
+        <span class="pill ok">${isSupplier ? "Proveedor" : "Restaurante"}</span>
         <h4>${escapeHtml(isSupplier ? appState.supplierAccount.name : appState.business.name)}</h4>
         <p class="muted">${escapeHtml(isSupplier ? appState.supplierAccount.category : appState.business.type)} · ${escapeHtml(isSupplier ? appState.supplierAccount.city : appState.business.city)}</p>
       </article>

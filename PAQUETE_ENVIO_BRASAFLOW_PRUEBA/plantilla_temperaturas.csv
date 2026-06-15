@@ -1,0 +1,4 @@
+equipo,area,tipo,temperatura_minima,temperatura_maxima,frecuencia_control,notas
+Nevera cocina 1,Cocina,Nevera,0,5,Diario,Ejemplo ficticio
+Congelador cocina,Cocina,Congelador,-22,-18,Diario,Ejemplo ficticio
+Botellero barra,Sala,Nevera,2,8,Diario,Ejemplo ficticio

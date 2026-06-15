@@ -327,6 +327,34 @@ button {
   gap: 14px;
 }
 
+.connect-explainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.connect-explainer article {
+  padding: 14px;
+  border: 1px solid rgba(46, 38, 29, 0.08);
+  border-radius: 20px;
+  background: var(--panel-strong);
+}
+
+.connect-explainer strong,
+.connect-explainer span {
+  display: block;
+}
+
+.connect-explainer strong {
+  margin-bottom: 6px;
+}
+
+.connect-explainer span {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 .card,
 .metric-card,
 .supplier-card,
@@ -673,6 +701,7 @@ textarea {
   }
 
   .demo-path,
+  .connect-explainer,
   .integration-strip,
   .order-layout,
   .detail-grid {
@@ -704,6 +733,7 @@ textarea {
 .note-card,
 .inline-form,
 .order-detail,
+.connect-explainer article,
 .hero-stack article,
 .table-wrap,
 .demo-path article,
