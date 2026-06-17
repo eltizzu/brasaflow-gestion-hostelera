@@ -167,7 +167,6 @@ const defaultState = {
 let appState = structuredClone(defaultState);
 let saveTimer = null;
 const STORAGE_KEY = "brasaconnect-demo-state";
-const STATE_WRITE_TOKEN = "brasa-local-demo-write";
 
 const viewCopy = {
   business: {
@@ -235,6 +234,31 @@ function escapeHtml(value) {
 
 function escapeAttribute(value) {
   return escapeHtml(value);
+}
+
+function hasUnsafeFormText(value) {
+  return /<[^>]*>|javascript:|on[a-z]+\s*=/i.test(String(value || ""));
+}
+
+function validateFormBeforeSubmit(form) {
+  const errors = [];
+  Array.from(form.elements).forEach((field) => {
+    if (!field.name || field.disabled || ["button", "submit", "reset", "file", "checkbox"].includes(field.type)) return;
+    const label = field.closest("label")?.querySelector("span")?.textContent?.trim() || field.name;
+    const value = String(field.value || "").trim();
+    const maxLength = Number(field.getAttribute("maxlength") || 160);
+    if (field.required && !value) errors.push(`${label}: campo requerido.`);
+    if (field.type === "number" && value && !Number.isFinite(Number(value))) errors.push(`${label}: debe ser un numero valido.`);
+    if (field.type === "number" && value && field.min !== "" && Number(value) < Number(field.min)) errors.push(`${label}: debe ser mayor o igual a ${field.min}.`);
+    if (field.type === "number" && value && field.max !== "" && Number(value) > Number(field.max)) errors.push(`${label}: debe ser menor o igual a ${field.max}.`);
+    if (value.length > maxLength) errors.push(`${label}: maximo ${maxLength} caracteres.`);
+    if (hasUnsafeFormText(value)) errors.push(`${label}: no incluyas HTML ni scripts.`);
+  });
+  if (errors.length) {
+    alert(errors.join("\n"));
+    return false;
+  }
+  return true;
 }
 
 function getSupplier(id) {
@@ -313,7 +337,6 @@ function scheduleSave() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "X-Brasa-State-Token": STATE_WRITE_TOKEN,
         },
         body: JSON.stringify(appState),
       });
@@ -897,6 +920,7 @@ function bindEvents() {
   document.querySelectorAll("form[data-form='catalog-product']").forEach((form) => {
     form.onsubmit = (event) => {
       event.preventDefault();
+      if (!validateFormBeforeSubmit(form)) return;
       const data = new FormData(form);
       const activeSupplier = getActiveSupplier();
       appState.catalog.unshift({

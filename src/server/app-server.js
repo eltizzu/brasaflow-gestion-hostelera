@@ -6,6 +6,7 @@ const { readJsonBody } = require("./json-body");
 const { sendStaticFile } = require("./static-files");
 const { createStateStore } = require("./state-store");
 const { validatePublicReservation } = require("../validation/public-reservation");
+const { validateEmail, sanitizeText, validateStatePayload } = require("../validation/input");
 
 function sendJson(res, statusCode, payload) {
   res.writeHead(statusCode, { "Content-Type": "application/json; charset=utf-8" });
@@ -142,8 +143,22 @@ function createAppServer(options) {
     if (req.url === "/api/session" && req.method === "POST" && appId === "brasaflow") {
       try {
         const payload = await readJsonBody(req, { limitBytes: 16 * 1024 });
-        const email = String(payload.email || "").trim().toLowerCase();
-        const password = String(payload.password || "");
+        const emailValidation = validateEmail(payload.email, { required: true });
+        const passwordValidation = sanitizeText(payload.password, { required: true, maxLength: 200 });
+        const inputErrors = {};
+        if (!emailValidation.valid) inputErrors.email = emailValidation.error;
+        if (!passwordValidation.valid) inputErrors.password = passwordValidation.error;
+        if (Object.keys(inputErrors).length) {
+          sendJson(res, 400, {
+            error: "invalid_session_input",
+            message: "Revisa email y contrasena.",
+            errors: inputErrors,
+          });
+          return;
+        }
+
+        const email = emailValidation.value.toLowerCase();
+        const password = passwordValidation.value;
         const user = findAuthUser(authUsers, email, password);
         if (!user) {
           sendJson(res, 401, {
@@ -201,7 +216,16 @@ function createAppServer(options) {
 
       try {
         const payload = await readJsonBody(req, { limitBytes: 1024 * 1024 });
-        stateStore.saveState(appId, payload);
+        const validation = validateStatePayload(payload);
+        if (!validation.valid) {
+          sendJson(res, 400, {
+            error: "invalid_state_payload",
+            message: "El estado contiene campos no validos.",
+            errors: validation.errors,
+          });
+          return;
+        }
+        stateStore.saveState(appId, validation.value);
         sendJson(res, 200, { ok: true });
       } catch (error) {
         const status = error.code === "payload_too_large" ? 413 : 400;
@@ -227,7 +251,7 @@ function createAppServer(options) {
         }
 
         const state = stateStore.loadState(appId);
-        const reservation = addPublicReservation(state, payload);
+        const reservation = addPublicReservation(state, validation.value);
         stateStore.saveState(appId, state);
         sendJson(res, 201, { ok: true, reservationId: reservation.id });
       } catch (error) {

@@ -1,10 +1,15 @@
 const assert = require("node:assert");
+const crypto = require("node:crypto");
 const test = require("node:test");
 const { createAppServer } = require("../src/server/app-server");
 
+const testPassword = crypto.randomUUID();
+const invalidTestPassword = crypto.randomUUID();
+const testStateWriteToken = crypto.randomUUID();
+
 const demoUsers = [
-  { id: "user-admin", name: "Admin Demo", email: "admin@test.local", password: "1234", view: "admin", employeeId: "emp-1" },
-  { id: "user-employee", name: "Empleado Demo", email: "employee@test.local", password: "1234", view: "employee", employeeId: "emp-2" },
+  { id: "user-admin", name: "Admin Demo", email: "admin@test.local", password: testPassword, view: "admin", employeeId: "emp-1" },
+  { id: "user-employee", name: "Empleado Demo", email: "employee@test.local", password: testPassword, view: "employee", employeeId: "emp-2" },
 ];
 
 function listenUrl(server) {
@@ -28,7 +33,7 @@ test("state PUT rejects writes without the configured local write token", async 
     root: __dirname,
     dbPath: ":memory:",
     port: 0,
-    stateWriteToken: "secret-token",
+    stateWriteToken: testStateWriteToken,
   });
 
   try {
@@ -56,7 +61,7 @@ test("state PUT accepts writes with the configured local write token", async () 
     root: __dirname,
     dbPath: ":memory:",
     port: 0,
-    stateWriteToken: "secret-token",
+    stateWriteToken: testStateWriteToken,
   });
 
   try {
@@ -65,7 +70,7 @@ test("state PUT accepts writes with the configured local write token", async () 
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "X-Brasa-State-Token": "secret-token",
+        "X-Brasa-State-Token": testStateWriteToken,
       },
       body: JSON.stringify({ business: { name: "Safe write" } }),
     });
@@ -86,7 +91,7 @@ test("public reservation endpoint validates and appends a reservation without re
     root: __dirname,
     dbPath: ":memory:",
     port: 0,
-    stateWriteToken: "secret-token",
+    stateWriteToken: testStateWriteToken,
   });
 
   try {
@@ -95,7 +100,7 @@ test("public reservation endpoint validates and appends a reservation without re
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "X-Brasa-State-Token": "secret-token",
+        "X-Brasa-State-Token": testStateWriteToken,
       },
       body: JSON.stringify({
         business: { name: "La Terraza Central" },
@@ -153,7 +158,7 @@ test("BrasaFlow session endpoint returns safe user data for valid credentials", 
     const response = await fetch(`${listenUrl(server)}/api/session`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "admin@test.local", password: "1234" }),
+      body: JSON.stringify({ email: "admin@test.local", password: testPassword }),
     });
 
     assert.equal(response.status, 200);
@@ -187,7 +192,7 @@ test("BrasaFlow session endpoint rejects invalid credentials", async () => {
     const response = await fetch(`${listenUrl(server)}/api/session`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "admin@test.local", password: "bad" }),
+      body: JSON.stringify({ email: "admin@test.local", password: invalidTestPassword }),
     });
 
     assert.equal(response.status, 401);
@@ -200,6 +205,33 @@ test("BrasaFlow session endpoint rejects invalid credentials", async () => {
   }
 });
 
+test("BrasaFlow session endpoint rejects malformed email before auth lookup", async () => {
+  const server = createAppServer({
+    appId: "brasaflow",
+    appName: "BrasaFlow test",
+    root: __dirname,
+    dbPath: ":memory:",
+    port: 0,
+    authUsers: demoUsers,
+  });
+
+  try {
+    await waitForListening(server);
+    const response = await fetch(`${listenUrl(server)}/api/session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: "<b>admin@test.local</b>", password: testPassword }),
+    });
+
+    assert.equal(response.status, 400);
+    const payload = await response.json();
+    assert.equal(payload.error, "invalid_session_input");
+    assert.equal(payload.errors.email, "No incluyas HTML ni scripts.");
+  } finally {
+    await closeServer(server);
+  }
+});
+
 test("BrasaFlow state PUT rejects writes without an admin or manager session", async () => {
   const server = createAppServer({
     appId: "brasaflow",
@@ -207,7 +239,7 @@ test("BrasaFlow state PUT rejects writes without an admin or manager session", a
     root: __dirname,
     dbPath: ":memory:",
     port: 0,
-    stateWriteToken: "secret-token",
+    stateWriteToken: testStateWriteToken,
     authUsers: demoUsers,
   });
 
@@ -217,7 +249,7 @@ test("BrasaFlow state PUT rejects writes without an admin or manager session", a
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "X-Brasa-State-Token": "secret-token",
+        "X-Brasa-State-Token": testStateWriteToken,
       },
       body: JSON.stringify({ business: { name: "No session write" } }),
     });
@@ -247,7 +279,7 @@ test("BrasaFlow state PUT accepts writes with an admin session", async () => {
     const loginResponse = await fetch(`${listenUrl(server)}/api/session`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "admin@test.local", password: "1234" }),
+      body: JSON.stringify({ email: "admin@test.local", password: testPassword }),
     });
     const cookie = loginResponse.headers.get("set-cookie").split(";")[0];
 
@@ -263,6 +295,36 @@ test("BrasaFlow state PUT accepts writes with an admin session", async () => {
     assert.equal(writeResponse.status, 200);
     const readResponse = await fetch(`${listenUrl(server)}/api/state`);
     assert.deepEqual(await readResponse.json(), { business: { name: "Session write" } });
+  } finally {
+    await closeServer(server);
+  }
+});
+
+test("state PUT rejects html in nested text fields before saving", async () => {
+  const server = createAppServer({
+    appId: "brasaconnect",
+    appName: "BrasaConnect test",
+    root: __dirname,
+    dbPath: ":memory:",
+    port: 0,
+    stateWriteToken: testStateWriteToken,
+  });
+
+  try {
+    await waitForListening(server);
+    const response = await fetch(`${listenUrl(server)}/api/state`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Brasa-State-Token": testStateWriteToken,
+      },
+      body: JSON.stringify({ suppliers: [{ name: "<img src=x onerror=alert(1)>" }] }),
+    });
+
+    assert.equal(response.status, 400);
+    const payload = await response.json();
+    assert.equal(payload.error, "invalid_state_payload");
+    assert.equal(payload.errors["suppliers.0.name"], "No incluyas HTML ni scripts.");
   } finally {
     await closeServer(server);
   }

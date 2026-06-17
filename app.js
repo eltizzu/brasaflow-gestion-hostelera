@@ -1921,6 +1921,32 @@ function escapeAttribute(text) {
     .replaceAll("'", "&#39;");
 }
 
+function hasUnsafeFormText(value) {
+  return /<[^>]*>|javascript:|on[a-z]+\s*=/i.test(String(value || ""));
+}
+
+function validateFormBeforeSubmit(form) {
+  const errors = [];
+  Array.from(form.elements).forEach((field) => {
+    if (!field.name || field.disabled || ["button", "submit", "reset", "file", "checkbox"].includes(field.type)) return;
+    const label = field.closest("label")?.querySelector("span")?.textContent?.trim() || field.name;
+    const value = String(field.value || "").trim();
+    const maxLength = Number(field.getAttribute("maxlength") || (field.tagName === "TEXTAREA" ? 1000 : 200));
+    if (field.required && !value) errors.push(`${label}: campo requerido.`);
+    if (field.type === "email" && value && !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value)) errors.push(`${label}: email invalido.`);
+    if (field.type === "number" && value && !Number.isFinite(Number(value))) errors.push(`${label}: debe ser un numero valido.`);
+    if (field.type === "number" && value && field.min !== "" && Number(value) < Number(field.min)) errors.push(`${label}: debe ser mayor o igual a ${field.min}.`);
+    if (field.type === "number" && value && field.max !== "" && Number(value) > Number(field.max)) errors.push(`${label}: debe ser menor o igual a ${field.max}.`);
+    if (value.length > maxLength) errors.push(`${label}: maximo ${maxLength} caracteres.`);
+    if (hasUnsafeFormText(value)) errors.push(`${label}: no incluyas HTML ni scripts.`);
+  });
+  if (errors.length) {
+    alert(errors.join("\n"));
+    return false;
+  }
+  return true;
+}
+
 function renderOptions(items, getValue, getLabel, selectedValue) {
   return items
     .map((item) => {
@@ -4334,6 +4360,7 @@ function renderSidebar() {
 async function handleFormSubmit(event) {
   event.preventDefault();
   const form = event.currentTarget;
+  if (!validateFormBeforeSubmit(form)) return;
   const formType = form.dataset.form;
   const data = new FormData(form);
 
@@ -4962,6 +4989,7 @@ function bindAuthEvents() {
   if (!loginForm) return;
   loginForm.onsubmit = async (event) => {
     event.preventDefault();
+    if (!validateFormBeforeSubmit(loginForm)) return;
     const data = new FormData(loginForm);
     const email = String(data.get("email") || "").trim().toLowerCase();
     const password = String(data.get("password") || "");

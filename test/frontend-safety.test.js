@@ -28,10 +28,39 @@ test("BrasaFlow escapes user-controlled values before rendering them into HTML",
 test("BrasaFlow does not keep demo passwords or verify login in the browser", () => {
   const source = readProjectFile("app.js");
 
-  assert.equal(source.includes('password: "1234"'), false);
-  assert.equal(source.includes("/ 1234"), false);
+  assert.equal(/password:\s*["'][^"']+["']/.test(source), false);
   assert.equal(source.includes("item.password === password"), false);
   assert.equal(source.includes('fetch("/api/session"'), true);
+});
+
+test("sibling app frontends do not expose the state write token", () => {
+  const files = [
+    "BrasaReservas - Reservas Hosteleria/app.js",
+    "BrasaComandas - Comandas Hosteleria/app.js",
+    "BrasaConnect - Proveedores Hosteleria/app.js",
+  ];
+
+  for (const file of files) {
+    const source = readProjectFile(file);
+    assert.equal(source.includes("STATE_WRITE_TOKEN"), false, `${file} keeps a frontend token variable`);
+    assert.equal(source.includes("X-Brasa-State-Token"), false, `${file} sends a frontend state token header`);
+  }
+});
+
+test("frontends validate form data before mutating or sending user input", () => {
+  const files = [
+    "app.js",
+    "BrasaReservas - Reservas Hosteleria/app.js",
+    "BrasaReservas - Reservas Hosteleria/reserva-publica.js",
+    "BrasaComandas - Comandas Hosteleria/app.js",
+    "BrasaConnect - Proveedores Hosteleria/app.js",
+  ];
+
+  for (const file of files) {
+    const source = readProjectFile(file);
+    assert.equal(source.includes("validateFormBeforeSubmit"), true, `${file} does not define shared form validation`);
+    assert.equal(source.includes("hasUnsafeFormText"), true, `${file} does not check html/script input`);
+  }
 });
 
 test("public reservation page no longer writes the complete app state snapshot", () => {
